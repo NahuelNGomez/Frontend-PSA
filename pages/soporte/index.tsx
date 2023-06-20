@@ -15,14 +15,13 @@ export default function Soporte() {
     const [items, setItems] = useState([])
 
     useEffect(() => {
-        // Aquí hay que llamar al endpoint de proyectos para rellenar items, y luego reemplazar en linea 53
         fetch("https://apisoporte.onrender.com/productos")
-          .then((res) => {
-              return res.json()
-          })
-          .then((data) => {
-              setItems(data)
-          })
+            .then((res) => {
+                return res.json()
+            })
+            .then((data) => {
+                setItems(data)
+            })
       }, [])
 
     return (
