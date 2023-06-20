@@ -15,7 +15,7 @@ export default function Soporte() {
     const [items, setItems] = useState([])
 
     useEffect(() => {
-        fetch("https://apisoporte.onrender.com/productos")
+        fetch("https://apisoporte.onrender.com/versiones")
             .then((res) => {
                 return res.json()
             })
