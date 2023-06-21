@@ -32,6 +32,7 @@ export default function Tickets() {
         Estado: string;
         Severidad: string;
         idVersion: number;
+        nombreProducto: string;
         CUIT: string;
       };
       
@@ -60,7 +61,7 @@ export default function Tickets() {
                         <td>
                             ID version: {items[0].idVersion}
                             <br />
-                            <span> Nombre Producto: {items[0].Nombre}</span>
+                            <span> Nombre Producto: {items[0].nombreProducto}</span>
                         </td>
                     </tr>
                 )}
