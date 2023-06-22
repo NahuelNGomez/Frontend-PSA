@@ -1,15 +1,12 @@
 import { useRouter } from "next/router"
 import Breadcrumbs from "../../../components/Breadcrumbs"
-import TicketsTable from "../../../components/TicketsTable"
+import ClientsTable from "../../../components/ClientsTable"
 import TicketModal from "../../../components/TaskModal"
 import { useEffect, useState } from "react"
 
-export default function Tickets() {
+export default function Clientes() {
     const router = useRouter()
     const version_id = router.query.id;
-
-
-    
 
     interface Version {
         idVersion: number;
@@ -20,22 +17,11 @@ export default function Tickets() {
       }
       
       const [version, setVersion] = useState<Version>();
-    type Ticket = {
-        id: number;
-        Nombre: string;
-        Descripcion: string;
-        Escenario: string;
-        Estado: string;
-        Severidad: string;
-        idVersion: number;
-        nombreProducto: string;
-        CUIT: string;
-      };
       
-    const [items, setItems] = useState<Ticket[]>([]);
+      const [items, setItems] = useState([])
 
     useEffect(() => {
-        fetch("https://apisoporte.onrender.com/versiones/"+ version_id + "/tickets" )
+        fetch("https://apisoporte.onrender.com/licencias/"+ version_id)
             .then((res) => {
                 return res.json()
             })
@@ -50,6 +36,7 @@ export default function Tickets() {
                 setVersion(data)
             })    
       }, [])
+      console.log(version)
       
       const breadcrumbItems = [
         {
@@ -61,8 +48,8 @@ export default function Tickets() {
             url: '/soporte'
         },
         {
-            title: 'Tickets',
-            url: '/soporte/' + version_id + '/tickets'
+            title: 'Clientes',
+            url: '/soporte/' + version_id + '/clientes'
         }
     ]
     return (
@@ -70,7 +57,7 @@ export default function Tickets() {
             <div className="col-lg-12">
                 <Breadcrumbs items={breadcrumbItems} />
                 
-                <h3 className="fw-light">Listado de tickets</h3>
+                <h3 className="fw-light">Listado de clientes</h3>
                 <div className="modal-body">
                 <tbody>
                     <tr>
@@ -81,23 +68,7 @@ export default function Tickets() {
                 </tbody>
              </div>
 
-                <div className="row">
-                    <div className="col-md-10">
-                        <div className="input-group">
-                            <input type="text" className="form-control" placeholder="Buscar..." aria-label="Buscar..." aria-describedby="search" />
-                            <button className="btn btn-dark" type="button" id="search">
-                                <i className="bi bi-search"></i> Buscar ticket
-                            </button>
-                        </div>
-                    </div>
-                    <div className="col-md-2">
-                        <div className="d-grid gap-2">
-                            <button className="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#ticketModal">Nuevo ticket</button>
-                        </div>
-                    </div>
-                </div>
-
-                <TicketsTable items={items} />
+                <ClientsTable items={items} />
             </div>
 
             <TicketModal />
