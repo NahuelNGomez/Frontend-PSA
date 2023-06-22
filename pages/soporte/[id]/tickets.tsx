@@ -6,24 +6,20 @@ import { useEffect, useState } from "react"
 
 export default function Tickets() {
     const router = useRouter()
-    const product_id = router.query.id;
+    const version_id = router.query.id;
 
-    const breadcrumbItems = [
-        {
-            title: 'Soporte',
-            url: '/soporte'
-        },
-        {
-            title: 'NOMBRE_PRODUCTO', // Obtenerlo de API
-            url: '/soporte'
-        },
-        {
-            title: 'Tickets',
-            url: '/soporte/' + product_id + '/tickets'
-        }
-    ]
 
-    //const [items, setItems] = useState([])
+    
+
+    interface Version {
+        idVersion: number;
+        CodigoVersion: string;
+        CodigoProducto: 0;
+        NombreProducto: string;
+        Estado: string;
+      }
+      
+      const [version, setVersion] = useState<Version>();
     type Ticket = {
         id: number;
         Nombre: string;
@@ -36,18 +32,39 @@ export default function Tickets() {
         CUIT: string;
       };
       
-      const [items, setItems] = useState<Ticket[]>([]);
+    const [items, setItems] = useState<Ticket[]>([]);
 
     useEffect(() => {
-        fetch("https://apisoporte.onrender.com/productos/"+ product_id + "/tickets" )
+        fetch("https://apisoporte.onrender.com/versiones/"+ version_id + "/tickets" )
             .then((res) => {
                 return res.json()
             })
             .then((data) => {
                 setItems(data)
             })
+        fetch("https://apisoporte.onrender.com/versiones/"+ version_id)
+            .then((res) => {
+                return res.json()
+            })
+            .then((data) => {
+                setVersion(data)
+            })    
       }, [])
-
+      
+      const breadcrumbItems = [
+        {
+            title: 'Soporte',
+            url: '/soporte'
+        },
+        {
+            title: version?.NombreProducto,
+            url: '/soporte'
+        },
+        {
+            title: 'Tickets',
+            url: '/soporte/' + version_id + '/tickets'
+        }
+    ]
     return (
         <section className="row py-lg-12">
             <div className="col-lg-12">
@@ -56,17 +73,13 @@ export default function Tickets() {
                 <h3 className="fw-light">Listado de tickets</h3>
                 <div className="modal-body">
                 <tbody>
-                {items.length > 0 && (
-                    <tr key={items[0].id}>
-                        <td>
-                            ID version: {items[0].idVersion}
-                            <br />
-                            <span> Nombre Producto: {items[0].nombreProducto}</span>
-                        </td>
+                    <tr>
+                    <h5 className="fw-light">Version: {version?.CodigoVersion ? version.CodigoVersion : "Cargando..."}</h5>
+                    <h5 className="fw-light">Nombre De producto: {version?.NombreProducto ? version.NombreProducto : "Cargando..."}</h5>
                     </tr>
-                )}
-        </tbody>
-                    </div>
+
+                </tbody>
+             </div>
 
                 <div className="row">
                     <div className="col-md-10">

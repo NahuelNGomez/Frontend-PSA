@@ -6,7 +6,7 @@ export default function TicketsTable({items} : any) {
         <table className="table table-striped my-4">
             <thead>
                 <tr>
-                    <th>Número</th>
+                    <th>Número de ticket</th>
                     <th>Nombre</th>
                     <th style={{textAlign: 'center'}}>Estado</th>
                     <th style={{textAlign: 'center'}}>Severidad</th>
