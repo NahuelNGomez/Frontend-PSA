@@ -2,6 +2,16 @@ import Link from "next/link";
 
 export default function TicketsTable({items} : any) {
 
+    function subtractDates(FechaDeCreacion: any, arg1: number): import("react").ReactNode {
+        const currentDate = new Date();
+        const millisecondsPerDay = 24 * 60 * 60 * 1000; // Cantidad de milisegundos en un día
+        const creationTimestamp = new Date(FechaDeCreacion).getTime();
+        const targetTimestamp = creationTimestamp + ( arg1 * millisecondsPerDay);
+        const difference = Math.floor((targetTimestamp - currentDate.getTime()) / millisecondsPerDay);
+        console.log(creationTimestamp)
+        return `${difference} días restantes`;
+    }
+
     return (
         <table className="table table-striped my-4">
             <thead>
@@ -22,7 +32,14 @@ export default function TicketsTable({items} : any) {
                             <td>{item.Nombre}</td>
                             <td align="center">{item.Estado}</td>
                             <td align="center">{item.Severidad}</td>
-                            <td>Tiempo_RESTANTE</td>
+                            <td>
+                            {
+                                item.Severidad === 'S1' ? subtractDates(item.FechaDeCreacion, 7) :
+                                item.Severidad === 'S2' ? subtractDates(item.FechaDeCreacion, 30) :
+                                item.Severidad === 'S3' ? subtractDates(item.FechaDeCreacion, 90) :
+                                subtractDates(item.FechaDeCreacion, 365)
+                            }
+                            </td>
                             <td>
                                 <Link className="btn btn-primary btn-sm disabled" href={"/ticket/" + item.id}>Ver ticket</Link>
                             </td>
