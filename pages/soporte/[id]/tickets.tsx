@@ -8,9 +8,6 @@ export default function Tickets() {
     const router = useRouter()
     const version_id = router.query.id;
 
-
-    
-
     interface Version {
         idVersion: number;
         CodigoVersion: string;
@@ -22,14 +19,15 @@ export default function Tickets() {
       const [version, setVersion] = useState<Version>();
     type Ticket = {
         id: number;
+        FechaDeCreacion: String;
         Nombre: string;
         Descripcion: string;
         Escenario: string;
         Estado: string;
         Severidad: string;
         idVersion: number;
-        nombreProducto: string;
         CUIT: string;
+        RecursoAsignado: number;
       };
       
     const [items, setItems] = useState<Ticket[]>([]);
@@ -57,7 +55,7 @@ export default function Tickets() {
             url: '/soporte'
         },
         {
-            title: version?.NombreProducto,
+            title: version?.NombreProducto + " " + version?.CodigoVersion,
             url: '/soporte'
         },
         {
@@ -97,7 +95,7 @@ export default function Tickets() {
                     </div>
                 </div>
 
-                <TicketsTable items={items} />
+                <TicketsTable items={items}/>
             </div>
 
             <TicketModal />

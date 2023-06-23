@@ -1,6 +1,8 @@
 import Link from "next/link";
+import router from "next/router";
 
 export default function TicketsTable({items} : any) {
+
 
     function subtractDates(FechaDeCreacion: any, arg1: number): import("react").ReactNode {
         const currentDate = new Date();
@@ -41,7 +43,7 @@ export default function TicketsTable({items} : any) {
                             }
                             </td>
                             <td>
-                                <Link className="btn btn-primary btn-sm disabled" href={"/ticket/" + item.id}>Ver ticket</Link>
+                                <Link className="btn btn-primary btn-sm" href={"/soporte/" + item.idVersion + "/tickets/" + item.id}>Ver ticket</Link>
                             </td>
                         </tr>
                     ))
