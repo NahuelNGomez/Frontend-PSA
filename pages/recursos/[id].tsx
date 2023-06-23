@@ -1,10 +1,9 @@
 import { useRouter } from "next/router"
 import Breadcrumbs from "../../components/Breadcrumbs"
-import TaskModal from "../../components/TaskModal"
 import { useEffect, useState } from "react"
-import TrabajadorTable from "../../components/TrabajadorTable"
-import CargarHorasModal from "../../components/CargarHorasModal"
-import ReporteHorasModal from "../../components/ReporteHorasModal"
+import TrabajadorTable from "../../components/Recursos/TrabajadorTable"
+import CargarHorasModal from "../../components/Recursos/CargarHorasModal"
+import ReporteHorasModal from "../../components/Recursos/ReporteHorasModal"
 
 export default function Recurso() {
     const router = useRouter()
@@ -61,10 +60,23 @@ export default function Recurso() {
                         <h3 className="fw-light">Gestion R{legajo_recurso}</h3>
 
 
-                    <div className="col-md-2">
-                        <div className="d-grid gap-2">
-                            <button className="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#cargarHorasModal">Cargar horas</button>
-                            <button className="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#reporteHorasModal">Reporte de horas por proyecto</button>
+                    <div className="col-md-12">
+                        <div className="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+                            <div className="btn-group mr-2" role="group">
+                                <button className="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#cargarHorasModal">Cargar horas</button>
+                            </div>
+
+                            <div className="btn-group mr-2" role="group">
+                                <button className="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#cargarHorasModal">Modificar carga de horas</button>
+                            </div>
+
+                            <div className="btn-group mr-2" role="group">
+                                <button className="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#cargarHorasModal">Eliminar carga de horas</button>
+                            </div>
+
+                            <div className="btn-group mr-2" role="group">
+                                <button className="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#reporteHorasModal">Reporte de horas por proyecto</button>
+                            </div>
                         </div>
                     </div>
                     </div>
@@ -73,7 +85,7 @@ export default function Recurso() {
                 <TrabajadorTable item={items}/>
             </div>
 
-            <CargarHorasModal />
+            <CargarHorasModal id={legajo_recurso}/>
             <ReporteHorasModal />
         </section>
     )
