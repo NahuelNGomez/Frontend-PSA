@@ -4,6 +4,7 @@ import Breadcrumbs from "../../../../components/Breadcrumbs"
 import ProductsTable from "../../../../components/ProductsTable"
 import ProjectModal from "../../../../components/ProjectModal"
 import { version } from "os"
+import TareasAsignadasTable from "../../../../components/TareasAsignadasTable"
 
 const Ticket = () => {
     const router = useRouter()
@@ -34,7 +35,9 @@ const Ticket = () => {
       
     const [ticket, setTicket] = useState<Ticket>();
 
-    const[recurso, setRecurso] = useState<any>();
+    //const[recurso, setRecurso] = useState<any>();
+
+    const[tareasAsignadas, setTareasAsignadas] = useState([]);
 
     useEffect(() => {
         fetch("https://apisoporte.onrender.com/tickets/" + ticketID)
@@ -50,7 +53,14 @@ const Ticket = () => {
             })
             .then((data) => {
                 setVersion(data)
-            })   
+            })
+        fetch("https://apisoporte.onrender.com/tareasAsignadas/"+ ticketID)
+            .then((res) => {
+                return res.json()
+            })
+            .then((data) => {
+                setTareasAsignadas(data)
+            })     
       }, [])
 
       
@@ -133,7 +143,7 @@ const Ticket = () => {
                         </button>
                     </div>
                 </div>
-               <p>TABLA TAREAS</p>
+                <TareasAsignadasTable items={tareasAsignadas}/>
         </section>
     )
 }
