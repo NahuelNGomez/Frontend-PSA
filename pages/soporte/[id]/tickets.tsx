@@ -3,6 +3,7 @@ import Breadcrumbs from "../../../components/Breadcrumbs"
 import TicketsTable from "../../../components/TicketsTable"
 import TicketModal from "../../../components/TaskModal"
 import { useEffect, useState } from "react"
+import CrearTicketModal from "../../../components/CrearTicketModal"
 
 export default function Tickets() {
     const router = useRouter()
@@ -72,8 +73,10 @@ export default function Tickets() {
                 <div className="modal-body">
                 <tbody>
                     <tr>
-                    <h5 className="fw-light">Version: {version?.CodigoVersion ? version.CodigoVersion : "Cargando..."}</h5>
-                    <h5 className="fw-light">Nombre De producto: {version?.NombreProducto ? version.NombreProducto : "Cargando..."}</h5>
+                        <td>
+                        <h5 className="fw-light">Version: {version?.CodigoVersion ? version.CodigoVersion : "Cargando..."}</h5>
+                        <h5 className="fw-light">Nombre De producto: {version?.NombreProducto ? version.NombreProducto : "Cargando..."}</h5>
+                        </td>
                     </tr>
 
                 </tbody>
@@ -90,15 +93,14 @@ export default function Tickets() {
                     </div>
                     <div className="col-md-2">
                         <div className="d-grid gap-2">
-                            <button className="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#ticketModal">Nuevo ticket</button>
+                            <button className="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#crearTicketModal">Nuevo ticket</button>
                         </div>
                     </div>
                 </div>
 
                 <TicketsTable items={items}/>
             </div>
-
-            <TicketModal />
+            <CrearTicketModal/>
         </section>
     )
 }

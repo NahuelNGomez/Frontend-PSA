@@ -89,10 +89,6 @@ const Ticket = () => {
                 <div className="col-lg-12">
                     <Breadcrumbs items={breadcrumbItems} />
                 </div>
-
-
-
-
                 <div className="row">
                     <div className="col-6 m-auto">
                         <h3 className="fw-normal">Ticket {ticket?.id} - {ticket?.Nombre}</h3>
