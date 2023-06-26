@@ -2,27 +2,38 @@ import { useState } from "react";
 import HorasCargadasModal from "./HorasCargadasModal";
 
 
-
-
-export default function CargarHorasModal(legajo: any) {
-    if(legajo == undefined){  // || props.id == undefined
-        return (<></>)
-    }
-
+export default function CargarHorasModal({id}: any) {
+    let legajo = id;
+    console.log(legajo);
     const [proyect, setProyect] = useState('')
     const [task, setTask] = useState('')
     const [hours, setHours] = useState('')
     const [date, setDate] = useState('')
 
-    const handleSubmit = (e: { preventDefault: () => void; }) => {
-        const registro = {proyect, task, hours, date}
-        //Salta error para el push 
-        fetch("https://rrhh-squad6-1c2023.onrender.com/recursos/"+ legajo + "/registros",{
+    const handleSubmit = (e: { preventDefault: () => void }) => {
+        e.preventDefault();
+        const registro = {
+            id_proyecto: 1,
+            id_tarea: 1,
+            fecha_de_registro: date,
+            cantidad: parseInt(hours)
+        }
+
+        fetch(`https://rrhh-squad6-1c2023.onrender.com/recursos/1/registros`, {
             method: 'POST',
-            headers: {"Content-Type": "aplication/json"},
+            headers: { "Content-Type": "application/json", "Accept":"application/json" },
             body: JSON.stringify(registro)
-        }).then(() => {
-            console.log('Hora cargada con exito')
+        }).then(res => {
+            if (!res.ok) {
+                return res.json().then(err => {
+                    throw err
+                })
+            }
+            return res.json()
+        }).then(data => {
+            console.log(data);
+        }).catch(err => {
+            console.error(err.detail)
         })
 
     }
@@ -32,7 +43,7 @@ export default function CargarHorasModal(legajo: any) {
         <div className="modal fade" id="cargarHorasModal" tabIndex={-1} aria-labelledby="cargarHorasModalLabel" aria-hidden="true">
             <div className="modal-dialog">
                 <div className="modal-content">
-                    <form onSubmit = {handleSubmit}>
+                    <form onSubmit={handleSubmit}>
                         <div className="modal-header">
                             <h1 className="modal-title fs-5" id="cargarHorasModalLabel">Cargar Horas</h1>
                             <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -58,11 +69,11 @@ export default function CargarHorasModal(legajo: any) {
                             </div>
                             <div className="mb-3">
                                 <label htmlFor="name" className="col-form-label">Cantidad de horas: <small>(requerido)</small></label>
-                                <input type="text" className="form-control" id="horas" placeholder="Horas de trabajo" required value={hours} onChange={(e) => setHours(e.target.value)}/>
+                                <input type="text" className="form-control" id="horas" placeholder="Horas de trabajo" required value={hours} onChange={(e) => setHours(e.target.value)} />
                             </div>
                             <div className="mb-3">
                                 <label htmlFor="start_date" className="col-form-label">Fecha: <small>(requerido)</small></label>
-                                <input type="date" className="form-control" id="date" required value={date} onChange={(e) => setDate(e.target.value)}/>
+                                <input type="date" className="form-control" id="date" required value={date} onChange={(e) => setDate(e.target.value)} />
                             </div>
                         </div>
                         <div className="modal-footer">
@@ -70,11 +81,11 @@ export default function CargarHorasModal(legajo: any) {
                             {/* <button className="btn btn-secondary" type="button" data-bs-toggle="modal" data-bs-target="#horasCargadasModal">Aceptar</button> */}
                             <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
                             <button type="submit" className="btn btn-primary">Aceptar</button>
-        
-                            <HorasCargadasModal /> 
+
                         </div>
-                        
-                        
+                            <HorasCargadasModal />
+
+
                         {/* <div className="modal fade" id="horasCargadasModal" tabIndex={-1} aria-labelledby="horasCargadasModalLabel" aria-hidden="true">
                             <div className="modal-dialog">
                                 <div className="modal-content">
@@ -101,6 +112,6 @@ export default function CargarHorasModal(legajo: any) {
                 </div>
             </div>
         </div>
-        
+
     )
 }
