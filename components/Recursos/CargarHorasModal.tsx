@@ -15,7 +15,7 @@ interface TaskProps {
 export default function CargarHorasModal({id}: any) {
     let legajo = id;
     let maxDate = new Date().toISOString().slice(0,10);
-    console.log(legajo);
+    
     const [proyect, setProyect] = useState<ProyectProps>()
     const [task, setTask] = useState<TaskProps>()
     const [hours, setHours] = useState('')
