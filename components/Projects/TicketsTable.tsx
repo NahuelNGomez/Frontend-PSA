@@ -41,7 +41,7 @@ export default function TicketsTable({items} : any) {
                             }
                             </td>
                             <td>
-                                <Link className="btn btn-primary btn-sm disabled" href={"/ticket/" + item.id}>Ver ticket</Link>
+                            <Link className="btn btn-primary btn-sm" href={"/soporte/" + item.idVersion + "/tickets/" + item.id}>Ver ticket</Link>
                             </td>
                         </tr>
                     ))
