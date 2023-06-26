@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import Breadcrumbs from "../../components/Breadcrumbs"
-import ProjectModal from "../../components/ProjectModal"
+import ProjectModal from "../../components/Projects/ProjectModal"
 import RecursosTable from "../../components/Recursos/RecursosTable"
 
 

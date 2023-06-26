@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import Breadcrumbs from "../../components/Breadcrumbs"
-import ProductsTable from "../../components/ProductsTable"
-import ProjectModal from "../../components/ProjectModal"
+import ProductsTable from "../../components/Projects/ProductsTable"
+import ProjectModal from "../../components/Projects/ProjectModal"
 
 export default function Soporte() {
 

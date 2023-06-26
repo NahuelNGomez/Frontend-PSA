@@ -1,5 +1,5 @@
 import Link from "next/link";
-import ProductReportModal from "./ProductReportModal";
+import ProductReportModal from "../ProductReportModal";
 import { useState } from "react";
 
 export default function ProductsTable({items} : any) {

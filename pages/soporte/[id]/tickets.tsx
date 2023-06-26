@@ -1,7 +1,7 @@
 import { useRouter } from "next/router"
 import Breadcrumbs from "../../../components/Breadcrumbs"
-import TicketsTable from "../../../components/TicketsTable"
-import TicketModal from "../../../components/TaskModal"
+import TicketsTable from "../../../components/Projects/TicketsTable"
+import TicketModal from "../../../components/Projects/TaskModal"
 import { useEffect, useState } from "react"
 
 export default function Tickets() {

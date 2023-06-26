@@ -1,7 +1,7 @@
 import { useRouter } from "next/router"
 import Breadcrumbs from "../../../components/Breadcrumbs"
 import ClientsTable from "../../../components/ClientsTable"
-import TicketModal from "../../../components/TaskModal"
+import TicketModal from "../../../components/Projects/TaskModal"
 import { useEffect, useState } from "react"
 
 export default function Clientes() {

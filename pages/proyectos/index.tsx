@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import Breadcrumbs from "../../components/Breadcrumbs"
-import ProjectsTable from "../../components/ProjectsTable"
-import ProjectModal from "../../components/ProjectModal"
+import ProjectsTable from "../../components/Projects/ProjectsTable"
+import ProjectModal from "../../components/Projects/ProjectModal"
 
 export default function Proyectos() {
 
@@ -13,19 +13,27 @@ export default function Proyectos() {
     ]
 
     const [items, setItems] = useState([])
+    const [searchText, setSearchText] = useState('')
 
     useEffect(() => {
-        // Aquí hay que llamar al endpoint de proyectos para rellenar items, y luego reemplazar en linea 53
-        /*
-        fetch("https://apisoporte.onrender.com/clientes")
-            .then((res) => {
-                return res.json()
-            })
-            .then((data) => {
-                setItems(data)
-            })
-        */
-      }, [])
+        fetch("https://api-proyectos.onrender.com/projects")
+        .then((res) => {
+            return res.json()
+        })
+        .then((data) => {
+            setItems(data)
+        })
+    }, [])
+
+    const searchForm = async () => {
+        fetch("https://api-proyectos.onrender.com/projects/search?name=" + encodeURIComponent(searchText))
+        .then((res) => {
+            return res.json()
+        })
+        .then((data) => {
+            setItems(data)
+        })
+    }
 
     return (
         <section className="row py-lg-12">
@@ -37,8 +45,8 @@ export default function Proyectos() {
                 <div className="row">
                     <div className="col-md-10">
                         <div className="input-group">
-                            <input type="text" className="form-control" placeholder="Buscar..." aria-label="Buscar..." aria-describedby="search" />
-                            <button className="btn btn-dark" type="button" id="search">
+                            <input type="text" className="form-control" id="search" name="search" placeholder="Buscar..." aria-label="Buscar..." aria-describedby="searchButton" onKeyDown={(e) => setSearchText(e.target.value)} />
+                            <button className="btn btn-dark" type="button" id="searchButton" onClick={searchForm}>
                                 <i className="bi bi-search"></i> Buscar proyecto
                             </button>
                         </div>
@@ -50,16 +58,7 @@ export default function Proyectos() {
                     </div>
                 </div>
 
-                <ProjectsTable
-                items={[{
-                    id: 1,
-                    number: '0001',
-                    name: 'RappiYa',
-                    start_date: '01/01/2020',
-                    finish_date: '-',
-                    status: 'Inicio'
-                }]}
-                />
+                <ProjectsTable items={items} />
 
             </div>
 
