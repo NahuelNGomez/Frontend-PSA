@@ -8,7 +8,6 @@ export default function TicketsTable({items} : any) {
         const creationTimestamp = new Date(FechaDeCreacion).getTime();
         const targetTimestamp = creationTimestamp + ( arg1 * millisecondsPerDay);
         const difference = Math.floor((targetTimestamp - currentDate.getTime()) / millisecondsPerDay);
-        console.log(creationTimestamp)
         return `${difference} días restantes`;
     }
 

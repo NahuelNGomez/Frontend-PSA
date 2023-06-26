@@ -7,10 +7,7 @@ import CrearTicketModal from "../../../components/Projects/CrearTicketModal"
 export default function Tickets() {
     const router = useRouter()
     const version_id = router.query.id;
-
-
     
-
     interface Version {
         idVersion: number;
         CodigoVersion: string;
@@ -69,19 +66,17 @@ export default function Tickets() {
         <section className="row py-lg-12">
             <div className="col-lg-12">
                 <Breadcrumbs items={breadcrumbItems} />
-                
                 <h3 className="fw-light">Listado de tickets</h3>
                 <div className="modal-body">
-                <tbody>
-                    <tr>
-                        <td>
-                            <h5 className="fw-light">Version: {version?.CodigoVersion ? version.CodigoVersion : "Cargando..."}</h5>
-                            <h5 className="fw-light">Nombre De producto: {version?.NombreProducto ? version.NombreProducto : "Cargando..."}</h5>
-                        </td>
-                    </tr>
-                </tbody>
-             </div>
-
+                    <tbody>
+                        <tr>
+                            <td>
+                                <h5 className="fw-light">Version: {version?.CodigoVersion ? version.CodigoVersion : "Cargando..."}</h5>
+                                <h5 className="fw-light">Nombre De producto: {version?.NombreProducto ? version.NombreProducto : "Cargando..."}</h5>
+                            </td>
+                        </tr>
+                    </tbody>
+                </div>
                 <div className="row">
                     <div className="col-md-10">
                         <div className="input-group">
@@ -97,10 +92,9 @@ export default function Tickets() {
                         </div>
                     </div>
                 </div>
-
-                <TicketsTable items={items} />
+            <TicketsTable items={items} />
             </div>
-            <CrearTicketModal/>
+            <CrearTicketModal version_id={version_id}/>
         </section>
     )
 }
