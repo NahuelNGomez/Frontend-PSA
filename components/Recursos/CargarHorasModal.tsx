@@ -1,34 +1,50 @@
-import { useState } from "react";
+import { useEffect, useState } from "react"
 import HorasCargadasModal from "./HorasCargadasModal";
 
+interface ProyectProps {
+    id: number,
+    name: string,
+    tasks: []
+}
+
+interface TaskProps {
+    id: number,
+    title: string
+}
 
 export default function CargarHorasModal({id}: any) {
     let legajo = id;
     let maxDate = new Date().toISOString().slice(0,10);
     console.log(legajo);
-    const [proyect, setProyect] = useState('')
-    const [task, setTask] = useState('')
+    const [proyect, setProyect] = useState<ProyectProps>()
+    const [task, setTask] = useState<TaskProps>()
     const [hours, setHours] = useState('')
     const [date, setDate] = useState('')
+    const [projects, setProjects] = useState<ProyectProps[]>([])
+    const [tasks, setTasks] = useState<TaskProps[]>([])
 
     const handleSubmit = (e: { preventDefault: () => void }) => {
         e.preventDefault();
-        const registro = {
-            id_proyecto: 1,
-            id_tarea: 1,
-            fecha_de_registro: date,
-            cantidad: parseInt(hours)
+
+        if (!proyect || !task) {
+            console.error("Seleccionar proyecto y tarea");
+            return;
         }
 
-        fetch(`https://rrhh-squad6-1c2023.onrender.com/recursos/1/registros`, {
+        const registro = {
+            id_proyecto: proyect.id,
+            id_tarea: task.id,
+            fecha_de_registro: date,
+            cantidad: hours
+        }
+
+        fetch(`https://rrhh-squad6-1c2023.onrender.com/recursos/${legajo}/registros`, {
             method: 'POST',
             headers: { "Content-Type": "application/json", "Accept":"application/json" },
             body: JSON.stringify(registro)
         }).then(res => {
             if (!res.ok) {
-                return res.json().then(err => {
-                    throw err
-                })
+                return res.json().then(err => { throw err })
             }
             return res.json()
         }).then(data => {
@@ -38,6 +54,27 @@ export default function CargarHorasModal({id}: any) {
         })
 
     }
+
+    const selectProject = (projectIndex: number) => {
+        let project = projects[projectIndex];
+        setProyect(project);
+        setTasks(project.tasks);
+    }
+
+    const selectTask = (taskIndex: number) => {
+        let task = tasks[taskIndex];
+        setTask(task);
+    }
+
+    useEffect(() => {
+        fetch("https://api-proyectos.onrender.com/projects/")
+            .then((res) => {
+                return res.json()
+            })
+            .then((data) => {
+                setProjects(data)
+            })
+        }, [])
 
 
     return (
@@ -54,19 +91,12 @@ export default function CargarHorasModal({id}: any) {
                             <div className="mb-3">
                                 <label htmlFor="name" className="col-form-label">Proyecto: <small>(requerido)</small></label>
                                 {/* <input type="text" className="form-control" id="name" placeholder="Listar proyectos" required /> */}
-                                <select value={proyect} onChange={(e) => setProyect(e.target.value)}>
-                                    <option value="RappiYa">RappiYa </option>
-                                    <option value="StoreX">StoreX </option>
-                                    <option value="Buys Urus">Buys Urus </option>
-                                </select>
+                                <select onChange={(e) => selectProject(parseInt(e.target.value))}> {projects.map((proyect, index) => (<option key={index} value={index}>{proyect.name}</option>))}</select>
                             </div>
                             <div className="mb-3">
                                 <label htmlFor="name" className="col-form-label">Tarea: <small>(requerido)</small></label>
                                 {/* <input type="text" className="form-control" id="name" placeholder="Listar tarea" required /> */}
-                                <select value={task} onChange={(e) => setTask(e.target.value)}>
-                                    <option value="Verificar base de datos">Verificar base de datos </option>
-                                    <option value="Actualizar sonido principal">Actualizar sonido principal </option>
-                                </select>
+                                <select onChange={(e) => selectTask(parseInt(e.target.value))}> {tasks.map((task, index) => (<option key={index} value={index}>{task.title}</option>))} </select>
                             </div>
                             <div className="mb-3">
                                 <label htmlFor="name" className="col-form-label">Cantidad de horas: <small>(requerido)</small></label>
