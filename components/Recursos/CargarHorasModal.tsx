@@ -4,6 +4,7 @@ import HorasCargadasModal from "./HorasCargadasModal";
 
 export default function CargarHorasModal({id}: any) {
     let legajo = id;
+    let maxDate = new Date().toISOString().slice(0,10);
     console.log(legajo);
     const [proyect, setProyect] = useState('')
     const [task, setTask] = useState('')
@@ -69,11 +70,11 @@ export default function CargarHorasModal({id}: any) {
                             </div>
                             <div className="mb-3">
                                 <label htmlFor="name" className="col-form-label">Cantidad de horas: <small>(requerido)</small></label>
-                                <input type="text" className="form-control" id="horas" placeholder="Horas de trabajo" required value={hours} onChange={(e) => setHours(e.target.value)} />
+                                <input type="number" className="form-control" id="horas" placeholder="Horas de trabajo" required min={1} max={12} value={hours} onChange={(e) => setHours(e.target.value)} />
                             </div>
                             <div className="mb-3">
                                 <label htmlFor="start_date" className="col-form-label">Fecha: <small>(requerido)</small></label>
-                                <input type="date" className="form-control" id="date" required value={date} onChange={(e) => setDate(e.target.value)} />
+                                <input type="date" className="form-control" id="date" required value={date} max={maxDate} onChange={(e) => setDate(e.target.value)} />
                             </div>
                         </div>
                         <div className="modal-footer">
