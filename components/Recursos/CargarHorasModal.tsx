@@ -27,6 +27,7 @@ export default function CargarHorasModal({id}: any) {
         e.preventDefault();
 
         if (!proyect || !task) {
+            // mostrar cartel
             console.error("Seleccionar proyecto y tarea");
             return;
         }
@@ -58,7 +59,9 @@ export default function CargarHorasModal({id}: any) {
     const selectProject = (projectIndex: number) => {
         let project = projects[projectIndex];
         setProyect(project);
-        setTasks(project.tasks);
+        let tasks = project.tasks;
+        setTasks(tasks);
+        if (tasks.length === 0) setTask(undefined);
     }
 
     const selectTask = (taskIndex: number) => {
@@ -96,7 +99,7 @@ export default function CargarHorasModal({id}: any) {
                             <div className="mb-3">
                                 <label htmlFor="name" className="col-form-label">Tarea: <small>(requerido)</small></label>
                                 {/* <input type="text" className="form-control" id="name" placeholder="Listar tarea" required /> */}
-                                <select onChange={(e) => selectTask(parseInt(e.target.value))}> {tasks.map((task, index) => (<option key={index} value={index}>{task.title}</option>))} </select>
+                                <select disabled={tasks.length === 0} onChange={(e) => selectTask(parseInt(e.target.value))}> {tasks.map((task, index) => (<option key={index} value={index}>{task.title}</option>))} </select>
                             </div>
                             <div className="mb-3">
                                 <label htmlFor="name" className="col-form-label">Cantidad de horas: <small>(requerido)</small></label>
