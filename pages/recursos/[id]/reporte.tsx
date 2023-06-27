@@ -18,14 +18,11 @@ export default function ReporteHoras({ id }: any) {
             url: '/recursos/' + legajo_recurso
         },
         {
-            title: "reporte", // Obtenerlo de API
+            title: "Reporte", // Obtenerlo de API
             url: '/recursos/' + legajo_recurso + "/reporte"
         }
 
     ]
-
-    const [items, setItems] = useState([])
-
 
     const [registros, setRegistros] = useState([])
     const [dateInicio, setDateInicio] = useState('')
