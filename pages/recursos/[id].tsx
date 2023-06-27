@@ -62,11 +62,11 @@ export default function Recurso() {
 
                     <div className="col-md-12">
                         <div className="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
-                            <div className="btn-group mr-2" role="group">
+                            <div className="btn-group mx-2" role="group">
                                 <button className="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#cargarHorasModal">Cargar horas</button>
                             </div>
 
-                            <div className="btn-group mr-2" role="group">
+                            <div className="btn-group mx-2" role="group">
                                 <button className="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#reporteHorasModal">Reporte de horas por proyecto</button>
                             </div>
                         </div>

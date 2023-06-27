@@ -1,23 +1,43 @@
 import { useEffect, useState } from "react"
 import RegistrosTable from "./RegistrosTable"
 
+interface ProyectProps {
+    id: number,
+    name: string,
+    tasks: []
+}
+
 export default function ReporteHorasModal({ id }: any) {
 
     let legajo = id;
-    console.log(legajo);
 
     const [registros, setRegistros] = useState([])
     const [dateInicio, setDateInicio] = useState('')
     const [dateFin, setDateFin] = useState('')
     const [cargando, setCargando] = useState('')
+    const [projects, setProjects] = useState<ProyectProps[]>([])
+    const [project, setProject] = useState<ProyectProps>()
 
     let maxDate = new Date().toISOString().slice(0, 10);
+
+    const selectProject = (projectIndex: number) => {
+        let project = projects[projectIndex];
+        setProject(project);
+    }
 
     useEffect(() => {
         let fecha = new Date();
         fecha.setDate(fecha.getDate() - 7);
         setDateInicio(fecha.toISOString().slice(0, 10));
         setDateFin(maxDate);
+
+        fetch("https://api-proyectos.onrender.com/projects/")
+            .then((res) => {
+                return res.json()
+            })
+            .then((data) => {
+                setProjects(data)
+            })
     }, [])
 
     async function completarRegistro(registro: any) {
@@ -45,7 +65,14 @@ export default function ReporteHorasModal({ id }: any) {
                 return res.json()
             })
             .then(data => Promise.all(data.map(completarRegistro)))
-            .then((registros: any) => setRegistros(registros))
+            .then((registros: any) => {
+                if (!project) {
+                    setRegistros(registros);
+                } else {
+                    let registrosDeProyecto = registros.filter((registro: any) => registro.id_proyecto == project.id)
+                    setRegistros(registrosDeProyecto)
+                }
+            })
             .catch(err => {
                 console.error(err.detail)
             })
@@ -62,6 +89,10 @@ export default function ReporteHorasModal({ id }: any) {
                             <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div className="modal-body">
+                            <div className="mb-3">
+                                <label htmlFor="name" className="col-form-label">Proyecto: <small>(requerido)</small></label>
+                                <select onChange={(e) => selectProject(parseInt(e.target.value))}> {projects.map((proyect, index) => (<option key={index} value={index}>{proyect.name}</option>))}</select>
+                            </div>
 
                             <div className="mb-3">
                                 <label htmlFor="start_date" className="col-form-label">Fecha: <small>(requerido)</small></label>

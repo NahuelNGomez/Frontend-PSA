@@ -1,47 +1,32 @@
 import { useEffect, useState } from "react"
 import HorasCargadasModal from "./HorasCargadasModal";
 
-interface ProyectProps {
-    id: number,
-    name: string,
-    tasks: []
-}
-
-interface TaskProps {
-    id: number,
-    title: string
-}
-
-export default function CargarHorasModal({id}: any) {
+export default function CargarHorasModal({ id }: any) {
     let legajo = id;
-    let maxDate = new Date().toISOString().slice(0,10);
-    
-    const [proyect, setProyect] = useState<ProyectProps>()
-    const [task, setTask] = useState<TaskProps>()
+    let maxDate = new Date().toISOString().slice(0, 10);
+
     const [hours, setHours] = useState('')
     const [date, setDate] = useState('')
-    const [projects, setProjects] = useState<ProyectProps[]>([])
-    const [tasks, setTasks] = useState<TaskProps[]>([])
+
+    const [projects, setProjects] = useState([])
+    const [tasks, setTasks] = useState([])
+
+    const [proyect, setProyect] = useState("")
+    const [task, setTask] = useState("")
 
     const handleSubmit = (e: { preventDefault: () => void }) => {
         e.preventDefault();
 
-        if (!proyect || !task) {
-            // mostrar cartel
-            console.error("Seleccionar proyecto y tarea");
-            return;
-        }
-
         const registro = {
-            id_proyecto: proyect.id,
-            id_tarea: task.id,
+            id_proyecto: proyect,
+            id_tarea: task,
             fecha_de_registro: date,
             cantidad: hours
         }
 
         fetch(`https://rrhh-squad6-1c2023.onrender.com/recursos/${legajo}/registros`, {
             method: 'POST',
-            headers: { "Content-Type": "application/json", "Accept":"application/json" },
+            headers: { "Content-Type": "application/json", "Accept": "application/json" },
             body: JSON.stringify(registro)
         }).then(res => {
             if (!res.ok) {
@@ -56,18 +41,20 @@ export default function CargarHorasModal({id}: any) {
 
     }
 
-    const selectProject = (projectIndex: number) => {
-        let project = projects[projectIndex];
-        setProyect(project);
-        let tasks = project.tasks;
-        setTasks(tasks);
-        if (tasks.length === 0) setTask(undefined);
-    }
+    // const selectProject = (projectIndex: number) => {
+    //     let project = projects.at(projectIndex);
+    //     setProyect(project);
 
-    const selectTask = (taskIndex: number) => {
-        let task = tasks[taskIndex];
-        setTask(task);
-    }
+    //     let tasks = project ? project["tasks"] : [];
+    //     setTasks(tasks);
+    //     if (tasks.length === 0) setTask("")
+    //     else selectTask(0)
+    // }
+
+    // const selectTask = (taskIndex: number) => {
+    //     let task = tasks.at(taskIndex);
+    //     setTask(task);
+    // }
 
     useEffect(() => {
         fetch("https://api-proyectos.onrender.com/projects/")
@@ -76,9 +63,18 @@ export default function CargarHorasModal({id}: any) {
             })
             .then((data) => {
                 setProjects(data)
+                setProyect(data.at(0)["id"])
             })
-        }, [])
+    }, [])
 
+    useEffect(() => {
+        let project = projects.find(p => p["id"] == proyect);
+        let tasks = project ? project["tasks"] : [];
+        setTasks(tasks)
+        setTask(tasks.length === 0 ? "" : tasks[0]["id"])
+    }, [proyect])
+
+    let anyEmpty = !proyect || !task || !hours || !date;
 
     return (
         <div className="modal fade" id="cargarHorasModal" tabIndex={-1} aria-labelledby="cargarHorasModalLabel" aria-hidden="true">
@@ -94,12 +90,16 @@ export default function CargarHorasModal({id}: any) {
                             <div className="mb-3">
                                 <label htmlFor="name" className="col-form-label">Proyecto: <small>(requerido)</small></label>
                                 {/* <input type="text" className="form-control" id="name" placeholder="Listar proyectos" required /> */}
-                                <select onChange={(e) => selectProject(parseInt(e.target.value))}> {projects.map((proyect, index) => (<option key={index} value={index}>{proyect.name}</option>))}</select>
+                                <select value={proyect} onChange={(e) => setProyect(e.target.value)}>
+                                    {projects.map((proyect, index) => (<option key={proyect["id"]} value={proyect["id"]}>{proyect["name"]}</option>))}
+                                </select>
                             </div>
                             <div className="mb-3">
                                 <label htmlFor="name" className="col-form-label">Tarea: <small>(requerido)</small></label>
                                 {/* <input type="text" className="form-control" id="name" placeholder="Listar tarea" required /> */}
-                                <select disabled={tasks.length === 0} onChange={(e) => selectTask(parseInt(e.target.value))}> {tasks.map((task, index) => (<option key={index} value={index}>{task.title}</option>))} </select>
+                                <select value={task} disabled={tasks.length === 0} onChange={(e) => setTask(e.target.value)}>
+                                    {tasks.map((task, index) => (<option key={task["id"]} value={task["id"]}>{task["title"]}</option>))}
+                                </select>
                             </div>
                             <div className="mb-3">
                                 <label htmlFor="name" className="col-form-label">Cantidad de horas: <small>(requerido)</small></label>
@@ -114,10 +114,9 @@ export default function CargarHorasModal({id}: any) {
                             {/* <button className="btn btn-primary" data-bs-target="#exampleModalToggle2" data-bs-toggle="modal">Open second modal</button> */}
                             {/* <button className="btn btn-secondary" type="button" data-bs-toggle="modal" data-bs-target="#horasCargadasModal">Aceptar</button> */}
                             <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                            <button type="submit" className="btn btn-primary">Aceptar</button>
+                            <button type="submit" className="btn btn-primary" disabled={anyEmpty}>Aceptar</button>
 
                         </div>
-                            <HorasCargadasModal />
 
 
                         {/* <div className="modal fade" id="horasCargadasModal" tabIndex={-1} aria-labelledby="horasCargadasModalLabel" aria-hidden="true">
