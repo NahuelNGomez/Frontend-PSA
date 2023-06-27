@@ -73,8 +73,8 @@ export default function ReporteHorasModal({ id }: any) {
                     setRegistros(registrosDeProyecto)
 
                 }
-                let hoursSum = 0;
-                registros.forEach((r: any) => hoursSum += r["cantidad"])
+                
+                let hoursSum = registros.reduce((acc: number, actual: any) => acc += actual["cantidad"], 0);
                 setHours(hoursSum)
                 setCargando("");
             })
