@@ -1,9 +1,10 @@
 import { useRouter } from "next/router"
-import Breadcrumbs from "../../components/Breadcrumbs"
+import Breadcrumbs from "../../../components/Breadcrumbs"
 import { useEffect, useState } from "react"
-import TrabajadorTable from "../../components/Recursos/TrabajadorTable"
-import CargarHorasModal from "../../components/Recursos/CargarHorasModal"
-import ReporteHorasModal from "../../components/Recursos/ReporteHorasModal"
+import TrabajadorTable from "../../../components/Recursos/TrabajadorTable"
+import CargarHorasModal from "../../../components/Recursos/CargarHorasModal"
+import ReporteHorasModal from "../../../components/Recursos/ReporteHorasModal"
+import Link from "next/link"
 
 export default function Recurso() {
     const router = useRouter()
@@ -16,7 +17,7 @@ export default function Recurso() {
         },
         {
             title: 'Gestion R' + legajo_recurso, // Obtenerlo de API
-            url: '/soporte' + legajo_recurso
+            url: '/recursos' + legajo_recurso
         }
     ]
 
@@ -67,7 +68,8 @@ export default function Recurso() {
                             </div>
 
                             <div className="btn-group mx-2" role="group">
-                                <button className="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#reporteHorasModal">Reporte de horas por proyecto</button>
+                                {/* <button className="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#reporteHorasModal">Reporte de horas por proyecto</button> */}
+                                <Link className="btn btn-primary btn-sm" href={"/recursos/" + legajo_recurso + "/reporte"}>Reporte de horas por proyecto</Link>
                             </div>
                         </div>
                     </div>

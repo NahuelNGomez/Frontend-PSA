@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-
+import ModificarRegistroModal from "./ModificarRegistroModal";
 interface RegistroProps {
     id: number,
     cantidad: number,
@@ -33,6 +33,11 @@ export default function RegistrosTable({registros} : any) {
         }
     }
 
+    // const modificarRegistro = (item: any, legajo: number) => {
+    //     <ModificarRegistroModal registro= {item}/>
+        
+    // }
+
     return (
         <table className="table table-striped my-4">
             <thead>
@@ -42,8 +47,8 @@ export default function RegistrosTable({registros} : any) {
                     <th>Tarea</th>
                     <th>Fecha de registro</th>
                     <th>Cantidad de horas</th>
-                    <th>Modificar</th>
-                    <th>Eliminar</th>
+                    <th></th>
+                    <th></th>
                     <th></th>
                 </tr>
             </thead>
@@ -56,11 +61,12 @@ export default function RegistrosTable({registros} : any) {
                             <td>{item.titulo_tarea}</td>
                             <td>{item.fecha_de_registro}</td>
                             <td>{item.cantidad}</td>
-                            <td>test</td>
-                            <td><button onClick={() => eliminarRegistro(item.id)}>E</button></td>
+                            <td><button type="button" className="btn btn-primary">Modificar</button></td>
+                            <td><button type="button" className="btn btn-danger" onClick={() => eliminarRegistro(item.id)}>Eliminar</button></td>
                         </tr>
                     ))
                 }
+                
             </tbody>
         </table>
     )
