@@ -1,4 +1,18 @@
+import { useEffect, useState } from "react"
+
 export default function TaskModal({projectId} : any) {
+
+    const [resources, setResources] = useState([])
+
+    useEffect(() => {
+        fetch("https://rrhh-squad6-1c2023.onrender.com/recursos")
+        .then((res) => {
+            return res.json()
+        })
+        .then((data) => {
+            setResources(data)
+        })
+    }, [])
 
     const handleSubmit = async(event : any) => {
         event.preventDefault()
@@ -8,7 +22,7 @@ export default function TaskModal({projectId} : any) {
             body: JSON.stringify({
                 title: event.target.title.value,
                 description: event.target.description.value,
-                estimatedTime: parseInt(event.target.estimatedTime.value),
+                estimatedTime: parseFloat(event.target.estimatedTime.value),
                 employeeId: parseInt(event.target.employeeId.value),
                 taskType: event.target.taskType.value,
                 taskPriority: event.target.taskPriority.value,
@@ -66,14 +80,18 @@ export default function TaskModal({projectId} : any) {
                             <div className="mb-3">
                                 <label htmlFor="employeeId" className="col-form-label">Empleado: <small>(requerido)</small></label>
                                 <select className="form-control" id="employeeId" required>
-                                    <option></option>
-                                    <option value="1">Empleado 1</option>
+                                    <option value="">Seleccionar Recurso</option>
+                                    {
+                                        resources.map((item: any, index: number) => (
+                                            <option value={item.legajo}>{item.Nombre} {item.Apellido}</option>
+                                        ))
+                                    }
                                 </select>
                             </div>
                         </div>
                         <div className="modal-footer">
-                            <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
                             <button type="submit" className="btn btn-primary">Guardar</button>
+                            <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
                         </div>
                     </form>
                 </div>

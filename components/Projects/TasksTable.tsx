@@ -21,7 +21,7 @@ export default function TasksTable({items} : any) {
                             <td>{item.status}</td>
                             <td>{item.employeeId}</td>
                             <td>
-                                <a href={'/proyectos/' + item.project.id + '/tarea/' + item.id} className="btn btn-primary btn-sm">Ver tarea</a>
+                                <a href={'/tareas/' + item.id} className="btn btn-primary btn-sm">Ver tarea</a>
                             </td>
                         </tr>
                     ))

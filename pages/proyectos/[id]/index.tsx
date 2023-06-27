@@ -43,7 +43,7 @@ export default function Proyecto() {
     }, [router.query.id])
 
     const searchForm = async () => {
-        fetch("http://localhost:8080/projects/search?name=" + encodeURIComponent(searchText))
+        fetch("https://api-proyectos.onrender.com/projects/search?name=" + encodeURIComponent(searchText))
         .then((res) => {
             return res.json()
         })
