@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react"
 import RegistrosTable from "./RegistrosTable"
 
-interface ProyectProps {
-    id: number,
-    name: string,
-    tasks: []
-}
+// interface ProyectProps {
+//     id: number,
+//     name: string,
+//     tasks: []
+// }
 
 export default function ReporteHorasModal({ id }: any) {
 
@@ -15,15 +15,16 @@ export default function ReporteHorasModal({ id }: any) {
     const [dateInicio, setDateInicio] = useState('')
     const [dateFin, setDateFin] = useState('')
     const [cargando, setCargando] = useState('')
-    const [projects, setProjects] = useState<ProyectProps[]>([])
-    const [project, setProject] = useState<ProyectProps>()
+
+    const [projects, setProjects] = useState([])
+    const [project, setProject] = useState('')
 
     let maxDate = new Date().toISOString().slice(0, 10);
 
-    const selectProject = (projectIndex: number) => {
-        let project = projects[projectIndex];
-        setProject(project);
-    }
+    // const selectProject = (projectIndex: number) => {
+    //     let project = projects[projectIndex];
+    //     setProject(project);
+    // }
 
     useEffect(() => {
         let fecha = new Date();
@@ -37,21 +38,19 @@ export default function ReporteHorasModal({ id }: any) {
             })
             .then((data) => {
                 setProjects(data)
+                setProject(data[0]['id'])
             })
     }, [])
 
     async function completarRegistro(registro: any) {
-        return fetch(`https://api-proyectos.onrender.com/projects/${registro.id_proyecto}`)
-            .then(response => {
-                if (response.ok)
-                    return response.json().then(proyecto => {
-                        registro.nombre_proyecto = proyecto.name;
-                        let tarea = proyecto.tasks.find((task: any) => task.id == registro.id_tarea)
-                        registro.titulo_tarea = tarea? tarea.title : "Tarea sin titulo";
-                        setCargando("");
-                        return registro;
-                    });
-            })
+        let proyecto = projects.find(p => p['id'] == project);
+        if (proyecto) {
+            registro.nombre_proyecto = proyecto["name"];
+            let tasks: [] = proyecto['tasks'] || [];
+            let tarea = tasks.find((task: any) => task.id == registro.id_tarea)
+            registro.titulo_tarea = tarea ? tarea['title'] : "Tarea sin titulo";
+        }
+        return registro
     }
 
     const handleSubmit = (e: { preventDefault: () => void }) => {
@@ -69,11 +68,13 @@ export default function ReporteHorasModal({ id }: any) {
                 if (!project) {
                     setRegistros(registros);
                 } else {
-                    let registrosDeProyecto = registros.filter((registro: any) => registro.id_proyecto == project.id)
+                    let registrosDeProyecto = registros.filter((registro: any) => registro.id_proyecto == project)
                     setRegistros(registrosDeProyecto)
                 }
+                setCargando("");
             })
             .catch(err => {
+                setCargando("");
                 console.error(err.detail)
             })
 
@@ -91,7 +92,7 @@ export default function ReporteHorasModal({ id }: any) {
                         <div className="modal-body">
                             <div className="mb-3">
                                 <label htmlFor="name" className="col-form-label">Proyecto: <small>(requerido)</small></label>
-                                <select onChange={(e) => selectProject(parseInt(e.target.value))}> {projects.map((proyect, index) => (<option key={index} value={index}>{proyect.name}</option>))}</select>
+                                <select value={project} onChange={(e) => setProject(e.target.value)}> {projects.map((proyect, index) => (<option key={proyect["id"]} value={proyect["id"]}>{proyect["name"]}</option>))}</select>
                             </div>
 
                             <div className="mb-3">
