@@ -118,8 +118,9 @@ export default function ReporteHoras({ id }: any) {
                         </div>
 
                     </div>
-                    <button type="submit" className="btn btn-primary">Buscar</button>
-                    
+                    <div className="text-center">
+                        <button type="submit" className="btn btn-primary">Generar</button>
+                    </div>
                 </form>
                 {cargando}
                 <RegistrosTable registros={registros} />

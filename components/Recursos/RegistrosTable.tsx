@@ -1,5 +1,7 @@
 import { useRouter } from "next/router";
 import ModificarRegistroModal from "./ModificarRegistroModal";
+import EliminarRegistroModal from "./EliminarRegistroModal";
+import { useState } from "react";
 interface RegistroProps {
     id: number,
     cantidad: number,
@@ -14,7 +16,11 @@ export default function RegistrosTable({registros} : any) {
     if (!registros) return (<></>)
     const router = useRouter()
     const legajo = router.query.id;
-    
+    // let registroAEliminar = {
+    //     id: 0,
+    //     legajo: legajo
+    // };
+    const [id, setId] = useState(0)
     const eliminarRegistro = (id:number) => {
         if (confirm("¿Seguro que desea eliminar el registro?")) {
             fetch(`https://rrhh-squad6-1c2023.onrender.com/recursos/${legajo}/registros/${id}`, {
@@ -62,13 +68,15 @@ export default function RegistrosTable({registros} : any) {
                             <td>{item.fecha_de_registro}</td>
                             <td>{item.cantidad}</td>
                             <td><button type="button" className="btn btn-primary">Modificar</button></td>
-                            <td><button type="button" className="btn btn-danger" onClick={() => eliminarRegistro(item.id)}>Eliminar</button></td>
+                            <td><button type="button" className="btn btn-danger" data-bs-toggle="modal" data-bs-target="#eliminarRegistroModal" onClick={() => setId(item.id) }>Eliminar</button></td>
                         </tr>
                     ))
                 }
                 
+            <EliminarRegistroModal idRegistro={id}/>
             </tbody>
         </table>
-    )
+
+)
 
 }
