@@ -5,12 +5,6 @@ export default function EliminarRegistroModal({idRegistro}:any) {
     const router = useRouter()
     const legajo = router.query.id;
     
-    // const id = idRegistro;
-    console.log(idRegistro)
-    // const legajo = registro.legajo
-
-    
-
     const eliminarRegistro = () => {
         fetch(`https://rrhh-squad6-1c2023.onrender.com/recursos/${legajo}/registros/${idRegistro}`, {
             method: 'DELETE',

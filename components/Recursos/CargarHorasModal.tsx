@@ -41,21 +41,6 @@ export default function CargarHorasModal({ id }: any) {
 
     }
 
-    // const selectProject = (projectIndex: number) => {
-    //     let project = projects.at(projectIndex);
-    //     setProyect(project);
-
-    //     let tasks = project ? project["tasks"] : [];
-    //     setTasks(tasks);
-    //     if (tasks.length === 0) setTask("")
-    //     else selectTask(0)
-    // }
-
-    // const selectTask = (taskIndex: number) => {
-    //     let task = tasks.at(taskIndex);
-    //     setTask(task);
-    // }
-
     useEffect(() => {
         fetch("https://api-proyectos.onrender.com/projects/")
             .then((res) => {
@@ -89,14 +74,12 @@ export default function CargarHorasModal({ id }: any) {
 
                             <div className="mb-3">
                                 <label htmlFor="name" className="col-form-label">Proyecto: <small>(requerido)</small></label>
-                                {/* <input type="text" className="form-control" id="name" placeholder="Listar proyectos" required /> */}
                                 <select value={proyect} onChange={(e) => setProyect(e.target.value)}>
                                     {projects.map((proyect, index) => (<option key={proyect["id"]} value={proyect["id"]}>{proyect["name"]}</option>))}
                                 </select>
                             </div>
                             <div className="mb-3">
                                 <label htmlFor="name" className="col-form-label">Tarea: <small>(requerido)</small></label>
-                                {/* <input type="text" className="form-control" id="name" placeholder="Listar tarea" required /> */}
                                 <select value={task} disabled={tasks.length === 0} onChange={(e) => setTask(e.target.value)}>
                                     {tasks.map((task, index) => (<option key={task["id"]} value={task["id"]}>{task["title"]}</option>))}
                                 </select>
@@ -111,36 +94,10 @@ export default function CargarHorasModal({ id }: any) {
                             </div>
                         </div>
                         <div className="modal-footer">
-                            {/* <button className="btn btn-primary" data-bs-target="#exampleModalToggle2" data-bs-toggle="modal">Open second modal</button> */}
-                            {/* <button className="btn btn-secondary" type="button" data-bs-toggle="modal" data-bs-target="#horasCargadasModal">Aceptar</button> */}
                             <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
                             <button type="submit" className="btn btn-primary" disabled={anyEmpty}>Aceptar</button>
 
                         </div>
-
-
-                        {/* <div className="modal fade" id="horasCargadasModal" tabIndex={-1} aria-labelledby="horasCargadasModalLabel" aria-hidden="true">
-                            <div className="modal-dialog">
-                                <div className="modal-content">
-                                    <form>
-                                        <div className="modal-header">
-                                            <h1 className="modal-title fs-5" id="horasCargadasModalLabel">Carga de horas</h1>
-                                            <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                        </div>
-                                        <div className="modal-body">
-                                            <h3 className="fw-light mb-4">La carga fue realizada con exito</h3>
-                        
-                                        </div>
-                                        <div className="modal-footer">
-                                            <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Salir</button>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                        </div> */}
-
-
-
                     </form>
                 </div>
             </div>

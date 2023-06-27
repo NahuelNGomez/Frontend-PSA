@@ -22,22 +22,6 @@ export default function Recurso() {
     ]
 
     const [items, setItems] = useState([])
-    // const items = [{
-    //     legajo: "1",
-    //     Nombre: "Mario",
-    //     Apellido: "Mendoza"
-    //     }]
-    
-    /*useEffect(() => {
-        fetch("https://rrhh-squad6-1c2023.onrender.com/recursos/{(proyectos en los que aporto)}")
-            .then((res) => {
-                return res.json()
-            })
-            .then((data) => {
-                setItems(data)
-            })
-      }, [])
-    */
 
     useEffect(() => {
     fetch("https://rrhh-squad6-1c2023.onrender.com/recursos/"+ legajo_recurso )

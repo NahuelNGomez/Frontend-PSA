@@ -3,13 +3,6 @@ import RegistrosTable from "../../../components/Recursos/RegistrosTable";
 import { useRouter } from "next/router";
 import Breadcrumbs from "../../../components/Breadcrumbs";
 
-
-// interface ProyectProps {
-//     id: number,
-//     name: string,
-//     tasks: []
-// }
-
 export default function ReporteHoras({ id }: any) {
 
     const router = useRouter()

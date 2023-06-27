@@ -16,33 +16,7 @@ export default function RegistrosTable({registros} : any) {
     if (!registros) return (<></>)
     const router = useRouter()
     const legajo = router.query.id;
-    // let registroAEliminar = {
-    //     id: 0,
-    //     legajo: legajo
-    // };
     const [id, setId] = useState(0)
-    const eliminarRegistro = (id:number) => {
-        if (confirm("¿Seguro que desea eliminar el registro?")) {
-            fetch(`https://rrhh-squad6-1c2023.onrender.com/recursos/${legajo}/registros/${id}`, {
-                method: 'DELETE',
-                headers: { "Content-Type": "application/json", "Accept": "application/json" }
-            }).then(res => {
-                if (!res.ok) {
-                    return res.json().then(err => { throw err })
-                }
-                return res.json()
-            }).then(data => {
-                console.log(data);
-            }).catch(err => {
-                console.error(err.detail)
-            })
-        }
-    }
-
-    // const modificarRegistro = (item: any, legajo: number) => {
-    //     <ModificarRegistroModal registro= {item}/>
-        
-    // }
 
     return (
         <table className="table table-striped my-4">
