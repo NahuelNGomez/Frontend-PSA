@@ -35,10 +35,10 @@ export default function ProductReportModal(props : any) {
                                 <br />
                                 <b>Promedio respuesta de tickets</b>
                                 <ul>
-                                    <li>Promedio en Severidad 1: {item.PromedioS1} </li>
-                                    <li>Promedio en Severidad 2: {item.PromedioS2}</li>
-                                    <li>Promedio en Severidad 3: {item.PromedioS3}</li>
-                                    <li>Promedio en Severidad 4: {item.PromedioS4}</li>
+                                    <li className="m-3">Promedio en Severidad 1: {item.PromedioS1} días </li>
+                                    <li className="m-3">Promedio en Severidad 2: {item.PromedioS2} días</li>
+                                    <li className="m-3">Promedio en Severidad 3: {item.PromedioS3} días</li>
+                                    <li className="m-3">Promedio en Severidad 4: {item.PromedioS4} días</li>
                                 </ul>
                             </>
                         ) : (
