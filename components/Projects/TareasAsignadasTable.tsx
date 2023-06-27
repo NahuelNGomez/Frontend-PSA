@@ -13,16 +13,16 @@ export default function TareasAsignadasTable({items} : any) {
                 </tr>
             </thead>
             <tbody>
-                    {
-                        items.map((item: any, index: number) => (
-                            <tr key={index}>
-                                <td>{item.idTarea}</td>
-                                <td>
-                                </td>
-                            </tr>
-                        ))
-                    }
-                </tbody>
+                {
+                    items.map((item: any, index: number) => (
+                        <tr key={index}>
+                            <td>{item.idTarea}</td>
+                            <td>
+                            </td>
+                        </tr>
+                    ))
+                }
+            </tbody>
         </table>
     )
 }

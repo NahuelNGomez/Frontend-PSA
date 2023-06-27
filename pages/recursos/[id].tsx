@@ -67,14 +67,6 @@ export default function Recurso() {
                             </div>
 
                             <div className="btn-group mr-2" role="group">
-                                <button className="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#cargarHorasModal">Modificar carga de horas</button>
-                            </div>
-
-                            <div className="btn-group mr-2" role="group">
-                                <button className="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#cargarHorasModal">Eliminar carga de horas</button>
-                            </div>
-
-                            <div className="btn-group mr-2" role="group">
                                 <button className="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#reporteHorasModal">Reporte de horas por proyecto</button>
                             </div>
                         </div>
@@ -86,7 +78,7 @@ export default function Recurso() {
             </div>
 
             <CargarHorasModal id={legajo_recurso}/>
-            <ReporteHorasModal />
+            <ReporteHorasModal id={legajo_recurso}/>
         </section>
     )
 }

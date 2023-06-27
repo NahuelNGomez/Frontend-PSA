@@ -25,8 +25,8 @@ export default function ProjectsTable({items} : any) {
                         <tr key={index}>
                             <td>{item.id}</td>
                             <td>{item.name}</td>
-                            <td>{formatDate(item.startDate)}</td>
-                            <td>{formatDate(item.endDate)}</td>
+                            <td>{formatDate(item.start_date)}</td>
+                            <td>{formatDate(item.end_date)}</td>
                             <td>{item.status}</td>
                             <td>
                                 <Link className="btn btn-primary btn-sm" href={"/proyectos/" + item.id}>Ver proyecto</Link>

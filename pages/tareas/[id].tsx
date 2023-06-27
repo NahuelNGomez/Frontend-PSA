@@ -20,12 +20,12 @@ export default function Tarea() {
     useEffect(() => {
         if(router.query.id){
             fetch("https://api-proyectos.onrender.com/projectTasks/" + router.query.id)
-            .then((res) => {
-                return res.json()
-            })
+            .then((res) => res.json())
             .then((data) => {
                 setItem(data)
                 setTasks(data.tasks)
+
+                console.log(data);
 
                 const breadcrumb = [
                     {
@@ -35,6 +35,10 @@ export default function Tarea() {
                     {
                         title: data.name,
                         url: '/proyectos/' + data.id
+                    },
+                    {
+                        title: data.title,
+                        url: '/tareas/' + router.query.id
                     }
                 ];
                 setBreadcrumbItems(breadcrumb);
@@ -56,9 +60,32 @@ export default function Tarea() {
         <section className="row py-lg-12">
             <div className="col-lg-12">
                 <Breadcrumbs items={breadcrumbItems} />
-                
-                <h3 className="fw-light">{item.name}</h3>
-                <h6 className="fw-light">Version FALTA_VERSION</h6>
+
+                <div className="d-md-flex flex-md-row-reverse align-items-center justify-content-between">
+                    <div className="mb-3 mb-md-0 d-flex text-nowrap">
+                        <select className="form-select mx-1">
+                            <option selected>Seleccionar estado</option>
+                            <option value="1">One</option>
+                            <option value="2">Two</option>
+                            <option value="3">Three</option>
+                        </select>
+                        <a className="btn btn-primary">Editar tarea</a>
+                    </div>
+                    <div>
+                        <span className="badge text-bg-dark ms-1">{item.task_type}</span>
+                        <span className="badge text-bg-warning ms-1">{item.task_priority}</span>
+                        <h3 className="fw-light mb-0">{item.title}</h3>
+                    </div>
+                </div>
+
+                <div className="d-md-flex flex-md-row-reverse align-items-center justify-content-between">
+                    <div className="mb-3 mb-md-0 d-flex text-nowrap">
+                        <a className="btn btn-dark">Cargar horas</a>
+                    </div>
+                    <div>
+                        <h6 className="fw-light">FALTA_NOMBRE Proyecto - Version FALTA_VERSION</h6>
+                    </div>
+                </div>
 
                 <div className="row my-4">
                     <div className="col-md-12 mb-2">
@@ -67,8 +94,10 @@ export default function Tarea() {
                     <div className="col-md-12 mb-2">
                         Detalles: 
                         <div className="bd-callout bd-callout-light my-2">
-                            {item.hoursWorked} horas trabajadas ({item.tasksQuantity} tareas)<br />
-                            Inicio: {formatDate(item.startDate)} | Fin: {formatDate(item.endDate)}
+                            Responsable: {item.employee_id}<br />
+                            Fecha de creación: {formatDate(item.start_date)}<br />
+                            Tiempo estimado: {item.estimated_time} horas<br />
+                            Tiempo trabajado: WORKED_HOURS horas<br />
                         </div>
                     </div>
                 </div>
