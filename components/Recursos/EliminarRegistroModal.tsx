@@ -6,17 +6,17 @@ export default function EliminarRegistroModal({idRegistro}:any) {
     const legajo = router.query.id;
     
     const eliminarRegistro = () => {
-        fetch(`https://rrhh-squad6-1c2023.onrender.com/recursos/${legajo}/registros/${idRegistro}`, {
+        return fetch(`https://rrhh-squad6-1c2023.onrender.com/recursos/${legajo}/registros/${idRegistro}`, {
             method: 'DELETE',
-            headers: { "Content-Type": "application/json", "Accept": "application/json" }
+            headers: { "Accept": "application/json" }
         }).then(res => {
             if (!res.ok) {
                 return res.json().then(err => { throw err })
             }
             return res.json()
-        }).then(data => {
+        }).then((data: any) => {
             console.log(data);
-        }).catch(err => {
+        }).catch((err: any) => {
             console.error(err.detail)
         })
     }

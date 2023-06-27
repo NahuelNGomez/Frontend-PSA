@@ -1,9 +1,15 @@
 import { useEffect, useState } from "react"
 import HorasCargadasModal from "./HorasCargadasModal";
+import { useRouter } from "next/router";
 
-export default function CargarHorasModal({ id }: any) {
-    let legajo = id;
+export default function CargarHorasModal({ id, registro, handleSubmit }: any) {
+    const router = useRouter()
+    const legajo = router.query.id || id;
+
     let maxDate = new Date().toISOString().slice(0, 10);
+
+    const [isModification, setIsModification] = useState(false)
+    const [register, setRegister] = useState()
 
     const [hours, setHours] = useState('')
     const [date, setDate] = useState('')
@@ -14,31 +20,14 @@ export default function CargarHorasModal({ id }: any) {
     const [proyect, setProyect] = useState("")
     const [task, setTask] = useState("")
 
-    const handleSubmit = (e: { preventDefault: () => void }) => {
+    const submitHandler = (e: { preventDefault: () => void }) => {
         e.preventDefault();
-
-        const registro = {
-            id_proyecto: proyect,
-            id_tarea: task,
-            fecha_de_registro: date,
-            cantidad: hours
-        }
-
-        fetch(`https://rrhh-squad6-1c2023.onrender.com/recursos/${legajo}/registros`, {
-            method: 'POST',
-            headers: { "Content-Type": "application/json", "Accept": "application/json" },
-            body: JSON.stringify(registro)
-        }).then(res => {
-            if (!res.ok) {
-                return res.json().then(err => { throw err })
-            }
-            return res.json()
-        }).then(data => {
-            console.log(data);
-        }).catch(err => {
-            console.error(err.detail)
-        })
-
+        handleSubmit(proyect, task, date, hours)
+            .then((data: any) => {
+                console.log(data);
+            }).catch((err: any) => {
+                console.error(err.detail)
+            })
     }
 
     useEffect(() => {
@@ -53,6 +42,17 @@ export default function CargarHorasModal({ id }: any) {
     }, [])
 
     useEffect(() => {
+        setRegister(registro)
+        if (!register) return;
+        console.log(register);
+        setIsModification(true)
+        setProyect(register["id_proyecto"])
+        setTask(register["id_tarea"])
+        setDate(register["fecha_de_registro"])
+        setHours(register["cantidad"])
+    }, [register, projects])
+
+    useEffect(() => {
         let project = projects.find(p => p["id"] == proyect);
         let tasks = project ? project["tasks"] : [];
         setTasks(tasks)
@@ -65,37 +65,41 @@ export default function CargarHorasModal({ id }: any) {
         <div className="modal fade" id="cargarHorasModal" tabIndex={-1} aria-labelledby="cargarHorasModalLabel" aria-hidden="true">
             <div className="modal-dialog">
                 <div className="modal-content">
-                    <form onSubmit={handleSubmit}>
                         <div className="modal-header">
                             <h1 className="modal-title fs-5" id="cargarHorasModalLabel">Cargar Horas</h1>
                             <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
+                    <form onSubmit={submitHandler}>
                         <div className="modal-body">
+
+                            <div className="mb-4" hidden={!isModification}>
+                                <h1 className="fs-5"><b>Registro {register ? register["id"] : ""} </b></h1>
+                            </div>
 
                             <div className="mb-3">
                                 <label htmlFor="name" className="col-form-label">Proyecto: <small>(requerido)</small></label>
-                                <select value={proyect} onChange={(e) => setProyect(e.target.value)}>
+                                <select className="form-select" value={proyect} required={!isModification} onChange={(e) => setProyect(e.target.value)}>
                                     {projects.map((proyect, index) => (<option key={proyect["id"]} value={proyect["id"]}>{proyect["name"]}</option>))}
                                 </select>
                             </div>
                             <div className="mb-3">
                                 <label htmlFor="name" className="col-form-label">Tarea: <small>(requerido)</small></label>
-                                <select value={task} disabled={tasks.length === 0} onChange={(e) => setTask(e.target.value)}>
+                                <select className="form-select" value={task} disabled={tasks.length === 0} required={!isModification} onChange={(e) => setTask(e.target.value)}>
                                     {tasks.map((task, index) => (<option key={task["id"]} value={task["id"]}>{task["title"]}</option>))}
                                 </select>
                             </div>
                             <div className="mb-3">
                                 <label htmlFor="name" className="col-form-label">Cantidad de horas: <small>(requerido)</small></label>
-                                <input type="number" className="form-control" id="horas" placeholder="Horas de trabajo" required min={1} max={12} value={hours} onChange={(e) => setHours(e.target.value)} />
+                                <input type="number" className="form-control" id="horas" placeholder="Horas de trabajo" required={!isModification} min={1} max={12} value={hours} onChange={(e) => setHours(e.target.value)} />
                             </div>
                             <div className="mb-3">
                                 <label htmlFor="start_date" className="col-form-label">Fecha: <small>(requerido)</small></label>
-                                <input type="date" className="form-control" id="date" required value={date} max={maxDate} onChange={(e) => setDate(e.target.value)} />
+                                <input type="date" className="form-control" id="date" required={!isModification} value={date} max={maxDate} onChange={(e) => setDate(e.target.value)} />
                             </div>
                         </div>
                         <div className="modal-footer">
                             <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                            <button type="submit" className="btn btn-primary" disabled={anyEmpty}>Aceptar</button>
+                            <button type="submit" className="btn btn-primary" data-bs-dismiss="modal" disabled={anyEmpty}>Aceptar</button>
 
                         </div>
                     </form>

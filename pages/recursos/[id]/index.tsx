@@ -23,6 +23,27 @@ export default function Recurso() {
 
     const [items, setItems] = useState([])
 
+    const cargarRegistro = (proyect: number, task: number, date: string, hours: number) => {
+        const registro = {
+            id_proyecto: proyect,
+            id_tarea: task,
+            fecha_de_registro: date,
+            cantidad: hours
+        }
+
+        return fetch(`https://rrhh-squad6-1c2023.onrender.com/recursos/${legajo_recurso}/registros`, {
+            method: 'POST',
+            headers: { "Content-Type": "application/json", "Accept": "application/json" },
+            body: JSON.stringify(registro)
+        }).then(res => {
+            if (!res.ok) {
+                return res.json().then(err => { throw err })
+            }
+            return res.json()
+        })
+
+    }
+
     useEffect(() => {
     fetch("https://rrhh-squad6-1c2023.onrender.com/recursos/"+ legajo_recurso )
         .then((res) => {
@@ -58,7 +79,7 @@ export default function Recurso() {
                 <TrabajadorTable item={items}/>
             </div>
 
-            <CargarHorasModal id={legajo_recurso}/>
+            <CargarHorasModal id={legajo_recurso} handleSubmit={cargarRegistro}/>
         </section>
     )
 }

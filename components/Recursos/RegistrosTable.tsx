@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
-import ModificarRegistroModal from "./ModificarRegistroModal";
 import EliminarRegistroModal from "./EliminarRegistroModal";
 import { useState } from "react";
+import CargarHorasModal from "./CargarHorasModal";
 
 
 export default function RegistrosTable({ registros }: any) {
@@ -9,6 +9,33 @@ export default function RegistrosTable({ registros }: any) {
     const router = useRouter()
     const legajo = router.query.id;
     const [id, setId] = useState(0)
+    const [selectedItem, setSelectedItem] = useState()
+
+    const modificarRegistro = (proyect: number, task: number, date: string, hours: number) => {
+        const registro = {
+            id_proyecto: proyect,
+            id_tarea: task,
+            fecha_de_registro: date,
+            cantidad: hours,
+
+        }
+
+        return fetch(`https://rrhh-squad6-1c2023.onrender.com/recursos/${legajo}/registros/${id}`, {
+            method: 'PATCH',
+            headers: { "Content-Type": "application/json", "Accept": "application/json" },
+            body: JSON.stringify(registro)
+        }).then(res => {
+            if (!res.ok) {
+                return res.json().then(err => { throw err })
+            }
+            return res.json()
+        })
+
+    }
+
+    const parseFecha = (fecha:string) => {
+        return new Date(fecha).toLocaleDateString()
+    } 
 
     return (
         <div>
@@ -32,9 +59,9 @@ export default function RegistrosTable({ registros }: any) {
                                 <td>{item.id}</td>
                                 <td>{item.nombre_proyecto}</td>
                                 <td>{item.titulo_tarea}</td>
-                                <td>{item.fecha_de_registro}</td>
+                                <td>{parseFecha(item.fecha_de_registro)}</td>
                                 <td>{item.cantidad}</td>
-                                <td><button type="button" className="btn btn-primary">Modificar</button></td>
+                                <td><button type="button" className="btn btn-primary" data-bs-toggle="modal" data-bs-target="#cargarHorasModal" onClick={() => setSelectedItem(item)}>Modificar</button></td>
                                 <td><button type="button" className="btn btn-danger" data-bs-toggle="modal" data-bs-target="#eliminarRegistroModal" onClick={() => setId(item.id)}>Eliminar</button></td>
                             </tr>
                         ))
@@ -42,7 +69,9 @@ export default function RegistrosTable({ registros }: any) {
 
                 </tbody>
             </table>
+            
             <EliminarRegistroModal idRegistro={id} />
+            <CargarHorasModal registro={selectedItem} handleSubmit={modificarRegistro} />
         </div>
 
     )
