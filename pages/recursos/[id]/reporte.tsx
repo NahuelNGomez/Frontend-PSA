@@ -86,84 +86,43 @@ export default function ReporteHoras({ id }: any) {
 
     }
 
-    return(
+    return (
         <section className="row py-lg-12">
             <div className="col-lg-12">
                 <Breadcrumbs items={breadcrumbItems} />
                 <div className="row">
-                <form onSubmit={handleSubmit}>
+
+                    <form onSubmit={handleSubmit}>
                         <h1 className="modal-title fs-5">Hacer reporte</h1>
                         <div className="mb-3">
                             <label htmlFor="name" className="col-form-label">Proyecto: <small>(requerido)</small></label>
                             <select value={project} onChange={(e) => setProject(e.target.value)}> {projects.map((proyect, index) => (<option key={proyect["id"]} value={proyect["id"]}>{proyect["name"]}</option>))}</select>
 
-                        <div className="mb-3">
-                            <label htmlFor="start_date" className="col-form-label">Fecha de inicio: <small>(requerido)</small></label>
-                            <input type="date" className="form-control" id="date" required value={dateInicio} max={maxDate} onChange={(e) => setDateInicio(e.target.value)} />
+                            <div className="mb-3">
+                                <label htmlFor="start_date" className="col-form-label">Fecha de inicio: <small>(requerido)</small></label>
+                                <input type="date" className="form-control" id="date" required value={dateInicio} max={maxDate} onChange={(e) => setDateInicio(e.target.value)} />
+                            </div>
+
+                            <div className="mb-3">
+                                <label htmlFor="start_date" className="col-form-label">Fecha de finalizacion: <small>(requerido)</small></label>
+                                <input type="date" className="form-control" id="date" required value={dateFin} max={maxDate} min={dateInicio} onChange={(e) => setDateFin(e.target.value)} />
+                            </div>
+
                         </div>
-
-                        <div className="mb-3">
-                            <label htmlFor="start_date" className="col-form-label">Fecha de finalizacion: <small>(requerido)</small></label>
-                            <input type="date" className="form-control" id="date" required value={dateFin} max={maxDate} min={dateInicio} onChange={(e) => setDateFin(e.target.value)} />
+                        <div className="text-center">
+                            <button type="submit" className="btn btn-primary">Generar</button>
                         </div>
+                        <div className="text-center">
+                            {cargando}
+                            <RegistrosTable registros={registros} />
+                            <div className="mb-4">
+                                <label htmlFor="name" className="col-form-label" style={{ padding: "10px" }}><b>Subtotal de horas: {hours} </b></label>
+                            </div>
+                        </div>
+                    </form>
 
-                    </div>
-                    <div className="text-center">
-                        <button type="submit" className="btn btn-primary">Generar</button>
-                    </div>
-                </form>
-                {cargando}
-                <RegistrosTable registros={registros} />
-
-                <div className="mb-4">
-                    <label htmlFor="name" className="col-form-label" style={{ padding: "10px" }}><b>Subtotal de horas: {hours} </b></label>
-                </div>
                 </div>
             </div>
         </section>
     )
-
-    // return (
-    //     <section className="row py-lg-12">
-
-    //     <div className="modal fade modal-lg" id="reporteHorasModal" tabIndex={-1} aria-labelledby="reporteHorasModalLabel" aria-hidden="true" style={{ width: "80%" }}>
-    //         <div className="modal-dialog">
-    //             <div className="modal-content">
-    //                 <form onSubmit={handleSubmit}>
-    //                     <div className="modal-header">
-    //                         <h1 className="modal-title fs-5" id="projectModalLabel">Hacer reporte</h1>
-    //                         <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-    //                     </div>
-    //                     <div className="modal-body">
-    //                         <div className="mb-3">
-    //                             <label htmlFor="name" className="col-form-label">Proyecto: <small>(requerido)</small></label>
-    //                             <select value={project} onChange={(e) => setProject(e.target.value)}> {projects.map((proyect, index) => (<option key={proyect["id"]} value={proyect["id"]}>{proyect["name"]}</option>))}</select>
-    //                         </div>
-
-    //                         <div className="mb-3">
-    //                             <label htmlFor="start_date" className="col-form-label">Fecha: <small>(requerido)</small></label>
-    //                             <input type="date" className="form-control" id="date" required value={dateInicio} max={maxDate} onChange={(e) => setDateInicio(e.target.value)} />
-    //                         </div>
-
-    //                         <div className="mb-3">
-    //                             <label htmlFor="start_date" className="col-form-label">Fecha: <small>(requerido)</small></label>
-    //                             <input type="date" className="form-control" id="date" required value={dateFin} max={maxDate} min={dateInicio} onChange={(e) => setDateFin(e.target.value)} />
-    //                         </div>
-
-    //                     </div>
-    //                     <div className="modal-footer">
-    //                         <button type="submit" className="btn btn-primary">Buscar</button>
-    //                     </div>
-    //                 </form>
-    //                 {cargando}
-    //                 <RegistrosTable registros={registros} />
-
-    //                 <div className="mb-4">
-    //                     <label htmlFor="name" className="col-form-label" style={{ padding: "10px" }}><b>Subtotal de horas: {hours} </b></label>
-    //                 </div>
-    //             </div>
-    //         </div>
-    //     </div>
-    // </section>
-    // )
 }

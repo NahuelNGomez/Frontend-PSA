@@ -16,7 +16,7 @@ export default function Recurso() {
             url: '/recursos'
         },
         {
-            title: 'Gestion R' + legajo_recurso, // Obtenerlo de API
+            title: 'Gestion R' + legajo_recurso,
             url: '/recursos' + legajo_recurso
         }
     ]
@@ -38,13 +38,9 @@ export default function Recurso() {
         <section className="row py-lg-12">
             <div className="col-lg-12">
                 <Breadcrumbs items={breadcrumbItems} />
-                
-                
                 <div className="row">
                     <div className="col-md-10">
                         <h3 className="fw-light">Gestion R{legajo_recurso}</h3>
-
-
                     <div className="col-md-12">
                         <div className="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
                             <div className="btn-group mx-2" role="group">
@@ -52,7 +48,6 @@ export default function Recurso() {
                             </div>
 
                             <div className="btn-group mx-2" role="group">
-                                {/* <button className="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#reporteHorasModal">Reporte de horas por proyecto</button> */}
                                 <Link className="btn btn-primary btn-sm" href={"/recursos/" + legajo_recurso + "/reporte"}>Reporte de horas por proyecto</Link>
                             </div>
                         </div>
@@ -64,7 +59,6 @@ export default function Recurso() {
             </div>
 
             <CargarHorasModal id={legajo_recurso}/>
-            <ReporteHorasModal id={legajo_recurso}/>
         </section>
     )
 }
