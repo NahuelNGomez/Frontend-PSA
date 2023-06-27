@@ -18,6 +18,7 @@ export default function ReporteHorasModal({ id }: any) {
 
     const [projects, setProjects] = useState([])
     const [project, setProject] = useState('')
+    const [hours, setHours] = useState(0)
 
     let maxDate = new Date().toISOString().slice(0, 10);
 
@@ -70,7 +71,11 @@ export default function ReporteHorasModal({ id }: any) {
                 } else {
                     let registrosDeProyecto = registros.filter((registro: any) => registro.id_proyecto == project)
                     setRegistros(registrosDeProyecto)
+
                 }
+                let hoursSum = 0;
+                registros.forEach((r: any) => hoursSum += r["cantidad"])
+                setHours(hoursSum)
                 setCargando("");
             })
             .catch(err => {
@@ -112,6 +117,10 @@ export default function ReporteHorasModal({ id }: any) {
                     </form>
                     {cargando}
                     <RegistrosTable registros={registros} />
+
+                    <div className="mb-4">
+                                <label htmlFor="name" className="col-form-label" style={{padding: "10px"}}><b>Subtotal de horas: {hours} </b></label>
+                    </div>
                 </div>
             </div>
         </div>
