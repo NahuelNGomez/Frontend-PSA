@@ -12,7 +12,7 @@ function formatDate(timestamp: string){
 export default function Proyecto() {
     const router = useRouter()
 
-    const [item, setItem] = useState([])
+    const [item, setItem] = useState(null)
     const [breadcrumbItems, setBreadcrumbItems] = useState<Array<{ title: string; url: string; }>>([]);
     const [tasks, setTasks] = useState([])
     var [searchText, setSearchText] = useState('')
@@ -50,6 +50,18 @@ export default function Proyecto() {
         .then((data) => {
             setItem(data)
         })
+    }
+
+    if(item == null && !tasks.length){
+        return (<div className="container text-center">
+            <div className="row align-items-center">
+                <div className="col my-4">
+                    <div className="spinner-border" role="status">
+                        <span className="visually-hidden">Loading...</span>
+                    </div>
+                </div>
+            </div>
+        </div>)
     }
 
     return (

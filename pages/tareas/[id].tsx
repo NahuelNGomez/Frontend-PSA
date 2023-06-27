@@ -12,10 +12,8 @@ function formatDate(timestamp: string){
 export default function Tarea() {
     const router = useRouter()
 
-    const [item, setItem] = useState([])
+    const [item, setItem] = useState(null)
     const [breadcrumbItems, setBreadcrumbItems] = useState<Array<{ title: string; url: string; }>>([]);
-    const [tasks, setTasks] = useState([])
-    const [searchText, setSearchText] = useState('')
 
     useEffect(() => {
         if(router.query.id){
@@ -23,9 +21,6 @@ export default function Tarea() {
             .then((res) => res.json())
             .then((data) => {
                 setItem(data)
-                setTasks(data.tasks)
-
-                console.log(data);
 
                 const breadcrumb = [
                     {
@@ -46,14 +41,16 @@ export default function Tarea() {
         }
     }, [router.query.id])
 
-    const searchForm = async () => {
-        fetch("https://api-proyectos.onrender.com/projects?search=" + encodeURIComponent(searchText))
-        .then((res) => {
-            return res.json()
-        })
-        .then((data) => {
-            setItem(data)
-        })
+    if(item == null){
+        return (<div className="container text-center">
+            <div className="row align-items-center">
+                <div className="col my-4">
+                    <div className="spinner-border" role="status">
+                        <span className="visually-hidden">Loading...</span>
+                    </div>
+                </div>
+            </div>
+        </div>)
     }
 
     return (
@@ -64,10 +61,11 @@ export default function Tarea() {
                 <div className="d-md-flex flex-md-row-reverse align-items-center justify-content-between">
                     <div className="mb-3 mb-md-0 d-flex text-nowrap">
                         <select className="form-select mx-1">
-                            <option selected>Seleccionar estado</option>
-                            <option value="1">One</option>
-                            <option value="2">Two</option>
-                            <option value="3">Three</option>
+                            <option>Seleccionar estado</option>
+                            <option value="pending">Pendiente</option>
+                            <option value="working">En curso</option>
+                            <option value="reviewing">En revisión</option>
+                            <option value="finished">Finalizada</option>
                         </select>
                         <a className="btn btn-primary">Editar tarea</a>
                     </div>
@@ -83,7 +81,7 @@ export default function Tarea() {
                         <a className="btn btn-dark">Cargar horas</a>
                     </div>
                     <div>
-                        <h6 className="fw-light">FALTA_NOMBRE Proyecto - Version FALTA_VERSION</h6>
+                        <h6 className="fw-light">FALTA_NOMBRE Proyecto</h6>
                     </div>
                 </div>
 
