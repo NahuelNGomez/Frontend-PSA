@@ -13,6 +13,7 @@ const Ticket = () => {
 
     interface Version {
         idVersion: number;
+        idProyecto: number;
         CodigoVersion: string;
         CodigoProducto: 0;
         NombreProducto: string;
@@ -62,8 +63,6 @@ const Ticket = () => {
                 setTareasAsignadas(data)
             })     
       }, [])
-
-      
 
       const breadcrumbItems = [
         {

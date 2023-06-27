@@ -15,21 +15,17 @@ export default function Tickets() {
         NombreProducto: string;
         Estado: string;
       }
+
+      interface Recurso {
+        legajo: number;
+        Nombre: string;
+        Apellido: string;
+      }
       
       const [version, setVersion] = useState<Version>();
-    type Ticket = {
-        id: number;
-        Nombre: string;
-        Descripcion: string;
-        Escenario: string;
-        Estado: string;
-        Severidad: string;
-        idVersion: number;
-        nombreProducto: string;
-        CUIT: string;
-      };
-      
       const [items, setItems] = useState([])
+      const [recursos, setRecursos] = useState<Recurso[]>([])
+      const [clientes, setClientes] = useState([])
 
     useEffect(() => {
         fetch("https://apisoporte.onrender.com/versiones/"+ version_id + "/tickets" )
@@ -46,7 +42,22 @@ export default function Tickets() {
             })
             .then((data) => {
                 setVersion(data)
-            })    
+            })   
+            
+        fetch("https://rrhh-squad6-1c2023.onrender.com/recursos")
+            .then((res) => {
+                return res.json()
+            })
+            .then((data) => {
+                setRecursos(data)
+            })
+        fetch("https://apisoporte.onrender.com/clientes")
+            .then((res) => {
+                return res.json()
+            })
+            .then((data) => {
+                setClientes(data)
+            })      
       }, [])
       
       const breadcrumbItems = [
@@ -89,7 +100,7 @@ export default function Tickets() {
                 </div>
             <TicketsTable items={items} />
             </div>
-            <CrearTicketModal version_id={version_id}/>
+            <CrearTicketModal version_id={version_id} recursos={recursos} clientes={clientes}/>
         </section>
     )
 }

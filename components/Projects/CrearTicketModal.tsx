@@ -1,6 +1,6 @@
 import React, { SyntheticEvent, useEffect, useState } from "react";
 
-export default function CrearTicketModal({version_id} : any){
+export default function CrearTicketModal({version_id, recursos, clientes} : any){
 
 
     const handleSubmit = async(event : any) => {
@@ -44,8 +44,14 @@ export default function CrearTicketModal({version_id} : any){
                                     <input type="text" className="form-control" id="titulo" placeholder="Titulo" required />
                                 </div>
                                 <div className="mb-3">
-                                    <label htmlFor="cuit" className="col-form-label">CUIT: <small>(requerido)</small></label>
-                                    <input type="text" className="form-control" id="cuit" placeholder="CUIT" required />
+                                    <label htmlFor="cuit" className="col-form-label">CUIT Cliente: <small>(requerido)</small></label>
+                                    <select className="form-control" id="cuit">
+                                {
+                                    Array.isArray(clientes) && clientes.map((item: any, index: number) => (
+                                        <option value={item?.CUIT}>{item?.CUIT} - {item?.Nombre}</option>
+                                    ))
+                                }
+                                </select>
                                 </div>
                             </div>
                             <div className="mb-3">
@@ -70,10 +76,13 @@ export default function CrearTicketModal({version_id} : any){
                             </div>
 
                             <div className="mb-3">
+                                <label htmlFor="cuit" className="col-form-label">Recurso a asignar:</label>
                                 <select className="form-control" id="recursos">
-                                    <option value="1">1</option>
-                                    <option value="2">2</option>
-                                    <option value="3">3</option>
+                                {
+                                    Array.isArray(recursos) && recursos.map((item: any, index: number) => (
+                                        <option value={item?.legajo}>{item?.legajo} - {item?.Nombre} {item?.Apellido}</option>
+                                    ))
+                                }
                                 </select>
                             </div>
                             <div className="mb-3 row">
