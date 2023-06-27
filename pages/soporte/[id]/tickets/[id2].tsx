@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react"
 import { useRouter } from "next/router"
 import Breadcrumbs from "../../../../components/Breadcrumbs"
-import ProductsTable from "../../../../components/Projects/ProductsTable"
-import ProjectModal from "../../../../components/Projects/ProjectModal"
 import { version } from "os"
 import TareasAsignadasTable from "../../../../components/Projects/TareasAsignadasTable"
+import TaskModal from "../../../../components/Projects/TaskModal"
+import AsignarTareaModal from "../../../../components/Projects/AsignarTareaModal"
 
 const Ticket = () => {
     const router = useRouter()
@@ -13,6 +13,7 @@ const Ticket = () => {
 
     interface Version {
         idVersion: number;
+        idProyecto: number;
         CodigoVersion: string;
         CodigoProducto: 0;
         NombreProducto: string;
@@ -63,8 +64,6 @@ const Ticket = () => {
             })     
       }, [])
 
-      
-
       const breadcrumbItems = [
         {
             title: 'Soporte',
@@ -86,60 +85,60 @@ const Ticket = () => {
 
     return (
         <section className="row py-lg-12">
-            <div className="col-lg-12">
-                <Breadcrumbs items={breadcrumbItems} />
-            </div>
-            <div className="row">
-                <div className="col-6 m-auto">
-                    <h3 className="fw-normal">Ticket {ticket?.id} - {ticket?.Nombre}</h3>
-                    <div className="modal-body">
-                        <tbody>
-                            <tr>
+                <div className="col-lg-12">
+                    <Breadcrumbs items={breadcrumbItems} />
+                </div>
+                <div className="row">
+                    <div className="col-6 m-auto">
+                        <h3 className="fw-normal">Ticket {ticket?.id} - {ticket?.Nombre}</h3>
+                        <div className="modal-body">
                             <h5 className="fw-light">{version?.NombreProducto ? version.NombreProducto : "Cargando..."} - Version {version?.CodigoVersion ? version.CodigoVersion : "Cargando..."}</h5>
-                            </tr>
-                        </tbody>
+                        </div>
                     </div>
-                </div>
 
-                <div className="col-2 m-auto">
-                    <p className="bd-callout bd-callout-light fw-light mb-8">
-                        <span className="estado"><b>Severidad:</b> {ticket?.Severidad}</span><br />
-                        <span className="severidad"><b>Estado:</b> {ticket?.Estado}</span>
-                    </p>
-                </div>
-                <div className="col-2 mx-auto">
-                    <p className="bd-callout bd-callout-light fw-light mb-8"><b>Recurso:</b> {ticket?.RecursoAsignado}.</p>
-                </div>
-                <div className="col-2 my-4">
-                    <button className="btn btn-outline-secondary " type="button" id="search">
-                        <i className="bi bi-search"></i> Editar Ticket
-                    </button>
-                </div>
-            </div>
-            <div className="row">
-                <div className="col-6">
-                    <p className="bd-callout bd-callout-light fw-light mb-8"><b>Descripcion:</b> {ticket?.Descripcion ? ticket.Descripcion : "Cargando..."}.</p>
-                </div>
-                <div className="col-6">
-                    <p className="bd-callout bd-callout-light fw-light mb-8"><b>Escenario:</b> {ticket?.Escenario}.</p>
-                </div>
-            </div>
-            <div className="row">
-                <div className="col-md-10">
-                    <div className="input-group">
-                        <input type="text" className="form-control" placeholder="Buscar..." aria-label="Buscar..." aria-describedby="search" />
-                        <button className="btn btn-dark" type="button" id="search">
-                            <i className="bi bi-search"></i> Buscar
+                    <div className="col-2 m-auto">
+                        <p className="bd-callout bd-callout-light fw-light mb-8">
+                            <span className="estado"><b>Severidad:</b> {ticket?.Severidad}</span><br />
+                            <span className="severidad"><b>Estado:</b> {ticket?.Estado}</span>
+                        </p>
+                    </div>
+                    <div className="col-2 mx-auto">
+                        <p className="bd-callout bd-callout-light fw-light mb-8"><b>Recurso:</b> {ticket?.RecursoAsignado}.</p>
+                    </div>
+                    <div className="col-2 my-4">
+                        <button className="btn btn-outline-secondary " type="button" id="search">
+                                    <i className="bi bi-search"></i> Editar Ticket
                         </button>
                     </div>
                 </div>
-                <div className="col-md-2">
-                    <button className="btn btn-outline-secondary " type="button" id="search">
-                        <i className="bi bi-search"></i> Asignar Tarea
-                    </button>
+                <div className="row">
+                    <div className="col-6">
+                        <p className="bd-callout bd-callout-light fw-light mb-8"><b>Descripcion:</b> {ticket?.Descripcion ? ticket.Descripcion : "Cargando..."}.</p>
+                    </div>
+                    <div className="col-6">
+                        <p className="bd-callout bd-callout-light fw-light mb-8"><b>Escenario:</b> {ticket?.Escenario}.</p>
+                    </div>
                 </div>
-            </div>
-            <TareasAsignadasTable items={tareasAsignadas}/>
+                <div className="row">
+                    <div className="col-md-8">
+                        <div className="input-group">
+                            <input type="text" className="form-control" placeholder="Buscar..." aria-label="Buscar..." aria-describedby="search" />
+                            <button className="btn btn-dark" type="button" id="search">
+                                <i className="bi bi-search"></i> Buscar
+                            </button>
+                        </div>
+                    </div>
+                    <div className="col-md-2">
+                        <button className="btn btn-outline-secondary " type="button" data-bs-toggle="modal" data-bs-target="#asignarTareaModal"> Asignar Tarea
+                        </button>
+                    </div>
+                    <div className="col-md-2 ">
+                    <button className="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#taskModal">Crear tarea</button>
+                    </div>
+                </div>
+                <TareasAsignadasTable items={tareasAsignadas}/>
+                <AsignarTareaModal/>
+               {/* <TaskModal projectId={2}/> Deberiamos obtener ese numero de proyecto o pasar un versionID*/}
         </section>
     )
 }

@@ -1,16 +1,18 @@
 import Link from "next/link";
 
-export default function TicketsTable({items} : any) {
-
-    function subtractDates(FechaDeCreacion: any, arg1: number): import("react").ReactNode {
+function subtractDates(estado: string, FechaDeCreacion: any, arg1: number): import("react").ReactNode {
+    if (estado != "Cerrado"){
         const currentDate = new Date();
         const millisecondsPerDay = 24 * 60 * 60 * 1000; // Cantidad de milisegundos en un día
         const creationTimestamp = new Date(FechaDeCreacion).getTime();
         const targetTimestamp = creationTimestamp + ( arg1 * millisecondsPerDay);
         const difference = Math.floor((targetTimestamp - currentDate.getTime()) / millisecondsPerDay);
-        console.log(creationTimestamp)
         return `${difference} días restantes`;
     }
+    return '-'
+}
+
+export default function TicketsTable({items} : any) {
 
     return (
         <table className="table table-striped my-4">
@@ -34,10 +36,10 @@ export default function TicketsTable({items} : any) {
                             <td align="center">{item.Severidad}</td>
                             <td>
                             {
-                                item.Severidad === 'S1' ? subtractDates(item.FechaDeCreacion, 7) :
-                                item.Severidad === 'S2' ? subtractDates(item.FechaDeCreacion, 30) :
-                                item.Severidad === 'S3' ? subtractDates(item.FechaDeCreacion, 90) :
-                                subtractDates(item.FechaDeCreacion, 365)
+                                item.Severidad === 'S1' ? subtractDates(item.Estado, item.FechaDeCreacion, 7) :
+                                item.Severidad === 'S2' ? subtractDates(item.Estado, item.FechaDeCreacion, 30) :
+                                item.Severidad === 'S3' ? subtractDates(item.Estado, item.FechaDeCreacion, 90) :
+                                subtractDates(item.Estado, item.FechaDeCreacion, 365)
                             }
                             </td>
                             <td>

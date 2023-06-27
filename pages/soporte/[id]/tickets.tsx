@@ -7,10 +7,7 @@ import CrearTicketModal from "../../../components/Projects/CrearTicketModal"
 export default function Tickets() {
     const router = useRouter()
     const version_id = router.query.id;
-
-
     
-
     interface Version {
         idVersion: number;
         CodigoVersion: string;
@@ -18,21 +15,17 @@ export default function Tickets() {
         NombreProducto: string;
         Estado: string;
       }
+
+      interface Recurso {
+        legajo: number;
+        Nombre: string;
+        Apellido: string;
+      }
       
       const [version, setVersion] = useState<Version>();
-    type Ticket = {
-        id: number;
-        Nombre: string;
-        Descripcion: string;
-        Escenario: string;
-        Estado: string;
-        Severidad: string;
-        idVersion: number;
-        nombreProducto: string;
-        CUIT: string;
-      };
-      
-    const [items, setItems] = useState<Ticket[]>([]);
+      const [items, setItems] = useState([])
+      const [recursos, setRecursos] = useState<Recurso[]>([])
+      const [clientes, setClientes] = useState([])
 
     useEffect(() => {
         fetch("https://apisoporte.onrender.com/versiones/"+ version_id + "/tickets" )
@@ -42,13 +35,29 @@ export default function Tickets() {
             .then((data) => {
                 setItems(data)
             })
+            
         fetch("https://apisoporte.onrender.com/versiones/"+ version_id)
             .then((res) => {
                 return res.json()
             })
             .then((data) => {
                 setVersion(data)
-            })    
+            })   
+            
+        fetch("https://rrhh-squad6-1c2023.onrender.com/recursos")
+            .then((res) => {
+                return res.json()
+            })
+            .then((data) => {
+                setRecursos(data)
+            })
+        fetch("https://apisoporte.onrender.com/clientes")
+            .then((res) => {
+                return res.json()
+            })
+            .then((data) => {
+                setClientes(data)
+            })      
       }, [])
       
       const breadcrumbItems = [
@@ -69,19 +78,11 @@ export default function Tickets() {
         <section className="row py-lg-12">
             <div className="col-lg-12">
                 <Breadcrumbs items={breadcrumbItems} />
-                
                 <h3 className="fw-light">Listado de tickets</h3>
                 <div className="modal-body">
-                <tbody>
-                    <tr>
-                        <td>
                             <h5 className="fw-light">Version: {version?.CodigoVersion ? version.CodigoVersion : "Cargando..."}</h5>
                             <h5 className="fw-light">Nombre De producto: {version?.NombreProducto ? version.NombreProducto : "Cargando..."}</h5>
-                        </td>
-                    </tr>
-                </tbody>
-             </div>
-
+                </div>
                 <div className="row">
                     <div className="col-md-10">
                         <div className="input-group">
@@ -97,10 +98,9 @@ export default function Tickets() {
                         </div>
                     </div>
                 </div>
-
-                <TicketsTable items={items} />
+            <TicketsTable items={items} />
             </div>
-            <CrearTicketModal/>
+            <CrearTicketModal version_id={version_id} recursos={recursos} clientes={clientes}/>
         </section>
     )
 }
