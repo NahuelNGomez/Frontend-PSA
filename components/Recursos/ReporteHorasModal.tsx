@@ -22,10 +22,6 @@ export default function ReporteHorasModal({ id }: any) {
 
     let maxDate = new Date().toISOString().slice(0, 10);
 
-    // const selectProject = (projectIndex: number) => {
-    //     let project = projects[projectIndex];
-    //     setProject(project);
-    // }
 
     useEffect(() => {
         let fecha = new Date();
@@ -43,37 +39,29 @@ export default function ReporteHorasModal({ id }: any) {
             })
     }, [])
 
-    async function completarRegistro(registro: any) {
-        let proyecto = projects.find(p => p['id'] == project);
-        if (proyecto) {
-            registro.nombre_proyecto = proyecto["name"];
-            let tasks: [] = proyecto['tasks'] || [];
-            let tarea = tasks.find((task: any) => task.id == registro.id_tarea)
-            registro.titulo_tarea = tarea ? tarea['title'] : "Tarea sin titulo";
-        }
-        return registro
-    }
-
     const handleSubmit = (e: { preventDefault: () => void }) => {
         e.preventDefault();
         setCargando("Cargando datos...");
-        fetch(`https://rrhh-squad6-1c2023.onrender.com/recursos/${legajo}/registros?fechaInicio=${dateInicio}&fechaFin=${dateFin}`)
+        fetch(`https://rrhh-squad6-1c2023.onrender.com/recursos/${legajo}/registros?fechaInicio=${dateInicio}&fechaFin=${dateFin}&idProyecto=${project}`)
             .then(res => {
                 if (!res.ok) {
                     return res.json().then(err => { throw err })
                 }
                 return res.json()
             })
-            .then(data => Promise.all(data.map(completarRegistro)))
-            .then((registros: any) => {
-                if (!project) {
-                    setRegistros(registros);
-                } else {
-                    let registrosDeProyecto = registros.filter((registro: any) => registro.id_proyecto == project)
-                    setRegistros(registrosDeProyecto)
+            .then(data => {
+                let registros = data.map((registro: any) => {
+                    let proyecto = projects.find(p => p['id'] == project);
+                    if (proyecto) {
+                        registro.nombre_proyecto = proyecto["name"];
+                        let tasks: [] = proyecto['tasks'] || [];
+                        let tarea = tasks.find((task: any) => task.id == registro.id_tarea)
+                        registro.titulo_tarea = tarea ? tarea['title'] : "Tarea sin titulo";
+                    }
+                    return registro
+                })
 
-                }
-                
+                setRegistros(registros);
                 let hoursSum = registros.reduce((acc: number, actual: any) => acc += actual["cantidad"], 0);
                 setHours(hoursSum)
                 setCargando("");
@@ -119,7 +107,7 @@ export default function ReporteHorasModal({ id }: any) {
                     <RegistrosTable registros={registros} />
 
                     <div className="mb-4">
-                                <label htmlFor="name" className="col-form-label" style={{padding: "10px"}}><b>Subtotal de horas: {hours} </b></label>
+                        <label htmlFor="name" className="col-form-label" style={{ padding: "10px" }}><b>Subtotal de horas: {hours} </b></label>
                     </div>
                 </div>
             </div>
