@@ -22,10 +22,10 @@ export default function TaskModal({projectId} : any) {
             body: JSON.stringify({
                 title: event.target.title.value,
                 description: event.target.description.value,
-                estimatedTime: parseFloat(event.target.estimatedTime.value),
-                employeeId: parseInt(event.target.employeeId.value),
-                taskType: event.target.taskType.value,
-                taskPriority: event.target.taskPriority.value,
+                estimated_time: parseFloat(event.target.estimatedTime.value),
+                employee_id: parseInt(event.target.employeeId.value),
+                task_type: event.target.taskType.value,
+                task_priority: event.target.taskPriority.value,
                 status: 'pending'
             })
         }).then((response) => {

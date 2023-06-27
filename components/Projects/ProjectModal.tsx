@@ -8,8 +8,8 @@ export default function ProjectModal() {
             body: JSON.stringify({
                 name: event.target.name.value,
                 description: event.target.description.value,
-                startDate: event.target.start_date.value,
-                endDate: event.target.end_date.value,
+                start_date: event.target.start_date.value,
+                end_date: event.target.end_date.value,
             })
         }).then((response) => {
             if(response.ok) location.reload();
