@@ -13,7 +13,7 @@ export default function Proyectos() {
     ]
 
     const [items, setItems] = useState([])
-    const [searchText, setSearchText] = useState('')
+    var [searchText, setSearchText] = useState('')
 
     useEffect(() => {
         fetch("https://api-proyectos.onrender.com/projects")
@@ -45,7 +45,7 @@ export default function Proyectos() {
                 <div className="row">
                     <div className="col-md-10">
                         <div className="input-group">
-                            <input type="text" className="form-control" id="search" name="search" placeholder="Buscar..." aria-label="Buscar..." aria-describedby="searchButton" onKeyDown={(e) => setSearchText(e.target.value)} />
+                            <input type="text" className="form-control" id="search" name="search" placeholder="Buscar..." aria-label="Buscar..." aria-describedby="searchButton" onChange={(e) => setSearchText(e.target.value)} />
                             <button className="btn btn-dark" type="button" id="searchButton" onClick={searchForm}>
                                 <i className="bi bi-search"></i> Buscar proyecto
                             </button>

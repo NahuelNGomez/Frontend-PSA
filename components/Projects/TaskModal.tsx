@@ -83,7 +83,7 @@ export default function TaskModal({projectId} : any) {
                                     <option value="">Seleccionar Recurso</option>
                                     {
                                         resources.map((item: any, index: number) => (
-                                            <option value={item.legajo}>{item.Nombre} {item.Apellido}</option>
+                                            <option key={index} value={item.legajo}>{item.Nombre} {item.Apellido}</option>
                                         ))
                                     }
                                 </select>

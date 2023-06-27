@@ -15,7 +15,7 @@ export default function Proyecto() {
     const [item, setItem] = useState([])
     const [breadcrumbItems, setBreadcrumbItems] = useState<Array<{ title: string; url: string; }>>([]);
     const [tasks, setTasks] = useState([])
-    const [searchText, setSearchText] = useState('')
+    var [searchText, setSearchText] = useState('')
 
     useEffect(() => {
         if(router.query.id){
@@ -66,13 +66,13 @@ export default function Proyecto() {
                     <div className="col-md-6 mb-2">
                         Detalles: 
                         <div className="bd-callout bd-callout-light my-2">
-                            {item.hoursWorked} horas trabajadas ({item.tasksQuantity} tareas)<br />
-                            Inicio: {formatDate(item.startDate)} | Fin: {formatDate(item.endDate)}
+                            {item.hours_worked} horas trabajadas ({item.tasks_quantity} tareas)<br />
+                            Inicio: {formatDate(item.start_date)} | Fin: {formatDate(item.end_date)}
                         </div>
                     </div>
                     <div className="col-md-10">
                         <div className="input-group">
-                            <input type="text" className="form-control" id="search" name="search" placeholder="Buscar..." aria-label="Buscar..." aria-describedby="searchButton" onKeyDown={(e) => setSearchText(e.target.value)} />
+                            <input type="text" className="form-control" id="search" name="search" placeholder="Buscar..." aria-label="Buscar..." aria-describedby="searchButton" onChange={(e) => setSearchText(e.target.value)} />
                             <button className="btn btn-dark" type="button" id="searchButton" onClick={searchForm}>
                                 <i className="bi bi-search"></i> Buscar tarea
                             </button>
