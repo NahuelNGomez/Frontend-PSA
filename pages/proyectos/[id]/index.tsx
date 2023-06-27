@@ -58,7 +58,6 @@ export default function Proyecto() {
                 <Breadcrumbs items={breadcrumbItems} />
                 
                 <h3 className="fw-light">{item.name}</h3>
-                <h6 className="fw-light">Version FALTA_VERSION</h6>
 
                 <div className="row my-4">
                     <div className="col-md-6 mb-2">
