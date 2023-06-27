@@ -29,7 +29,7 @@ export default function Tickets() {
         CUIT: string;
       };
       
-    const [items, setItems] = useState<Ticket[]>([]);
+      const [items, setItems] = useState([])
 
     useEffect(() => {
         fetch("https://apisoporte.onrender.com/versiones/"+ version_id + "/tickets" )
@@ -39,6 +39,7 @@ export default function Tickets() {
             .then((data) => {
                 setItems(data)
             })
+            
         fetch("https://apisoporte.onrender.com/versiones/"+ version_id)
             .then((res) => {
                 return res.json()
@@ -68,14 +69,8 @@ export default function Tickets() {
                 <Breadcrumbs items={breadcrumbItems} />
                 <h3 className="fw-light">Listado de tickets</h3>
                 <div className="modal-body">
-                    <tbody>
-                        <tr>
-                            <td>
-                                <h5 className="fw-light">Version: {version?.CodigoVersion ? version.CodigoVersion : "Cargando..."}</h5>
-                                <h5 className="fw-light">Nombre De producto: {version?.NombreProducto ? version.NombreProducto : "Cargando..."}</h5>
-                            </td>
-                        </tr>
-                    </tbody>
+                            <h5 className="fw-light">Version: {version?.CodigoVersion ? version.CodigoVersion : "Cargando..."}</h5>
+                            <h5 className="fw-light">Nombre De producto: {version?.NombreProducto ? version.NombreProducto : "Cargando..."}</h5>
                 </div>
                 <div className="row">
                     <div className="col-md-10">

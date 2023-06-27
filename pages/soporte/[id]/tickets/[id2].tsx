@@ -93,11 +93,7 @@ const Ticket = () => {
                     <div className="col-6 m-auto">
                         <h3 className="fw-normal">Ticket {ticket?.id} - {ticket?.Nombre}</h3>
                         <div className="modal-body">
-                        <tbody>
-                            <tr>
                             <h5 className="fw-light">{version?.NombreProducto ? version.NombreProducto : "Cargando..."} - Version {version?.CodigoVersion ? version.CodigoVersion : "Cargando..."}</h5>
-                            </tr>
-                        </tbody>
                         </div>
                     </div>
 

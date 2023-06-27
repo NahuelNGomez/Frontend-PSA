@@ -59,18 +59,11 @@ export default function Clientes() {
                 
                 <h3 className="fw-light">Listado de clientes</h3>
                 <div className="modal-body">
-                <tbody>
-                    <tr>
                     <h5 className="fw-light">Version: {version?.CodigoVersion ? version.CodigoVersion : "Cargando..."}</h5>
                     <h5 className="fw-light">Nombre De producto: {version?.NombreProducto ? version.NombreProducto : "Cargando..."}</h5>
-                    </tr>
-
-                </tbody>
-             </div>
-
+                </div>
                 <ClientsTable items={items} />
             </div>
-
             <TicketModal />
         </section>
     )

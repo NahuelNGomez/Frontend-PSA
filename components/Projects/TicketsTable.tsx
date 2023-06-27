@@ -1,15 +1,15 @@
 import Link from "next/link";
 
-export default function TicketsTable({items} : any) {
+function subtractDates(FechaDeCreacion: any, arg1: number): import("react").ReactNode {
+    const currentDate = new Date();
+    const millisecondsPerDay = 24 * 60 * 60 * 1000; // Cantidad de milisegundos en un día
+    const creationTimestamp = new Date(FechaDeCreacion).getTime();
+    const targetTimestamp = creationTimestamp + ( arg1 * millisecondsPerDay);
+    const difference = Math.floor((targetTimestamp - currentDate.getTime()) / millisecondsPerDay);
+    return `${difference} días restantes`;
+}
 
-    function subtractDates(FechaDeCreacion: any, arg1: number): import("react").ReactNode {
-        const currentDate = new Date();
-        const millisecondsPerDay = 24 * 60 * 60 * 1000; // Cantidad de milisegundos en un día
-        const creationTimestamp = new Date(FechaDeCreacion).getTime();
-        const targetTimestamp = creationTimestamp + ( arg1 * millisecondsPerDay);
-        const difference = Math.floor((targetTimestamp - currentDate.getTime()) / millisecondsPerDay);
-        return `${difference} días restantes`;
-    }
+export default function TicketsTable({items} : any) {
 
     return (
         <table className="table table-striped my-4">
