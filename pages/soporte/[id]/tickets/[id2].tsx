@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react"
 import { useRouter } from "next/router"
 import Breadcrumbs from "../../../../components/Breadcrumbs"
-import ProductsTable from "../../../../components/Projects/ProductsTable"
-import ProjectModal from "../../../../components/Projects/ProjectModal"
 import { version } from "os"
 import TareasAsignadasTable from "../../../../components/Projects/TareasAsignadasTable"
+import TaskModal from "../../../../components/Projects/TaskModal"
+import AsignarTareaModal from "../../../../components/Projects/AsignarTareaModal"
 
 const Ticket = () => {
     const router = useRouter()
@@ -121,7 +121,7 @@ const Ticket = () => {
                     </div>
                 </div>
                 <div className="row">
-                    <div className="col-md-10">
+                    <div className="col-md-8">
                         <div className="input-group">
                             <input type="text" className="form-control" placeholder="Buscar..." aria-label="Buscar..." aria-describedby="search" />
                             <button className="btn btn-dark" type="button" id="search">
@@ -130,12 +130,16 @@ const Ticket = () => {
                         </div>
                     </div>
                     <div className="col-md-2">
-                        <button className="btn btn-outline-secondary " type="button" id="search">
-                            <i className="bi bi-search"></i> Asignar Tarea
+                        <button className="btn btn-outline-secondary " type="button" data-bs-toggle="modal" data-bs-target="#asignarTareaModal"> Asignar Tarea
                         </button>
+                    </div>
+                    <div className="col-md-2 ">
+                    <button className="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#taskModal">Crear tarea</button>
                     </div>
                 </div>
                 <TareasAsignadasTable items={tareasAsignadas}/>
+                <AsignarTareaModal/>
+               {/* <TaskModal projectId={2}/> Deberiamos obtener ese numero de proyecto o pasar un versionID*/}
         </section>
     )
 }
