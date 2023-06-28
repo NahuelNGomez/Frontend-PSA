@@ -32,11 +32,14 @@ export default function Recursos() {
             setRecursos(items)
             return;
         }
+        
         let filteredItems = items.filter(item => {
-            let itemApellido: string = item["Apellido"];
-            let itemNombre: string = item["Nombre"];
-            let itemLegajo: string = item["legajo"];
-            return itemApellido.toLowerCase().includes(search) || itemNombre.toLowerCase().includes(search) || itemLegajo.toString().includes(search) 
+            for (let key of Object.getOwnPropertyNames(item)) {
+                let value:string = item[key];
+                if (value.toString().toLowerCase().includes(search))
+                    return true;
+            }
+            return false;
         })
         setRecursos(filteredItems)
     }
