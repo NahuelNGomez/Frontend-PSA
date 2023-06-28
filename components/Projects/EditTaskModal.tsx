@@ -62,25 +62,25 @@ export default function TaskModal({item, taskId} : any) {
                             <div className="row mb-3">
                                 <div className="col">
                                     <label htmlFor="task_type" className="col-form-label">Tipo: <small>(requerido)</small></label>
-                                    <select className="form-control" id="task_type" onChange={(e) => e.target.value} value={task.task_type || ''} required>
+                                    <select className="form-control" id="task_type" value={task.task_type || ''} required>
                                         <option value="">Seleccionar Tipo</option>
-                                        <option value="FEATURE">Feature</option>
-                                        <option value="BUG">Bug</option>
+                                        <option value="feature">Feature</option>
+                                        <option value="bug">Bug</option>
                                     </select>
                                 </div>
                                 <div className="col">
                                     <label htmlFor="task_priority" className="col-form-label">Prioridad: <small>(requerido)</small></label>
-                                    <select className="form-control" id="task_priority" onChange={(e) => e.target.value} value={task.task_priority || ''} required>
+                                    <select className="form-control" id="task_priority" value={task.task_priority || ''} required>
                                         <option value="">Seleccionar Prioridad</option>
-                                        <option value="HIGH">Alta</option>
-                                        <option value="MEDIUM">Media</option>
-                                        <option value="LOW">Baja</option>
+                                        <option value="high">Alta</option>
+                                        <option value="medium">Media</option>
+                                        <option value="low">Baja</option>
                                     </select>
                                 </div>
                             </div>
                             <div className="mb-3">
                                 <label htmlFor="employee_id" className="col-form-label">Empleado: <small>(requerido)</small></label>
-                                <select className="form-control" id="employee_id" onChange={(e) => e.target.value} value={task.employee_id || ''} required>>
+                                <select className="form-control" id="employee_id" value={task.employee_id || ''} required>
                                     <option value="">Seleccionar Recurso</option>
                                     {
                                         resources.map((item: any, index: number) => (

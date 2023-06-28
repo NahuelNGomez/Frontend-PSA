@@ -47,7 +47,7 @@ export default function Tarea() {
             method: 'PUT',
             headers: {"Content-Type": "application/json"},
             body: JSON.stringify({
-                status: event.target.status.value
+                status: event.target.value
             })
         }).then((response) => {
             if(response.ok) location.reload();
@@ -76,7 +76,7 @@ export default function Tarea() {
 
                 <div className="d-md-flex flex-md-row-reverse align-items-center justify-content-between">
                     <div className="mb-3 mb-md-0 d-flex text-nowrap">
-                        <select className="form-select mx-1" onChange={handleStatusSubmit}>
+                        <select id="status" name="status" className="form-select mx-1" onChange={(e) => handleStatusSubmit(e)} value={item.status || ''}>
                             <option>Seleccionar estado</option>
                             <option value="pending">Pendiente</option>
                             <option value="working">En curso</option>
