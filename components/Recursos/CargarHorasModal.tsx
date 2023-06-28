@@ -96,20 +96,41 @@ function DateInput({ date, setDate, maxDate }: any) {
     );
 }
 
-function ModalFooterRegistro({ anyEmpty, handleSubmit }: any) {
+function ModalFooterRegistro({ anyEmpty, handleSubmit, isRequestLoading, isProjectDataLoading }: any) {
     return (
         <div className="modal-footer">
             <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">
                 Cancelar
             </button>
-            <button type="submit" className="btn btn-primary" data-bs-dismiss="modal" disabled={anyEmpty}>
-                Aceptar
+            <button type="submit" className="btn btn-primary" disabled={anyEmpty || isRequestLoading || isProjectDataLoading}>
+                {(isRequestLoading || isProjectDataLoading) ? "Cargando..." : "Aceptar"}
             </button>
         </div>
     );
 }
 
-
+function ModalBodyRegistro({ isRequestLoading, isProjectDataLoading, isModification, registro, projects, project, setProject, tasks, task, setTask, hours, setHours, date, setDate, maxDate, submitHandler }: any) {
+    return (
+        <div className="modal-body">
+            {(isProjectDataLoading || isRequestLoading) ? (
+                <div className="text-center">
+                    <div className="spinner-border" role="status">
+                        <span className="visually-hidden">Loading...</span>
+                    </div>
+                    <p>Loading...</p>
+                </div>
+            ) : (
+                <form onSubmit={submitHandler}>
+                    <ModalBodyTitle isModification={isModification} registro={registro} />
+                    <ProjectSelect projects={projects} project={project} setProject={setProject} />
+                    <TaskSelect tasks={tasks} task={task} setTask={setTask} />
+                    <HoursInput hours={hours} setHours={setHours} />
+                    <DateInput date={date} setDate={setDate} maxDate={maxDate} />
+                </form>
+            )}
+        </div>
+    );
+}
 
 export default function CargarHorasModal({ id, registro, handleSubmit }: any) {
     const router = useRouter()
@@ -125,26 +146,33 @@ export default function CargarHorasModal({ id, registro, handleSubmit }: any) {
     const [project, setProject] = useState("")
     const [task, setTask] = useState("")
 
+    const [isRequestLoading, setIsRequestLoading] = useState(false);
+    const [isProjectDataLoading, setIsProjectDataLoading] = useState(false);
+
     const submitHandler = (e: { preventDefault: () => void }) => {
         e.preventDefault();
+        setIsRequestLoading(true);
         handleSubmit(project, task, date, hours)
             .then((data: any) => {
                 console.log(data);
+                setIsRequestLoading(false);
             }).catch((err: any) => {
                 console.error(err.detail)
+                setIsRequestLoading(false);
             })
     }
 
     useEffect(() => {
         console.log("Buscando proyectos...")
+        setIsProjectDataLoading(true);
         fetch("https://api-proyectos.onrender.com/projects/")
             .then((res) => {
                 return res.json()
             })
             .then((data) => {
                 setProjects(data)
-                if (!project)
-                    setProject(data.at(0)["id"])
+                if (!project) setProject(data.at(0)["id"])
+                setIsProjectDataLoading(false);
             })
     }, [])
 
@@ -174,16 +202,25 @@ export default function CargarHorasModal({ id, registro, handleSubmit }: any) {
             <div className="modal-dialog">
                 <div className="modal-content">
                     <ModalHeaderRegistro />
-                    <form onSubmit={submitHandler}>
-                        <div className="modal-body">
-                            <ModalBodyTitle isModification={isModification} registro={registro} />
-                            <ProjectSelect projects={projects} project={project} setProject={setProject} />
-                            <TaskSelect tasks={tasks} task={task} setTask={setTask} />
-                            <HoursInput hours={hours} setHours={setHours} />
-                            <DateInput date={date} setDate={setDate} maxDate={maxDate} />
-                        </div>
-                        <ModalFooterRegistro anyEmpty={anyEmpty} handleSubmit={handleSubmit} />
-                    </form>
+                    <ModalBodyRegistro
+                        isRequestLoading={isRequestLoading}
+                        isDataLoaded={isProjectDataLoading}
+                        isModification={isModification}
+                        registro={registro}
+                        projects={projects}
+                        project={project}
+                        setProject={setProject}
+                        tasks={tasks}
+                        task={task}
+                        setTask={setTask}
+                        hours={hours}
+                        setHours={setHours}
+                        date={date}
+                        setDate={setDate}
+                        maxDate={maxDate}
+                        submitHandler={submitHandler}
+                    />
+                    <ModalFooterRegistro anyEmpty={anyEmpty} handleSubmit={handleSubmit} isRequestLoading={isRequestLoading} isProjectDataLoading={isProjectDataLoading} />
                 </div>
             </div>
         </div>

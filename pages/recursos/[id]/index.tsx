@@ -22,6 +22,9 @@ export default function Recurso() {
 
     const [items, setItems] = useState([])
 
+    const [notification, setNotification] = useState({ message: "", type: "" });
+
+
     const cargarRegistro = (proyect: number, task: number, date: string, hours: number) => {
         const registro = {
             id_proyecto: proyect,
@@ -34,51 +37,64 @@ export default function Recurso() {
             method: 'POST',
             headers: { "Content-Type": "application/json", "Accept": "application/json" },
             body: JSON.stringify(registro)
-        }).then(res => {
+        }).then((res) => {
             if (!res.ok) {
-                return res.json().then(err => { throw err })
+                return res.json().then(err => { throw err });
             }
-            return res.json()
+            setNotification({ message: "Carga realizada exitosamente!", type: "success" });
+            setTimeout(() => setNotification({ message: "", type: "" }), 4000); // Clear notification after 3 seconds
+            return res.json();
+        }).catch((error) => {
+            setNotification({ message: "Fallo en la carga de horas", type: "danger" });
+            setTimeout(() => setNotification({ message: "", type: "" }), 4000);
         })
 
     }
 
     useEffect(() => {
-    fetch("https://rrhh-squad6-1c2023.onrender.com/recursos/"+ legajo_recurso )
-        .then((res) => {
-            return res.json()
-        })
-        .then((data) => {
-            setItems(data)
-        })
+        fetch("https://rrhh-squad6-1c2023.onrender.com/recursos/" + legajo_recurso)
+            .then((res) => {
+                return res.json()
+            })
+            .then((data) => {
+                setItems(data)
+            })
     }, [])
 
-    
+
     return (
         <section className="row py-lg-12">
             <div className="col-lg-12">
                 <Breadcrumbs items={breadcrumbItems} />
+
                 <div className="row">
                     <div className="col-md-10">
                         <h3 className="fw-light">Gestion R{legajo_recurso}</h3>
-                    <div className="col-md-12">
-                        <div className="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
-                            <div className="btn-group mx-2" role="group">
-                                <button className="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#cargarHorasModal">Cargar horas</button>
-                            </div>
+                        <div className="col-md-12">
+                            <div className="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+                                <div className="btn-group mx-2" role="group">
+                                    <button className="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#cargarHorasModal">Cargar horas</button>
+                                </div>
 
-                            <div className="btn-group mx-2" role="group">
-                                <Link className="btn btn-primary btn-sm" href={"/recursos/" + legajo_recurso + "/reporte"}>Reporte de horas por proyecto</Link>
+                                <div className="btn-group mx-2" role="group">
+                                    <Link className="btn btn-primary btn-sm" href={"/recursos/" + legajo_recurso + "/reporte"}>Reporte de horas por proyecto</Link>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    </div>
                 </div>
 
-                <TrabajadorTable item={items}/>
+                <TrabajadorTable item={items} />
             </div>
 
-            <CargarHorasModal id={legajo_recurso} handleSubmit={cargarRegistro}/>
+            {notification.message && (
+                <div className={`alert alert-${notification.type} mt-4`} role="alert">
+                    {notification.message}
+                </div>
+            )}
+
+            <CargarHorasModal id={legajo_recurso} handleSubmit={cargarRegistro} />
+
         </section>
     )
 }
