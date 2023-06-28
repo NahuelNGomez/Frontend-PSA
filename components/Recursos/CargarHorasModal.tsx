@@ -10,6 +10,14 @@ function ModalHeaderRegistro({ isModification, registro }: any) {
                 Cargar Horas
             </h1>
             <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+
+        </div>
+    );
+}
+
+function ModalBodyTitle({ isModification, registro }: any) {
+    return (
+        <div>
             {isModification && (
                 <div className="mb-4">
                     <h1 className="fs-5">
@@ -168,6 +176,7 @@ export default function CargarHorasModal({ id, registro, handleSubmit }: any) {
                     <ModalHeaderRegistro isModification={isModification} registro={registro} />
                     <form onSubmit={submitHandler}>
                         <div className="modal-body">
+                            <ModalBodyTitle isModification={isModification} registro={registro} />
                             <ProjectSelect projects={projects} project={project} setProject={setProject} />
                             <TaskSelect tasks={tasks} task={task} setTask={setTask} />
                             <HoursInput hours={hours} setHours={setHours} />
