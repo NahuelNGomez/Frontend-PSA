@@ -27,14 +27,16 @@ export default function Recursos() {
             })
       }, [])
 
-      const filtrarPorApellido = (apellido: string) => {
-        if (apellido == "") {
+      const filtrarRecursos = (search: string) => {
+        if (search == "") {
             setRecursos(items)
             return;
         }
         let filteredItems = items.filter(item => {
             let itemApellido: string = item["Apellido"];
-            return itemApellido.toLowerCase().includes(apellido)
+            let itemNombre: string = item["Nombre"];
+            let itemLegajo: string = item["legajo"];
+            return itemApellido.toLowerCase().includes(search) || itemNombre.toLowerCase().includes(search) || itemLegajo.toString().includes(search) 
         })
         setRecursos(filteredItems)
     }
@@ -50,7 +52,7 @@ export default function Recursos() {
                 <div className="row">
                     <div className="col-md-12">
                         <div className="input-group">
-                            <input type="text" className="form-control" placeholder="Buscar apellido..." aria-label="Buscar..." aria-describedby="search" onChange={(e) => {filtrarPorApellido(e.target.value)}} />
+                            <input type="text" className="form-control" placeholder="Buscar..." aria-label="Buscar..." aria-describedby="search" onChange={(e) => {filtrarRecursos(e.target.value)}} />
                             <button className="btn btn-dark" type="button" id="search">
                                 <i className="bi bi-search"></i> Buscar recurso
                             </button>
