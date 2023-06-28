@@ -16,7 +16,7 @@ export default function Recurso() {
         },
         {
             title: 'Gestion R' + legajo_recurso,
-            url: '/recursos' + legajo_recurso
+            url: '/recursos/' + legajo_recurso
         }
     ]
 

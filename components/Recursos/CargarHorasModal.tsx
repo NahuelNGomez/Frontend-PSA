@@ -109,7 +109,7 @@ function ModalFooterRegistro({ anyEmpty, handleSubmit, isRequestLoading, isProje
     );
 }
 
-function ModalBodyRegistro({ isRequestLoading, isProjectDataLoading, isModification, registro, projects, project, setProject, tasks, task, setTask, hours, setHours, date, setDate, maxDate, submitHandler }: any) {
+function ModalBodyRegistro({ isRequestLoading, isProjectDataLoading, isModification, registro, projects, project, setProject, tasks, task, setTask, hours, setHours, date, setDate, maxDate, submitHandler, anyEmpty }: any) {
     return (
         <div className="modal-body">
             {(isProjectDataLoading || isRequestLoading) ? (
@@ -126,6 +126,15 @@ function ModalBodyRegistro({ isRequestLoading, isProjectDataLoading, isModificat
                     <TaskSelect tasks={tasks} task={task} setTask={setTask} />
                     <HoursInput hours={hours} setHours={setHours} />
                     <DateInput date={date} setDate={setDate} maxDate={maxDate} />
+                    <div className="modal-footer">
+
+                        <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        {/* Saco o dejo el data-bs-dismiss="modal"??*/}
+                        <button type="submit" className="btn btn-primary" /* data-bs-dismiss="modal" */  disabled={anyEmpty || isRequestLoading || isProjectDataLoading}>
+                            {(isRequestLoading || isProjectDataLoading) ? "Cargando..." : "Aceptar"}
+                        </button>
+
+                    </div>
                 </form>
             )}
         </div>
@@ -134,7 +143,7 @@ function ModalBodyRegistro({ isRequestLoading, isProjectDataLoading, isModificat
 
 export default function CargarHorasModal({ id, registro, handleSubmit }: any) {
     const router = useRouter()
-    const legajo = id > 0 || router.query.id;
+    const legajo = id > 0 ? id : router.query.id;
 
     const [isModification, setIsModification] = useState(false)
     const [hours, setHours] = useState('')
@@ -219,8 +228,9 @@ export default function CargarHorasModal({ id, registro, handleSubmit }: any) {
                         setDate={setDate}
                         maxDate={maxDate}
                         submitHandler={submitHandler}
+                        anyEmpty={anyEmpty}
                     />
-                    <ModalFooterRegistro anyEmpty={anyEmpty} handleSubmit={handleSubmit} isRequestLoading={isRequestLoading} isProjectDataLoading={isProjectDataLoading} />
+                    {/* <ModalFooterRegistro anyEmpty={anyEmpty} handleSubmit={handleSubmit} isRequestLoading={isRequestLoading} isProjectDataLoading={isProjectDataLoading} /> */}
                 </div>
             </div>
         </div>

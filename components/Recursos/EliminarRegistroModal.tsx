@@ -5,6 +5,14 @@ export default function EliminarRegistroModal({idRegistro}:any) {
     const router = useRouter()
     const legajo = router.query.id;
     
+    const handleClick = () => {
+        eliminarRegistro();
+        // Te direcciona a la pagina de generar reporte pero no se genera solo
+        // window.location.href = 'http://localhost:3000/recursos/' + legajo + '/reporte';
+    }
+
+
+
     const eliminarRegistro = () => {
         return fetch(`https://rrhh-squad6-1c2023.onrender.com/recursos/${legajo}/registros/${idRegistro}`, {
             method: 'DELETE',
@@ -19,6 +27,7 @@ export default function EliminarRegistroModal({idRegistro}:any) {
         }).catch((err: any) => {
             console.error(err.detail)
         })
+
     }
 
     return (
@@ -35,8 +44,8 @@ export default function EliminarRegistroModal({idRegistro}:any) {
                         
                         </div>
                         <div className="modal-footer">
-                            <button type="button" className="btn btn-danger" data-bs-dismiss="modal" onClick={() => eliminarRegistro()}>Eliminar</button>
-                            <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>     
+                            <button type="button" className="btn btn-danger" data-bs-dismiss="modal" onClick={() => handleClick()}>Eliminar</button>
+                            <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
                         </div>
                     
                 </div>

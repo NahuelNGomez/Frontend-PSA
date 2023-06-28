@@ -112,7 +112,7 @@ export default function ReporteHoras({ id }: any) {
 
     const breadcrumbItems = BreadcrumbItemsReporte({ legajo_recurso });
 
-    const table = registros.length === 0 ? (<></>) : (<RegistrosTable registros={registros} />);
+    const table = registros.length === 0 ? (<div className="text-center"><h1>No hay tareas cargadas</h1></div>) : (<RegistrosTable registros={registros} />);
 
     return (
         <section className="row py-lg-12">
@@ -135,6 +135,8 @@ export default function ReporteHoras({ id }: any) {
 
                     <LoadingIndicator cargando={cargando} />
                     {table}
+                    {/* <RegistrosTable registros={registros} /> */}
+                    
                     <SubtotalHours hours={hours} />
 
                 </div>
