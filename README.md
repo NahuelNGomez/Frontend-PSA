@@ -1,6 +1,33 @@
+# PSA Frontend - Tribu E - [75.09 / 95.20] Analisis de la Informacion - Curso Villagra (1c2023)
+
+---
+
+<br>
+<p align="center">
+  <a href="#/"><img src="https://raw.githubusercontent.com/MiguelV5/MiguelV5/main/misc/logofiubatransparent_partialwhite.png" height="180"/></a>
+</p>
+<br>
+
+---
+
+## Links
+
+### APIs de cada modulo
+
+Documentación de las REST APIs desarrolladas para el backend de los modulos:
+
+- [API Proyectos](https://api-proyectos.onrender.com/swagger-ui/index.html)
+- [API Soporte](apisoporte.onrender.com/docs)
+- [API Recursos Humanos](rrhh-squad6-1c2023.onrender.com/docs)
+
+
+---
+
+## Generación a partir de Nextjs Template
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
-## Getting Started
+#### Getting Started
 
 Install dependencies:
 ```bash
@@ -26,7 +53,7 @@ The `pages/api` directory is mapped to `/api/*`. Files in this directory are tre
 
 This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
 
-## Learn More
+#### Learn More
 
 To learn more about Next.js, take a look at the following resources:
 
@@ -35,7 +62,7 @@ To learn more about Next.js, take a look at the following resources:
 
 You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
 
-## Deploy on Vercel
+#### Deploy on Vercel
 
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 

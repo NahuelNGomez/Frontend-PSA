@@ -8,8 +8,8 @@ export default function RecursosTable({items} : any) {
             <thead>
                 <tr>
                     <th>Legajo</th>
-                    <th>Nombre</th>
                     <th>Apellido</th>
+                    <th>Nombre</th>
                     <th style={{width:"10%"}}></th>
                 </tr>
             </thead>
@@ -18,8 +18,8 @@ export default function RecursosTable({items} : any) {
                     items.map((item: any, index: number) => (
                         <tr key={index}>
                             <td>{item.legajo}</td>
-                            <td>{item.Nombre}</td>
                             <td>{item.Apellido}</td>
+                            <td>{item.Nombre}</td>
                             <td>
                                 <Link className="btn btn-primary btn-sm" href={"/recursos/" + item.legajo}>Gestionar</Link>
                             </td>
