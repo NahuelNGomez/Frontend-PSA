@@ -134,7 +134,7 @@ function ModalBodyRegistro({ isRequestLoading, isProjectDataLoading, isModificat
 
 export default function CargarHorasModal({ id, registro, handleSubmit }: any) {
     const router = useRouter()
-    const legajo = id > 0 || router.query.id;
+    const legajo = id > 0 ? id : router.query.id;
 
     const [isModification, setIsModification] = useState(false)
     const [hours, setHours] = useState('')
