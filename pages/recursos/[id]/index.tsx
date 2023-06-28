@@ -67,24 +67,32 @@ export default function Recurso() {
             <div className="col-lg-12">
                 <Breadcrumbs items={breadcrumbItems} />
 
-                <div className="row">
-                    <div className="col-md-10">
-                        <h3 className="fw-light">Gestion R{legajo_recurso}</h3>
-                        <div className="col-md-12">
-                            <div className="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
-                                <div className="btn-group mx-2" role="group">
-                                    <button className="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#cargarHorasModal">Cargar horas</button>
-                                </div>
+                <h3 className="fw-light mx-2">Gestion R{legajo_recurso}</h3>
 
-                                <div className="btn-group mx-2" role="group">
-                                    <Link className="btn btn-primary btn-sm" href={"/recursos/" + legajo_recurso + "/reporte"}>Reporte de horas por proyecto</Link>
+                <div className="row">
+                    <div className="d-flex align-items-center bg-secondary rounded my-5 mx-2">
+                        <div className="col-3 px-3">
+                            <div className="text-center text-white">
+                                <h5>Acciones</h5>
+                                <div className="btn-toolbar flex-column" role="toolbar" aria-label="Toolbar with button groups">
+                                    <div className="btn-group mx-2 my-2" role="group">
+                                        <button className="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#cargarHorasModal">Cargar horas</button>
+                                    </div>
+
+                                    <div className="btn-group mx-2 my-2" role="group">
+                                        <Link className="btn btn-primary btn-sm" href={"/recursos/" + legajo_recurso + "/reporte"}>Reporte de horas por proyecto</Link>
+                                    </div>
                                 </div>
                             </div>
+                        </div>
+
+                        <div className="col-10 text-left me-auto">
+                            <TrabajadorTable item={items} />
+
                         </div>
                     </div>
                 </div>
 
-                <TrabajadorTable item={items} />
             </div>
 
             {notification.message && (
