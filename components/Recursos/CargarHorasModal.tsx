@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react"
 import { useRouter } from "next/router";
-import HorasCargadasModal from "./HorasCargadasModal";
+// import HorasCargadasModal from "./HorasCargadasModal";
 
 
-function ModalHeaderRegistro({ isModification, registro }: any) {
+function ModalHeaderRegistro() {
     return (
         <div className="modal-header">
             <h1 className="modal-title fs-5" id="cargarHorasModalLabel">
@@ -173,7 +173,7 @@ export default function CargarHorasModal({ id, registro, handleSubmit }: any) {
         <div className="modal fade" id="cargarHorasModal" tabIndex={-1} aria-labelledby="cargarHorasModalLabel" aria-hidden="true">
             <div className="modal-dialog">
                 <div className="modal-content">
-                    <ModalHeaderRegistro isModification={isModification} registro={registro} />
+                    <ModalHeaderRegistro />
                     <form onSubmit={submitHandler}>
                         <div className="modal-body">
                             <ModalBodyTitle isModification={isModification} registro={registro} />
