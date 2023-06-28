@@ -36,7 +36,10 @@ export default function TaskModal({projectId, type, idTicket} : any) {
         }).then((response) => {
             if(response.ok) {
                 valid = 1;
-            } 
+            }
+            if (type == 1 && response.ok){
+                location.reload();
+            }
             return response.json()
         }).catch((error) => {
         console.log('Error al cargar el proyecto:', error);
@@ -54,7 +57,8 @@ export default function TaskModal({projectId, type, idTicket} : any) {
             }).catch((error) => {
                 console.log('Error al asignar la tarea al ticket:', error);
                 })
-        }})
+            }
+        })
     }
 
     return (
