@@ -38,11 +38,10 @@ export default function RegistrosTable({ registros }: any) {
 
     return (
         <div>
-            <table className="table table-striped my-4">
+            <table className="table table-striped my-4 text-center">
                 <thead>
                     <tr>
                         <th>ID</th>
-                        <th>Proyecto</th>
                         <th>Tarea</th>
                         <th>Fecha de registro</th>
                         <th>Cantidad de horas</th>
@@ -56,7 +55,6 @@ export default function RegistrosTable({ registros }: any) {
                         registros.map((item: any, index: number) => (
                             <tr key={index}>
                                 <td>{item.id}</td>
-                                <td>{item.nombre_proyecto}</td>
                                 <td>{item.titulo_tarea}</td>
                                 <td>{parseFecha(item.fecha_de_registro)}</td>
                                 <td>{item.cantidad}</td>
