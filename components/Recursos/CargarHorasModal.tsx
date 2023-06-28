@@ -43,10 +43,12 @@ export default function CargarHorasModal({ id, registro, handleSubmit }: any) {
 
     useEffect(() => {
         setIsModification(true)
-        setProyect(registro["id_proyecto"])
-        setTask(registro["id_tarea"])
-        setDate(registro["fecha_de_registro"])
-        setHours(registro["cantidad"])
+        if (registro != undefined) {
+            setProyect(registro["id_proyecto"])
+            setTask(registro["id_tarea"])
+            setDate(registro["fecha_de_registro"])
+            setHours(registro["cantidad"])
+        }
     }, [registro, projects])
 
     useEffect(() => {
