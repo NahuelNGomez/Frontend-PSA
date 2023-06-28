@@ -4,13 +4,11 @@ import { useRouter } from "next/router";
 
 export default function CargarHorasModal({ id, registro, handleSubmit }: any) {
     const router = useRouter()
-    const legajo = router.query.id || id;
+    const legajo = id > 0 || router.query.id;
 
     let maxDate = new Date().toISOString().slice(0, 10);
 
     const [isModification, setIsModification] = useState(false)
-    const [register, setRegister] = useState()
-
     const [hours, setHours] = useState('')
     const [date, setDate] = useState('')
 
@@ -31,20 +29,19 @@ export default function CargarHorasModal({ id, registro, handleSubmit }: any) {
     }
 
     useEffect(() => {
+        console.log("Buscando proyectos...")
         fetch("https://api-proyectos.onrender.com/projects/")
             .then((res) => {
                 return res.json()
             })
             .then((data) => {
                 setProjects(data)
-                setProyect(data.at(0)["id"])
+                if (!proyect)
+                    setProyect(data.at(0)["id"])
             })
     }, [])
 
     useEffect(() => {
-        setRegister(registro)
-        if (!register) return;
-        console.log(registro);
         setIsModification(true)
         setProyect(registro["id_proyecto"])
         setTask(registro["id_tarea"])
@@ -73,28 +70,28 @@ export default function CargarHorasModal({ id, registro, handleSubmit }: any) {
                         <div className="modal-body">
 
                             <div className="mb-4" hidden={!isModification}>
-                                <h1 className="fs-5"><b>Registro {register ? register["id"] : ""} </b></h1>
+                                <h1 className="fs-5"><b>Registro {registro ? registro["id"] : ""} </b></h1>
                             </div>
 
                             <div className="mb-3">
                                 <label htmlFor="name" className="col-form-label">Proyecto: <small>(requerido)</small></label>
-                                <select className="form-select" value={proyect} required={!isModification} onChange={(e) => setProyect(e.target.value)}>
+                                <select className="form-select" value={proyect || ""} required onChange={(e) => setProyect(e.target.value)}>
                                     {projects.map((proyect, index) => (<option key={proyect["id"]} value={proyect["id"]}>{proyect["name"]}</option>))}
                                 </select>
                             </div>
                             <div className="mb-3">
                                 <label htmlFor="name" className="col-form-label">Tarea: <small>(requerido)</small></label>
-                                <select className="form-select" value={task} disabled={tasks.length === 0} required={!isModification} onChange={(e) => setTask(e.target.value)}>
+                                <select className="form-select" value={task || ""} disabled={tasks.length === 0} required onChange={(e) => setTask(e.target.value)}>
                                     {tasks.map((task, index) => (<option key={task["id"]} value={task["id"]}>{task["title"]}</option>))}
                                 </select>
                             </div>
                             <div className="mb-3">
                                 <label htmlFor="name" className="col-form-label">Cantidad de horas: <small>(requerido)</small></label>
-                                <input type="number" className="form-control" id="horas" placeholder="Horas de trabajo" required={!isModification} min={1} max={12} value={hours} onChange={(e) => setHours(e.target.value)} />
+                                <input type="number" className="form-control" id="horas" placeholder="Horas de trabajo" required min={1} max={12} value={hours || ""} onChange={(e) => setHours(e.target.value)} />
                             </div>
                             <div className="mb-3">
                                 <label htmlFor="start_date" className="col-form-label">Fecha: <small>(requerido)</small></label>
-                                <input type="date" className="form-control" id="date" required={!isModification} value={date} max={maxDate} onChange={(e) => setDate(e.target.value)} />
+                                <input type="date" className="form-control" id="date" required value={date || ""} max={maxDate} onChange={(e) => setDate(e.target.value)} />
                             </div>
                         </div>
                         <div className="modal-footer">

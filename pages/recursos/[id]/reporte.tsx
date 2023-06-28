@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { ReactElement, useEffect, useState } from "react"
 import RegistrosTable from "../../../components/Recursos/RegistrosTable";
 import { useRouter } from "next/router";
 import Breadcrumbs from "../../../components/Breadcrumbs";
@@ -35,7 +35,6 @@ export default function ReporteHoras({ id }: any) {
 
     let maxDate = new Date().toISOString().slice(0, 10);
 
-
     useEffect(() => {
         let fecha = new Date();
         fecha.setDate(fecha.getDate() - 7);
@@ -50,6 +49,7 @@ export default function ReporteHoras({ id }: any) {
                 setProjects(data)
                 setProject(data[0]['id'])
             })
+
     }, [])
 
     const handleSubmit = (e: { preventDefault: () => void }) => {
@@ -86,6 +86,9 @@ export default function ReporteHoras({ id }: any) {
 
     }
     let anyEmpty = !project || !dateInicio || !dateFin;
+
+    const getTable = registros.length === 0 ? (<></>) : (<RegistrosTable registros={registros} />);
+
     return (
         <section className="row py-lg-12">
             <div className="col-lg-12">
@@ -96,7 +99,9 @@ export default function ReporteHoras({ id }: any) {
                         <h1 className="modal-title fs-5">Hacer reporte</h1>
                         <div className="mb-3">
                             <label htmlFor="name" className="col-form-label">Proyecto: <small>(requerido)</small></label>
-                            <select className="form-select" value={project} onChange={(e) => setProject(e.target.value)}> {projects.map((proyect, index) => (<option key={proyect["id"]} value={proyect["id"]}>{proyect["name"]}</option>))}</select>
+                            <select className="form-select" value={project} onChange={(e) => setProject(e.target.value)}>
+                                {projects.map(proyect => (<option key={proyect["id"]} value={proyect["id"]}>{proyect["name"]}</option>))}
+                            </select>
 
                             <div className="mb-3">
                                 <label htmlFor="start_date" className="col-form-label">Fecha de inicio: <small>(requerido)</small></label>
@@ -113,14 +118,13 @@ export default function ReporteHoras({ id }: any) {
                             <button type="submit" disabled={anyEmpty} className="btn btn-primary">Generar</button>
                         </div>
                         <div className="text-center">
-                            {cargando}
-                            <RegistrosTable registros={registros} />
                             <div className="mb-4">
                                 <label htmlFor="name" className="col-form-label" style={{ padding: "10px" }}><b>Subtotal de horas: {hours} </b></label>
                             </div>
                         </div>
                     </form>
-
+                    {cargando}
+                    {getTable}
                 </div>
             </div>
         </section>

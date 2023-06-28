@@ -17,7 +17,6 @@ export default function RegistrosTable({ registros }: any) {
             id_tarea: task,
             fecha_de_registro: date,
             cantidad: hours,
-
         }
 
         return fetch(`https://rrhh-squad6-1c2023.onrender.com/recursos/${legajo}/registros/${id}`, {
@@ -34,7 +33,7 @@ export default function RegistrosTable({ registros }: any) {
     }
 
     const parseFecha = (fecha:string) => {
-        return new Date(fecha).toLocaleDateString()
+        return `${fecha.substring(8,10)}/${fecha.substring(5,7)}/${fecha.substring(0,4)}`
     } 
 
     return (
@@ -61,7 +60,7 @@ export default function RegistrosTable({ registros }: any) {
                                 <td>{item.titulo_tarea}</td>
                                 <td>{parseFecha(item.fecha_de_registro)}</td>
                                 <td>{item.cantidad}</td>
-                                <td><button type="button" className="btn btn-primary" data-bs-toggle="modal" data-bs-target="#cargarHorasModal" onClick={() => setSelectedItem(item)}>Modificar</button></td>
+                                <td><button type="button" className="btn btn-primary" data-bs-toggle="modal" data-bs-target="#cargarHorasModal" onClick={() => {setSelectedItem(item); setId(item.id)}}>Modificar</button></td>
                                 <td><button type="button" className="btn btn-danger" data-bs-toggle="modal" data-bs-target="#eliminarRegistroModal" onClick={() => setId(item.id)}>Eliminar</button></td>
                             </tr>
                         ))
@@ -71,7 +70,7 @@ export default function RegistrosTable({ registros }: any) {
             </table>
             
             <EliminarRegistroModal idRegistro={id} />
-            <CargarHorasModal registro={selectedItem} handleSubmit={modificarRegistro} />
+            <CargarHorasModal id={legajo} registro={selectedItem} handleSubmit={modificarRegistro} />
         </div>
 
     )

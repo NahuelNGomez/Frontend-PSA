@@ -3,7 +3,6 @@ import Breadcrumbs from "../../../components/Breadcrumbs"
 import { useEffect, useState } from "react"
 import TrabajadorTable from "../../../components/Recursos/TrabajadorTable"
 import CargarHorasModal from "../../../components/Recursos/CargarHorasModal"
-import ReporteHorasModal from "../../../components/Recursos/ReporteHorasModal"
 import Link from "next/link"
 
 export default function Recurso() {
