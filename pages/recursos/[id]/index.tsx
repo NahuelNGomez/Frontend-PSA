@@ -24,6 +24,8 @@ export default function Recurso() {
 
     const [notification, setNotification] = useState({ message: "", type: "" });
 
+    const [isRequestLoading, setIsRequestLoading] = useState(false);
+
 
     const cargarRegistro = (proyect: number, task: number, date: string, hours: number) => {
         const registro = {
@@ -42,10 +44,11 @@ export default function Recurso() {
                 return res.json().then(err => { throw err });
             }
             setNotification({ message: "Carga realizada exitosamente!", type: "success" });
-            setTimeout(() => setNotification({ message: "", type: "" }), 4000); // Clear notification after 3 seconds
+            setTimeout(() => setNotification({ message: "", type: "" }), 4000); // Clear notification after 4 seconds
             return res.json();
         }).catch((error) => {
-            setNotification({ message: "Fallo en la carga de horas", type: "danger" });
+            console.error(error);
+            setNotification({ message: `Fallo en la carga de horas: ${error.detail || "Exceso de carga de horas para la fecha especificada. Maximo por dia: 12"}`, type: "danger" });
             setTimeout(() => setNotification({ message: "", type: "" }), 4000);
         })
 
@@ -69,6 +72,26 @@ export default function Recurso() {
 
                 <h3 className="fw-light mx-2">Gestion R{legajo_recurso}</h3>
 
+                {isRequestLoading && (
+
+                    <div className={`alert alert-info mt-4`} role="alert">
+                        <div className="text-center">
+                            <div className="spinner-border" role="status">
+                                <span className="visually-hidden">Procesando Operacion...</span>
+                            </div>
+                            <p>Procesando Operacion...</p>
+                        </div>
+                    </div>
+
+                )
+                }
+
+                {notification.message && (
+                    <div className={`alert alert-${notification.type} alert-block mt-4`} role="alert">
+                        <h5>{notification.message}</h5>
+                    </div>
+                )}
+
                 <div className="row">
                     <div className="d-flex align-items-center bg-secondary rounded my-5 mx-2">
                         <div className="col-3 px-3">
@@ -80,7 +103,7 @@ export default function Recurso() {
                                     </div>
 
                                     <div className="btn-group mx-2 my-2" role="group">
-                                        <Link className="btn btn-primary btn-sm" href={"/recursos/" + legajo_recurso + "/reporte"}>Reporte de horas por proyecto</Link>
+                                        <Link className="btn btn-primary" href={"/recursos/" + legajo_recurso + "/reporte"}>Reporte de horas por proyecto</Link>
                                     </div>
                                 </div>
                             </div>
@@ -95,13 +118,10 @@ export default function Recurso() {
 
             </div>
 
-            {notification.message && (
-                <div className={`alert alert-${notification.type} mt-4`} role="alert">
-                    {notification.message}
-                </div>
-            )}
 
-            <CargarHorasModal id={legajo_recurso} handleSubmit={cargarRegistro} />
+
+
+            <CargarHorasModal id={legajo_recurso} handleSubmit={cargarRegistro} isRequestLoading={isRequestLoading} setIsRequestLoading={setIsRequestLoading} />
 
         </section>
     )

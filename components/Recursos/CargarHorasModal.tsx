@@ -96,23 +96,23 @@ function DateInput({ date, setDate, maxDate }: any) {
     );
 }
 
-function ModalFooterRegistro({ anyEmpty, handleSubmit, isRequestLoading, isProjectDataLoading }: any) {
+function ModalFooterRegistro({ anyEmpty, isRequestLoading }: any) {
     return (
         <div className="modal-footer">
-            <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">
+            {/* <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">
                 Cancelar
-            </button>
-            <button type="submit" className="btn btn-primary" disabled={anyEmpty || isRequestLoading || isProjectDataLoading}>
-                {(isRequestLoading || isProjectDataLoading) ? "Cargando..." : "Aceptar"}
+            </button> */}
+            <button type="submit" className="btn btn-primary" data-bs-dismiss="modal" disabled={anyEmpty || isRequestLoading}>
+                {isRequestLoading ? "Cargando..." : "Aceptar"}
             </button>
         </div>
     );
 }
 
-function ModalBodyRegistro({ isRequestLoading, isProjectDataLoading, isModification, registro, projects, project, setProject, tasks, task, setTask, hours, setHours, date, setDate, maxDate, submitHandler, anyEmpty }: any) {
+function ModalBodyRegistro({ isRequestLoading, isModification, registro, projects, project, setProject, tasks, task, setTask, hours, setHours, date, setDate, maxDate, submitHandler, anyEmpty }: any) {
     return (
         <div className="modal-body">
-            {(isProjectDataLoading || isRequestLoading) ? (
+            {isRequestLoading ? (
                 <div className="text-center">
                     <div className="spinner-border" role="status">
                         <span className="visually-hidden">Loading...</span>
@@ -126,22 +126,15 @@ function ModalBodyRegistro({ isRequestLoading, isProjectDataLoading, isModificat
                     <TaskSelect tasks={tasks} task={task} setTask={setTask} />
                     <HoursInput hours={hours} setHours={setHours} />
                     <DateInput date={date} setDate={setDate} maxDate={maxDate} />
-                    <div className="modal-footer">
+                    <ModalFooterRegistro anyEmpty={anyEmpty} isRequestLoading={isRequestLoading} />
 
-                        <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                        {/* Saco o dejo el data-bs-dismiss="modal"??*/}
-                        <button type="submit" className="btn btn-primary" /* data-bs-dismiss="modal" */  disabled={anyEmpty || isRequestLoading || isProjectDataLoading}>
-                            {(isRequestLoading || isProjectDataLoading) ? "Cargando..." : "Aceptar"}
-                        </button>
-
-                    </div>
                 </form>
             )}
         </div>
     );
 }
 
-export default function CargarHorasModal({ id, registro, handleSubmit }: any) {
+export default function CargarHorasModal({ id, registro, handleSubmit, isRequestLoading, setIsRequestLoading }: any) {
     const router = useRouter()
     const legajo = id > 0 ? id : router.query.id;
 
@@ -155,8 +148,7 @@ export default function CargarHorasModal({ id, registro, handleSubmit }: any) {
     const [project, setProject] = useState("")
     const [task, setTask] = useState("")
 
-    const [isRequestLoading, setIsRequestLoading] = useState(false);
-    const [isProjectDataLoading, setIsProjectDataLoading] = useState(false);
+
 
     const submitHandler = (e: { preventDefault: () => void }) => {
         e.preventDefault();
@@ -173,7 +165,6 @@ export default function CargarHorasModal({ id, registro, handleSubmit }: any) {
 
     useEffect(() => {
         console.log("Buscando proyectos...")
-        setIsProjectDataLoading(true);
         fetch("https://api-proyectos.onrender.com/projects/")
             .then((res) => {
                 return res.json()
@@ -181,7 +172,6 @@ export default function CargarHorasModal({ id, registro, handleSubmit }: any) {
             .then((data) => {
                 setProjects(data)
                 if (!project) setProject(data.at(0)["id"])
-                setIsProjectDataLoading(false);
             })
     }, [])
 
@@ -213,7 +203,6 @@ export default function CargarHorasModal({ id, registro, handleSubmit }: any) {
                     <ModalHeaderRegistro />
                     <ModalBodyRegistro
                         isRequestLoading={isRequestLoading}
-                        isDataLoaded={isProjectDataLoading}
                         isModification={isModification}
                         registro={registro}
                         projects={projects}
@@ -230,7 +219,6 @@ export default function CargarHorasModal({ id, registro, handleSubmit }: any) {
                         submitHandler={submitHandler}
                         anyEmpty={anyEmpty}
                     />
-                    {/* <ModalFooterRegistro anyEmpty={anyEmpty} handleSubmit={handleSubmit} isRequestLoading={isRequestLoading} isProjectDataLoading={isProjectDataLoading} /> */}
                 </div>
             </div>
         </div>

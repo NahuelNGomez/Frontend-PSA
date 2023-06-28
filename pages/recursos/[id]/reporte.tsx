@@ -120,6 +120,8 @@ export default function ReporteHoras({ id }: any) {
                 <Breadcrumbs items={breadcrumbItems} />
                 <div className="row">
 
+
+
                     <ReporteHorasForm
                         handleSubmit={handleSubmit}
                         project={project}
@@ -135,8 +137,7 @@ export default function ReporteHoras({ id }: any) {
 
                     <LoadingIndicator cargando={cargando} />
                     {table}
-                    {/* <RegistrosTable registros={registros} /> */}
-                    
+
                     <SubtotalHours hours={hours} />
 
                 </div>
