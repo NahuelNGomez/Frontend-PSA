@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
 import EliminarRegistroModal from "./EliminarRegistroModal";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import CargarHorasModal from "./CargarHorasModal";
 
 
@@ -9,7 +9,7 @@ export default function RegistrosTable({ registros }: any) {
     const router = useRouter()
     const legajo = router.query.id;
     const [id, setId] = useState(0)
-    const [selectedItem, setSelectedItem] = useState()
+    const [selectedItem, setSelectedItem] = useState<object>({})
 
     const modificarRegistro = (proyect: number, task: number, date: string, hours: number) => {
         const registro = {

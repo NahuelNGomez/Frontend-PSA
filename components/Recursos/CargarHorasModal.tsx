@@ -44,13 +44,13 @@ export default function CargarHorasModal({ id, registro, handleSubmit }: any) {
     useEffect(() => {
         setRegister(registro)
         if (!register) return;
-        console.log(register);
+        console.log(registro);
         setIsModification(true)
-        setProyect(register["id_proyecto"])
-        setTask(register["id_tarea"])
-        setDate(register["fecha_de_registro"])
-        setHours(register["cantidad"])
-    }, [register, projects])
+        setProyect(registro["id_proyecto"])
+        setTask(registro["id_tarea"])
+        setDate(registro["fecha_de_registro"])
+        setHours(registro["cantidad"])
+    }, [registro, projects])
 
     useEffect(() => {
         let project = projects.find(p => p["id"] == proyect);
