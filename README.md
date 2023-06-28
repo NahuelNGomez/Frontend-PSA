@@ -17,8 +17,8 @@
 Documentación de las REST APIs desarrolladas para el backend de los modulos:
 
 - [API Proyectos](https://api-proyectos.onrender.com/swagger-ui/index.html)
-- [API Soporte](apisoporte.onrender.com/docs)
-- [API Recursos Humanos](rrhh-squad6-1c2023.onrender.com/docs)
+- [API Soporte](https://apisoporte.onrender.com/docs)
+- [API Recursos Humanos](https://rrhh-squad6-1c2023.onrender.com/docs)
 
 
 ---
