@@ -28,7 +28,8 @@ export default function Tickets() {
       const [clientes, setClientes] = useState([])
 
     useEffect(() => {
-        fetch("https://apisoporte.onrender.com/versiones/"+ version_id + "/tickets" )
+        if(router.query.id){ 
+        fetch("https://apisoporte.onrender.com/versiones/"+ router.query.id + "/tickets" )
             .then((res) => {
                 return res.json()
             })
@@ -36,7 +37,7 @@ export default function Tickets() {
                 setItems(data)
             })
             
-        fetch("https://apisoporte.onrender.com/versiones/"+ version_id)
+        fetch("https://apisoporte.onrender.com/versiones/"+ router.query.id)
             .then((res) => {
                 return res.json()
             })
@@ -57,8 +58,9 @@ export default function Tickets() {
             })
             .then((data) => {
                 setClientes(data)
-            })      
-      }, [])
+            })  
+        }    
+      }, [router.query.id])
       
       const breadcrumbItems = [
         {
@@ -71,9 +73,22 @@ export default function Tickets() {
         },
         {
             title: 'Tickets',
-            url: '/soporte/' + version_id + '/tickets'
+            url: '/soporte/' + router.query.id + '/tickets'
         }
     ]
+
+    if(version == null){
+        return (<div className="container text-center">
+            <div className="row align-items-center">
+                <div className="col my-4">
+                    <div className="spinner-border" role="status">
+                        <span className="visually-hidden">Loading...</span>
+                    </div>
+                </div>
+            </div>
+        </div>)
+    }
+
     return (
         <section className="row py-lg-12">
             <div className="col-lg-12">
@@ -100,7 +115,7 @@ export default function Tickets() {
                 </div>
             <TicketsTable items={items} />
             </div>
-            <CrearTicketModal version_id={version_id} recursos={recursos} clientes={clientes}/>
+            <CrearTicketModal version_id={router.query.id} recursos={recursos} clientes={clientes}/>
         </section>
     )
 }

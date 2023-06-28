@@ -8,8 +8,9 @@ import AsignarTareaModal from "../../../../components/Projects/AsignarTareaModal
 
 const Ticket = () => {
     const router = useRouter()
-    const versionID = router.query.id;
-    const ticketID = router.query.id2;
+    
+    /*const versionID = router.query.id;
+    const ticketID = router.query.id2;*/
 
     interface Version {
         idVersion: number;
@@ -39,30 +40,44 @@ const Ticket = () => {
     //const[recurso, setRecurso] = useState<any>();
 
     const[tareasAsignadas, setTareasAsignadas] = useState([]);
+    const[tareasDisponibles, setTareasDisponibles] = useState([]);
 
     useEffect(() => {
-        fetch("https://apisoporte.onrender.com/tickets/" + ticketID)
+        if(router.query.id != null || router.query.id2 != null){ 
+            fetch("https://apisoporte.onrender.com/tickets/" + router.query.id2)
+                .then((res) => {
+                    return res.json()
+                })
+                .then((data) => {
+                    setTicket(data)
+                })
+            fetch("https://apisoporte.onrender.com/versiones/"+ router.query.id)
+                .then((res) => {
+                    return res.json()
+                })
+                .then((data) => {
+                    setVersion(data)
+                })
+            fetch("https://apisoporte.onrender.com/tareasAsignadas/"+ router.query.id2)
+                .then((res) => {
+                    return res.json()
+                })
+                .then((data) => {
+                    setTareasAsignadas(data)
+                })
+        }
+      }, [router.query.id, router.query.id2])
+      useEffect(() =>{
+        if (version) {
+        fetch("https://api-proyectos.onrender.com/projects/"+  version?.idProyecto + "/tasks")
             .then((res) => {
                 return res.json()
             })
             .then((data) => {
-                setTicket(data)
-            })
-        fetch("https://apisoporte.onrender.com/versiones/"+ versionID)
-            .then((res) => {
-                return res.json()
-            })
-            .then((data) => {
-                setVersion(data)
-            })
-        fetch("https://apisoporte.onrender.com/tareasAsignadas/"+ ticketID)
-            .then((res) => {
-                return res.json()
-            })
-            .then((data) => {
-                setTareasAsignadas(data)
-            })     
-      }, [])
+                setTareasDisponibles(data)
+            }) 
+        }    
+      }, [version])
 
       const breadcrumbItems = [
         {
@@ -82,6 +97,18 @@ const Ticket = () => {
             url: '/soporte/' + version?.idVersion + '/tickets/' + ticket?.id
         }
     ]
+
+    if(version == null || ticket == null){
+        return (<div className="container text-center">
+            <div className="row align-items-center">
+                <div className="col my-4">
+                    <div className="spinner-border" role="status">
+                        <span className="visually-hidden">Loading...</span>
+                    </div>
+                </div>
+            </div>
+        </div>)
+    }
 
     return (
         <section className="row py-lg-12">
@@ -137,8 +164,10 @@ const Ticket = () => {
                     </div>
                 </div>
                 <TareasAsignadasTable items={tareasAsignadas}/>
-                <AsignarTareaModal/>
-               {/* <TaskModal projectId={2}/> Deberiamos obtener ese numero de proyecto o pasar un versionID*/}
+                {tareasDisponibles && (
+                    <AsignarTareaModal tareasDisponibles={tareasDisponibles} idTicket={ticket?.id} />
+                )}
+                <TaskModal projectId={version?.idProyecto} type={2} idTicket={ticket?.id}/>
         </section>
     )
 }

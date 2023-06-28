@@ -1,6 +1,10 @@
 import { useEffect, useState } from "react"
 
-export default function TaskModal({projectId} : any) {
+{/*
+    type: 1 -> Solamente se añade al proyecto (idTicket = null)
+    type: 2 -> Se añade al proyecto y se vincula a un ticket
+*/}
+export default function TaskModal({projectId, type, idTicket} : any) {
 
     const [resources, setResources] = useState([])
 
@@ -15,6 +19,7 @@ export default function TaskModal({projectId} : any) {
     }, [])
 
     const handleSubmit = async(event : any) => {
+        let valid = 0;
         event.preventDefault()
         fetch('https://api-proyectos.onrender.com/projects/'+ projectId + '/tasks', {
             method: 'POST',
@@ -29,10 +34,30 @@ export default function TaskModal({projectId} : any) {
                 status: 'pending'
             })
         }).then((response) => {
-            if(response.ok) location.reload();
-        })
-        .catch((error) => {
-            console.error('Error al cargar el proyecto:', error);
+            if(response.ok) {
+                valid = 1;
+            }
+            if (type == 1 && response.ok){
+                location.reload();
+            }
+            return response.json()
+        }).catch((error) => {
+        console.log('Error al cargar el proyecto:', error);
+        }).then((data) => { 
+            if(type == 2 && valid == 1) {
+                fetch('https://apisoporte.onrender.com/tareasAsignadas', {
+                    method: 'POST',
+                    headers: {"Content-Type": "application/json"},
+                    body: JSON.stringify({
+                        idTarea: data?.id,
+                        id: idTicket
+                })
+            }).then((response) =>{
+                if(response.ok) location.reload();
+            }).catch((error) => {
+                console.log('Error al asignar la tarea al ticket:', error);
+                })
+            }
         })
     }
 

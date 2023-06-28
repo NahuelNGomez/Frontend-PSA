@@ -10,6 +10,7 @@ export default function CrearTicketModal({version_id, recursos, clientes} : any)
             headers: {"Content-Type": "application/json"},
             body: JSON.stringify({
                 FechaDeCreacion: event.target.fechaInicio.value,
+                FechaDeFinalizacion: event.target.fechaFinal.value,
                 Nombre: event.target.titulo.value,
                 Descripcion: event.target.descripcion.value,
                 Escenario: event.target.escenario.value,
@@ -73,6 +74,10 @@ export default function CrearTicketModal({version_id, recursos, clientes} : any)
                             <div className="mb-3">
                                 <label htmlFor="fechaInicio" className="col-form-label">Fecha de inicio: <small>(requerido)</small></label>
                                 <input type="date" className="form-control" id="fechaInicio" required />
+                            </div>
+                            <div className="mb-3">
+                                <label htmlFor="fechaInicio" className="col-form-label">Fecha estimada de finalizacion: <small>(requerido)</small></label>
+                                <input type="date" className="form-control" id="fechaFinal" required />
                             </div>
 
                             <div className="mb-3">
