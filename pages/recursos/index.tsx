@@ -14,6 +14,7 @@ export default function Recursos() {
     ]
 
     const [items, setItems] = useState([])
+    const [recursos, setRecursos] = useState([])
 
     useEffect(() => {
         fetch("https://rrhh-squad6-1c2023.onrender.com/recursos")
@@ -22,8 +23,21 @@ export default function Recursos() {
             })
             .then((data) => {
                 setItems(data)
+                setRecursos(data)
             })
       }, [])
+
+      const filtrarPorApellido = (apellido: string) => {
+        if (apellido == "") {
+            setRecursos(items)
+            return;
+        }
+        let filteredItems = items.filter(item => {
+            let itemApellido: string = item["Apellido"];
+            return itemApellido.toLowerCase().includes(apellido)
+        })
+        setRecursos(filteredItems)
+    }
 
     return (
         <section className="row py-lg-12">
@@ -36,7 +50,7 @@ export default function Recursos() {
                 <div className="row">
                     <div className="col-md-12">
                         <div className="input-group">
-                            <input type="text" className="form-control" placeholder="Buscar..." aria-label="Buscar..." aria-describedby="search" />
+                            <input type="text" className="form-control" placeholder="Buscar apellido..." aria-label="Buscar..." aria-describedby="search" onChange={(e) => {filtrarPorApellido(e.target.value)}} />
                             <button className="btn btn-dark" type="button" id="search">
                                 <i className="bi bi-search"></i> Buscar recurso
                             </button>
@@ -45,9 +59,7 @@ export default function Recursos() {
                     
                 </div>
 
-                <RecursosTable
-                items={items}
-                />
+                <RecursosTable items={recursos} />
 
             </div>
 

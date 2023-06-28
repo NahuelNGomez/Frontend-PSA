@@ -10,21 +10,5 @@ export default function TrabajadorTable({item} : any) {
             <h4 className="fw-light mb-4">Apellido: {item.Apellido}</h4>
 
         </section>
-        // <table className="table table-striped my-4">
-        //     <thead>
-        //         <tr>
-        //             <th>Legajo</th>
-        //             <th>Nombre</th>
-        //             <th>Apellido</th>
-        //             <th style={{width:"10%"}}></th>
-        //         </tr>
-        //     </thead>
-        //     <tbody>
-        //         <td>{item.legajo}</td>
-        //         <td>{item.Nombre}</td>
-        //         <td>{item.Apellido}</td>
-                
-        //     </tbody>
-        // </table>
     )
 }
