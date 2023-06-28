@@ -4,6 +4,7 @@ import { useEffect, useState } from "react"
     type: 1 -> Solamente se añade al proyecto (idTicket = null)
     type: 2 -> Se añade al proyecto y se vincula a un ticket
 */}
+
 export default function TaskModal({projectId, type, idTicket} : any) {
 
     const [resources, setResources] = useState([])

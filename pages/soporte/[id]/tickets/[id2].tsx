@@ -67,17 +67,25 @@ const Ticket = () => {
                 })
         }
       }, [router.query.id, router.query.id2])
-      useEffect(() =>{
+      const [condicion, setCondicion] = useState(false);
+
+    useEffect(() => {
         if (version) {
-        fetch("https://api-proyectos.onrender.com/projects/"+  version?.idProyecto + "/tasks")
+        fetch("https://api-proyectos.onrender.com/projects/" + version?.idProyecto + "/tasks")
             .then((res) => {
-                return res.json()
+            return res.json();
             })
             .then((data) => {
-                setTareasDisponibles(data)
-            }) 
-        }    
-      }, [version])
+            setTareasDisponibles(data);
+            });
+
+        if (version?.idProyecto === null) {
+            setCondicion(true); // Actualizar el estado de 'condicion'
+        } else {
+            setCondicion(false); // Actualizar el estado de 'condicion'
+        }
+        }
+    }, [version]);
 
       const breadcrumbItems = [
         {
@@ -156,11 +164,11 @@ const Ticket = () => {
                         </div>
                     </div>
                     <div className="col-md-2">
-                        <button className="btn btn-outline-secondary " type="button" data-bs-toggle="modal" data-bs-target="#asignarTareaModal"> Asignar Tarea
+                        <button className="btn btn-outline-secondary " type="button" data-bs-toggle="modal" data-bs-target="#asignarTareaModal" disabled={condicion}> Asignar Tarea
                         </button>
                     </div>
                     <div className="col-md-2 ">
-                    <button className="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#taskModal">Crear tarea</button>
+                    <button className="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#taskModal" disabled={condicion}>Crear tarea</button>
                     </div>
                 </div>
                 <TareasAsignadasTable items={tareasAsignadas}/>
