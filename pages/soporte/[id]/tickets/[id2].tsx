@@ -98,6 +98,18 @@ const Ticket = () => {
         }
     ]
 
+    if(version == null || ticket == null){
+        return (<div className="container text-center">
+            <div className="row align-items-center">
+                <div className="col my-4">
+                    <div className="spinner-border" role="status">
+                        <span className="visually-hidden">Loading...</span>
+                    </div>
+                </div>
+            </div>
+        </div>)
+    }
+
     return (
         <section className="row py-lg-12">
                 <div className="col-lg-12">
