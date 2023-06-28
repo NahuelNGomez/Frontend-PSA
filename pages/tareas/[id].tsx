@@ -17,7 +17,7 @@ export default function Tarea() {
 
     useEffect(() => {
         if(router.query.id){
-            fetch("https://api-proyectos.onrender.com/projectTasks/" + router.query.id)
+            fetch("https://api-proyectos.onrender.com/projects/tasks/" + router.query.id)
             .then((res) => res.json())
             .then((data) => {
                 setItem(data)
@@ -28,8 +28,8 @@ export default function Tarea() {
                         url: '/proyectos'
                     },
                     {
-                        title: data.name,
-                        url: '/proyectos/' + data.id
+                        title: data.project.name,
+                        url: '/proyectos/' + data.project.id
                     },
                     {
                         title: data.title,
@@ -97,7 +97,7 @@ export default function Tarea() {
                         <a className="btn btn-dark">Cargar horas</a>
                     </div>
                     <div>
-                        <h6 className="fw-light">FALTA_NOMBRE Proyecto</h6>
+                        <h6 className="fw-light">{item.project.name} Proyecto</h6>
                     </div>
                 </div>
 
@@ -111,7 +111,7 @@ export default function Tarea() {
                             Responsable: {item.employee_id}<br />
                             Fecha de creación: {formatDate(item.start_date)}<br />
                             Tiempo estimado: {item.estimated_time} horas<br />
-                            Tiempo trabajado: WORKED_HOURS horas<br />
+                            Tiempo trabajado: {item.time_worked} horas<br />
                         </div>
                     </div>
                 </div>
