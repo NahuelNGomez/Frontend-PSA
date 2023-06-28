@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react"
 import { useRouter } from "next/router"
 import Breadcrumbs from "../../components/Breadcrumbs"
-//import TasksTable from "../../../components/Proyectos/TasksTable"
-//import TaskModal from "../../../components/TaskModal"
+import EditTaskModal from "../../components/Projects/EditTaskModal"
 
 function formatDate(timestamp: string){
     const date = new Date(timestamp);
@@ -13,6 +12,7 @@ export default function Tarea() {
     const router = useRouter()
 
     const [item, setItem] = useState(null)
+    const [status, setStatus] = useState(null)
     const [breadcrumbItems, setBreadcrumbItems] = useState<Array<{ title: string; url: string; }>>([]);
 
     useEffect(() => {
@@ -41,6 +41,22 @@ export default function Tarea() {
         }
     }, [router.query.id])
 
+    const handleStatusSubmit = async(event : any) => {
+        event.preventDefault()
+        fetch('https://api-proyectos.onrender.com/projects/tasks/' + router.query.id, {
+            method: 'PUT',
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({
+                status: event.target.status.value
+            })
+        }).then((response) => {
+            if(response.ok) location.reload();
+        })
+        .catch((error) => {
+            console.error('Error al cargar el proyecto:', error);
+        })
+    }
+
     if(item == null){
         return (<div className="container text-center">
             <div className="row align-items-center">
@@ -60,14 +76,14 @@ export default function Tarea() {
 
                 <div className="d-md-flex flex-md-row-reverse align-items-center justify-content-between">
                     <div className="mb-3 mb-md-0 d-flex text-nowrap">
-                        <select className="form-select mx-1">
+                        <select className="form-select mx-1" onChange={handleStatusSubmit}>
                             <option>Seleccionar estado</option>
                             <option value="pending">Pendiente</option>
                             <option value="working">En curso</option>
                             <option value="reviewing">En revisión</option>
                             <option value="finished">Finalizada</option>
                         </select>
-                        <a className="btn btn-primary">Editar tarea</a>
+                        <button className="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#editTaskModal">Editar tarea</button>
                     </div>
                     <div>
                         <span className="badge text-bg-dark ms-1">{item.task_type}</span>
@@ -100,6 +116,9 @@ export default function Tarea() {
                     </div>
                 </div>
             </div>
+
+            <EditTaskModal item={item} taskId={router.query.id} />
+
         </section>
     )
 }
