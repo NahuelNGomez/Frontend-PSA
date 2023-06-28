@@ -3,12 +3,8 @@ import RegistrosTable from "../../../components/Recursos/RegistrosTable";
 import { useRouter } from "next/router";
 import Breadcrumbs from "../../../components/Breadcrumbs";
 
-export default function ReporteHoras({ id }: any) {
-
-    const router = useRouter()
-    const legajo_recurso = router.query.id;
-
-    const breadcrumbItems = [
+function BreadcrumbItemsReporte({ legajo_recurso }: any) {
+    return [
         {
             title: 'Recursos',
             url: '/recursos'
@@ -23,6 +19,80 @@ export default function ReporteHoras({ id }: any) {
         }
 
     ]
+}
+
+function ReporteHorasForm(
+    {
+        handleSubmit,
+        project,
+        projects,
+        setProject,
+        dateInicio,
+        setDateInicio,
+        dateFin,
+        setDateFin,
+        maxDate,
+        anyEmpty
+    }: any
+) {
+    return (
+        <form onSubmit={handleSubmit}>
+            <h1 className="modal-title fs-5">Hacer reporte</h1>
+            <div className="mb-3">
+                <label htmlFor="name" className="col-form-label">
+                    Proyecto: <small>(requerido)</small>
+                </label>
+                <select className="form-select" value={project} onChange={(e) => setProject(e.target.value)}>
+                    {projects.map((proyect: any) => (
+                        <option key={proyect["id"]} value={proyect["id"]}>
+                            {proyect["name"]}
+                        </option>
+                    ))}
+                </select>
+            </div>
+            <div className="mb-3">
+                <label htmlFor="start_date" className="col-form-label">
+                    Fecha de inicio: <small>(requerido)</small>
+                </label>
+                <input type="date" className="form-control" id="date" required value={dateInicio} max={maxDate} onChange={(e) => setDateInicio(e.target.value)} />
+            </div>
+            <div className="mb-3">
+                <label htmlFor="start_date" className="col-form-label">
+                    Fecha de finalizacion: <small>(requerido)</small>
+                </label>
+                <input type="date" className="form-control" id="date" required value={dateFin} max={maxDate} min={dateInicio} onChange={(e) => setDateFin(e.target.value)} />
+            </div>
+            <div className="text-center">
+                <button type="submit" disabled={anyEmpty} className="btn btn-primary">
+                    Generar
+                </button>
+            </div>
+        </form>
+    );
+}
+
+function LoadingIndicator({ cargando }: any) {
+    return <div>{cargando}</div>;
+}
+
+function SubtotalHours({ hours }: any) {
+    return (
+        <div className="text-center">
+            <div className="mb-4">
+                <label htmlFor="name" className="col-form-label" style={{ padding: "10px" }}>
+                    <b>Subtotal de horas: {hours} </b>
+                </label>
+            </div>
+        </div>
+    );
+}
+
+
+
+export default function ReporteHoras({ id }: any) {
+
+    const router = useRouter()
+    const legajo_recurso = router.query.id;
 
     const [registros, setRegistros] = useState([])
     const [dateInicio, setDateInicio] = useState('')
@@ -85,9 +155,12 @@ export default function ReporteHoras({ id }: any) {
             })
 
     }
+
     let anyEmpty = !project || !dateInicio || !dateFin;
 
-    const getTable = registros.length === 0 ? (<></>) : (<RegistrosTable registros={registros} />);
+    const breadcrumbItems = BreadcrumbItemsReporte({ legajo_recurso });
+
+    const table = registros.length === 0 ? (<></>) : (<RegistrosTable registros={registros} />);
 
     return (
         <section className="row py-lg-12">
@@ -95,36 +168,23 @@ export default function ReporteHoras({ id }: any) {
                 <Breadcrumbs items={breadcrumbItems} />
                 <div className="row">
 
-                    <form onSubmit={handleSubmit}>
-                        <h1 className="modal-title fs-5">Hacer reporte</h1>
-                        <div className="mb-3">
-                            <label htmlFor="name" className="col-form-label">Proyecto: <small>(requerido)</small></label>
-                            <select className="form-select" value={project} onChange={(e) => setProject(e.target.value)}>
-                                {projects.map(proyect => (<option key={proyect["id"]} value={proyect["id"]}>{proyect["name"]}</option>))}
-                            </select>
+                    <ReporteHorasForm
+                        handleSubmit={handleSubmit}
+                        project={project}
+                        projects={projects}
+                        setProject={setProject}
+                        dateInicio={dateInicio}
+                        setDateInicio={setDateInicio}
+                        dateFin={dateFin}
+                        setDateFin={setDateFin}
+                        maxDate={maxDate}
+                        anyEmpty={anyEmpty}
+                    />
 
-                            <div className="mb-3">
-                                <label htmlFor="start_date" className="col-form-label">Fecha de inicio: <small>(requerido)</small></label>
-                                <input type="date" className="form-control" id="date" required value={dateInicio} max={maxDate} onChange={(e) => setDateInicio(e.target.value)} />
-                            </div>
+                    <LoadingIndicator cargando={cargando} />
+                    {table}
+                    <SubtotalHours hours={hours} />
 
-                            <div className="mb-3">
-                                <label htmlFor="start_date" className="col-form-label">Fecha de finalizacion: <small>(requerido)</small></label>
-                                <input type="date" className="form-control" id="date" required value={dateFin} max={maxDate} min={dateInicio} onChange={(e) => setDateFin(e.target.value)} />
-                            </div>
-
-                        </div>
-                        <div className="text-center">
-                            <button type="submit" disabled={anyEmpty} className="btn btn-primary">Generar</button>
-                        </div>
-                        <div className="text-center">
-                            <div className="mb-4">
-                                <label htmlFor="name" className="col-form-label" style={{ padding: "10px" }}><b>Subtotal de horas: {hours} </b></label>
-                            </div>
-                        </div>
-                    </form>
-                    {cargando}
-                    {getTable}
                 </div>
             </div>
         </section>
