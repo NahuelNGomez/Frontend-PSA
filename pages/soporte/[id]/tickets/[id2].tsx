@@ -8,8 +8,9 @@ import AsignarTareaModal from "../../../../components/Projects/AsignarTareaModal
 
 const Ticket = () => {
     const router = useRouter()
-    const versionID = router.query.id;
-    const ticketID = router.query.id2;
+    
+    /*const versionID = router.query.id;
+    const ticketID = router.query.id2;*/
 
     interface Version {
         idVersion: number;
@@ -42,29 +43,30 @@ const Ticket = () => {
     const[tareasDisponibles, setTareasDisponibles] = useState([]);
 
     useEffect(() => {
-        fetch("https://apisoporte.onrender.com/tickets/" + ticketID)
-            .then((res) => {
-                return res.json()
-            })
-            .then((data) => {
-                setTicket(data)
-            })
-        fetch("https://apisoporte.onrender.com/versiones/"+ versionID)
-            .then((res) => {
-                return res.json()
-            })
-            .then((data) => {
-                setVersion(data)
-            })
-        fetch("https://apisoporte.onrender.com/tareasAsignadas/"+ ticketID)
-            .then((res) => {
-                return res.json()
-            })
-            .then((data) => {
-                setTareasAsignadas(data)
-            })
-        
-      }, [])
+        if(router.query.id != null || router.query.id2 != null){ 
+            fetch("https://apisoporte.onrender.com/tickets/" + router.query.id2)
+                .then((res) => {
+                    return res.json()
+                })
+                .then((data) => {
+                    setTicket(data)
+                })
+            fetch("https://apisoporte.onrender.com/versiones/"+ router.query.id)
+                .then((res) => {
+                    return res.json()
+                })
+                .then((data) => {
+                    setVersion(data)
+                })
+            fetch("https://apisoporte.onrender.com/tareasAsignadas/"+ router.query.id2)
+                .then((res) => {
+                    return res.json()
+                })
+                .then((data) => {
+                    setTareasAsignadas(data)
+                })
+        }
+      }, [router.query.id, router.query.id2])
       useEffect(() =>{
         if (version) {
         fetch("https://api-proyectos.onrender.com/projects/"+  version?.idProyecto + "/tasks")
