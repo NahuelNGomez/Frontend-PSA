@@ -108,7 +108,7 @@ export default function Tarea() {
                     <div className="col-md-12 mb-2">
                         Detalles: 
                         <div className="bd-callout bd-callout-light my-2">
-                            Responsable: {item.employee_id}<br />
+                            Responsable: {item.employee_info.name + ' ' + item.employee_info.last_name}<br />
                             Fecha de creación: {formatDate(item.start_date)}<br />
                             Tiempo estimado: {item.estimated_time} horas<br />
                             Tiempo trabajado: {item.time_worked} horas<br />
