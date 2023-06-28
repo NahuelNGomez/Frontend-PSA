@@ -39,6 +39,7 @@ const Ticket = () => {
     //const[recurso, setRecurso] = useState<any>();
 
     const[tareasAsignadas, setTareasAsignadas] = useState([]);
+    const[tareasDisponibles, setTareasDisponibles] = useState([]);
 
     useEffect(() => {
         fetch("https://apisoporte.onrender.com/tickets/" + ticketID)
@@ -61,8 +62,20 @@ const Ticket = () => {
             })
             .then((data) => {
                 setTareasAsignadas(data)
-            })     
+            })
+        
       }, [])
+      useEffect(() =>{
+        if (version) {
+        fetch("https://api-proyectos.onrender.com/projects/"+  version?.idProyecto + "/tasks")
+            .then((res) => {
+                return res.json()
+            })
+            .then((data) => {
+                setTareasDisponibles(data)
+            }) 
+        }    
+      }, [version])
 
       const breadcrumbItems = [
         {
@@ -137,8 +150,10 @@ const Ticket = () => {
                     </div>
                 </div>
                 <TareasAsignadasTable items={tareasAsignadas}/>
-                <AsignarTareaModal/>
-               {/* <TaskModal projectId={2}/> Deberiamos obtener ese numero de proyecto o pasar un versionID*/}
+                {tareasDisponibles && (
+                    <AsignarTareaModal tareasDisponibles={tareasDisponibles} idTicket={ticket?.id} />
+                )}
+                <TaskModal projectId={version?.idProyecto} type={2} idTicket={ticket?.id}/>
         </section>
     )
 }

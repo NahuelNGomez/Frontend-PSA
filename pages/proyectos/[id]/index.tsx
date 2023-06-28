@@ -100,7 +100,7 @@ export default function Proyecto() {
                 <TasksTable items={tasks} />
             </div>
 
-            <TaskModal projectId={router.query.id} />
+            <TaskModal projectId={router.query.id} type={1} idTicket={null}/>
         </section>
     )
 }
