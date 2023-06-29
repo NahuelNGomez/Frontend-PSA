@@ -159,7 +159,7 @@ export default function CargarHorasModal({ id, registro, handleSubmit, isRequest
 
     useEffect(() => {
         console.log("Buscando proyectos...")
-        fetch("http://localhost:8080/projects/")
+        fetch("https://api-proyectos.onrender.com/projects/")
             .then((res) => {
                 if (!res.ok) {
                     return res.json().then(data => { throw { data } })
@@ -173,7 +173,7 @@ export default function CargarHorasModal({ id, registro, handleSubmit, isRequest
             })
             .then(() => {
                 if (!project) return;
-                fetch(`http://localhost:8080/projects/${project}/tasks`)
+                fetch(`https://api-proyectos.onrender.com/projects/${project}/tasks`)
                     .then((res) => {
                         if (!res.ok) {
                             return res.json().then(data => { throw { data } })

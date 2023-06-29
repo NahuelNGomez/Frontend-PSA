@@ -11,7 +11,7 @@ export default function TaskModal({projectId, type, idTicket, resources} : any) 
     const handleSubmit = async(event : any) => {
         let valid = 0;
         event.preventDefault()
-        fetch('http://localhost:8080/projects/'+ projectId + '/tasks', {
+        fetch('https://api-proyectos.onrender.com/projects/'+ projectId + '/tasks', {
             method: 'POST',
             headers: {"Content-Type": "application/json"},
             body: JSON.stringify({

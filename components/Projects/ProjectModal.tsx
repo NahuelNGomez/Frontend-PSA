@@ -25,7 +25,7 @@ export default function ProjectModal() {
 
     const handleSubmit = async(event : any) => {
         event.preventDefault()
-        fetch('http://localhost:8080/projects', {
+        fetch('https://api-proyectos.onrender.com/projects', {
             method: 'POST',
             headers: {"Content-Type": "application/json"},
             body: JSON.stringify({
