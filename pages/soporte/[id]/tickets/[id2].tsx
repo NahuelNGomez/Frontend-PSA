@@ -181,7 +181,7 @@ const Ticket = () => {
                     <AsignarTareaModal tareasDisponibles={tareasDisponibles} idTicket={ticket?.id} />
                 )}
                 <EditTicketModal ticket={ticket} recursos={recursos}/> 
-                <TaskModal projectId={version?.idProyecto} type={2} idTicket={ticket?.id}/>
+                <TaskModal projectId={version?.idProyecto} type={2} idTicket={ticket?.id} resources={recursos}/>
         </section>
     )
 }
