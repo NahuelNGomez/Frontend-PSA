@@ -32,7 +32,6 @@ export default function EditProjectModal({item, projectId} : any) {
                 description: event.target.description.value,
                 start_date: event.target.start_date.value,
                 end_date: event.target.end_date.value,
-                version_id: event.target.version_id.value,
                 responsible_id: event.target.responsible_id.value
             })
         }).then((response) => {
@@ -72,7 +71,7 @@ export default function EditProjectModal({item, projectId} : any) {
                             <div className="row mb-3">
                                 <div className="col">
                                     <label htmlFor="version_id" className="col-form-label">Versión: <small>(requerido)</small></label>
-                                    <select className="form-control" id="version_id" value={item.version_id || ''} required>
+                                    <select className="form-control" id="version_id" value={item.version_id || ''} disabled>
                                         <option value="">Seleccionar Versión</option>
                                         {
                                         versions.map((item: any, index: number) => (

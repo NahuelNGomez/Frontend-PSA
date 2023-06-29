@@ -14,10 +14,16 @@ export default function Proyecto() {
     const router = useRouter()
 
     const [item, setItem] = useState<any>(null)
+    const [version, setVersion] = useState<any>(null)
     const [resources, setResources] = useState([])
     const [breadcrumbItems, setBreadcrumbItems] = useState<Array<{ title: string; url: string; }>>([]);
     const [tasks, setTasks] = useState(null)
     var [searchText, setSearchText] = useState('')
+    var resource : any = {
+        legajo: '',
+        Nombre: '',
+        Apellido: ''
+    };
 
     useEffect(() => {
         if(router.query.id){
@@ -27,6 +33,14 @@ export default function Proyecto() {
             })
             .then((data) => {
                 setItem(data)
+                
+                fetch("https://apisoporte.onrender.com/versiones/" + data.version_id)
+                .then((res) => {
+                    return res.json()
+                })
+                .then((data) => {
+                    setVersion(data)
+                })
 
                 const breadcrumb = [
                     {
@@ -89,7 +103,7 @@ export default function Proyecto() {
         })
     }
 
-    if(item == null || tasks == null){
+    if(item == null || tasks == null || version == null || resources == null){
         return (<div className="container text-center">
             <div className="row align-items-center">
                 <div className="col my-4">
@@ -101,6 +115,7 @@ export default function Proyecto() {
         </div>)
     }
 
+    resource = resources.find((r: any) => r.legajo == item.responsible_id);
     return (
         <section className="row py-lg-12">
             <div className="col-lg-12">
@@ -118,8 +133,8 @@ export default function Proyecto() {
                         <button className="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#editProjectModal">Editar proyecto</button>
                     </div>
                     <div>
-                        <h3 className="fw-light">{item.name}</h3>
-                        <h6 className="fw-light">PRODUCTO Y VERSION</h6>
+                        <h3 className="fw-light">#{router.query.id} {item.name}</h3>
+                        <h6 className="fw-light">{version.NombreProducto} - v{version.CodigoVersion}</h6>
                     </div>
                 </div>
 
@@ -130,7 +145,7 @@ export default function Proyecto() {
                     <div className="col-md-6 mb-2">
                         Detalles: 
                         <div className="bd-callout bd-callout-light my-2">
-                            Responsable: <br />
+                            Responsable: {resource.Nombre + ' ' + resource.Apellido}<br />
                             {item.hours_worked} horas trabajadas ({item.tasks_quantity} tareas)<br />
                             Inicio: {formatDate(item.start_date)} | Fin: {formatDate(item.end_date)}
                         </div>

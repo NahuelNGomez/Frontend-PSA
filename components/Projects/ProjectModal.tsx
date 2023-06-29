@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react"
 export default function ProjectModal() {
 
+    const [notification, setNotification] = useState('')
     const [versions, setVersions] = useState([])
     const [responsibles, setResponsibles] = useState([])
 
     useEffect(() => {
-        //fetch("https://api-proyectos.onrender.com/projects")
         fetch("https://apisoporte.onrender.com/versiones")
         .then((res) => {
             return res.json()
@@ -25,7 +25,7 @@ export default function ProjectModal() {
 
     const handleSubmit = async(event : any) => {
         event.preventDefault()
-        fetch('https://api-proyectos.onrender.com/projects', {
+        fetch('http://localhost:8080/projects', {
             method: 'POST',
             headers: {"Content-Type": "application/json"},
             body: JSON.stringify({
@@ -38,6 +38,9 @@ export default function ProjectModal() {
             })
         }).then((response) => {
             if(response.ok) location.reload();
+            return response.json();
+        }).then(data => {
+            setNotification(data.message);
         })
         .catch((error) => {
             console.error('Error al cargar el proyecto:', error);
@@ -54,6 +57,18 @@ export default function ProjectModal() {
                             <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div className="modal-body">
+
+                            {
+                            notification === ''
+                            ? ''
+                            : <div
+                                className="alert alert-danger"
+                                role="alert"
+                                dangerouslySetInnerHTML={{ __html: notification }}
+                                />
+                            }
+
+
                             <div className="mb-3">
                                 <label htmlFor="name" className="col-form-label">Nombre: <small>(requerido)</small></label>
                                 <input type="text" className="form-control" id="name" placeholder="Nombre" required />

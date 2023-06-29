@@ -88,7 +88,7 @@ export default function Tarea() {
                     <div>
                         <span className="badge text-bg-dark ms-1">{item.task_type}</span>
                         <span className="badge text-bg-warning ms-1">{item.task_priority}</span>
-                        <h3 className="fw-light mb-0">{item.title}</h3>
+                        <h3 className="fw-light mb-0">#{router.query.id} {item.title}</h3>
                         <h6 className="fw-light">{item.project.name}</h6>
                     </div>
                 </div>
@@ -102,7 +102,12 @@ export default function Tarea() {
                         <div className="bd-callout bd-callout-light my-2">
                             Responsable: {item.employee_info.name + ' ' + item.employee_info.last_name}<br />
                             Fecha de inicio: {item.start_date == undefined ? '-' : formatDate(item.start_date)}<br />
-                            {item.end_date == undefined ? '' : 'Fecha de finalización: ' + formatDate(item.end_date)}<br />
+                            {
+                                item.end_date === undefined
+                                ? ''
+                                : <div dangerouslySetInnerHTML={{ __html: 'Fecha de finalización: ' + formatDate(item.end_date) + '<br />' }} />
+                            }
+
                             Tiempo estimado: {item.estimated_time} horas<br />
                             Tiempo trabajado: {item.time_worked} horas<br />
                         </div>
@@ -112,11 +117,13 @@ export default function Tarea() {
 
             <EditTaskModal item={item} taskId={router.query.id} />
 
-            <div>
-                <button className="btn btn-danger btn-sm" type="button" data-bs-toggle="modal" data-bs-target="#deleteTaskModal">Borrar tarea</button>
-            </div>
-            <DeleteTaskModal taskId={item.id} redirectUrl={'/proyectos/' + item.project.id} />
-
         </section>
     )
 }
+
+/*
+<div>
+    <button className="btn btn-danger btn-sm" type="button" data-bs-toggle="modal" data-bs-target="#deleteTaskModal">Borrar tarea</button>
+</div>
+<DeleteTaskModal taskId={item.id} redirectUrl={'/proyectos/' + item.project.id} />
+ */
