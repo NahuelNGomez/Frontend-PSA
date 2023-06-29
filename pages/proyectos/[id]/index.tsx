@@ -101,7 +101,7 @@ export default function Proyecto() {
         })
     }
 
-    if(item == null || !tasks.length || version == null || resources == null){
+    if(item == null || version == null || resources == null){
         return (<div className="container text-center">
             <div className="row align-items-center">
                 <div className="col my-4">
