@@ -36,30 +36,13 @@ export default function Recurso() {
 
     const [isRequestLoading, setIsRequestLoading] = useState(false);
 
-    const [registro, setRegistro] = useState({
-        id_proyecto: 0,
-        id_tarea: 0,
-        fecha_de_registro: "",
-        cantidad: 0
-    })
-
     const cargarRegistro = (proyect: number, task: number, date: string, hours: number) => {
-        // const registro = {
-        //     id_proyecto: proyect,
-        //     id_tarea: task,
-        //     fecha_de_registro: date,
-        //     cantidad: hours
-        // }
-        setRegistro({
+        const registro = {
             id_proyecto: proyect,
             id_tarea: task,
             fecha_de_registro: date,
             cantidad: hours
-        })
-
-        console.log(" [[[[[[BODY PREVIO A FETCH:]]]]]]   ")
-        console.log(registro)
-
+        }
 
         return fetch(`https://rrhh-squad6-1c2023.onrender.com/recursos/${legajo_recurso}/registros`, {
             method: 'POST',
@@ -137,7 +120,7 @@ export default function Recurso() {
 
 
 
-            <CargarHorasModal id={legajo_recurso} registro={registro} handleSubmit={cargarRegistro} isRequestLoading={isRequestLoading} setIsRequestLoading={setIsRequestLoading} />
+            <CargarHorasModal id={legajo_recurso} handleSubmit={cargarRegistro} isRequestLoading={isRequestLoading} setIsRequestLoading={setIsRequestLoading} />
 
         </section>
     )
