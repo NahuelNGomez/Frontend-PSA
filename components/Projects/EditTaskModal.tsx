@@ -34,7 +34,7 @@ export default function TaskModal({item, taskId} : any) {
             if(response.ok) location.reload();
             return response.json()
         }).then(data => {
-            if(data.error == 'invalid_daterange'){
+            if(data.error == 'invalid_date_range'){
                 setNotification('La fecha de finalización no puede ser anterior a la de inicio.');
             }else{
                 setNotification('Ocurrió un error, intente más tarde.');

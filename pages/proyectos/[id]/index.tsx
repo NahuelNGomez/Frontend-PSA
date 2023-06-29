@@ -18,7 +18,7 @@ export default function Proyecto() {
     const [version, setVersion] = useState<any>(null)
     const [resources, setResources] = useState([])
     const [breadcrumbItems, setBreadcrumbItems] = useState<Array<{ title: string; url: string; }>>([]);
-    const [tasks, setTasks] = useState(null)
+    const [tasks, setTasks] = useState<any>(null)
     var [searchText, setSearchText] = useState('')
     var resource : any = {
         legajo: '',
@@ -101,7 +101,7 @@ export default function Proyecto() {
         })
     }
 
-    if(item == null || tasks == null || version == null || resources == null){
+    if(item == null || !tasks.length || version == null || resources == null){
         return (<div className="container text-center">
             <div className="row align-items-center">
                 <div className="col my-4">
@@ -143,7 +143,7 @@ export default function Proyecto() {
                         Detalles: 
                         <div className="bd-callout bd-callout-light my-2">
                             Responsable: {resource.Nombre + ' ' + resource.Apellido}<br />
-                            {item.hours_worked} horas trabajadas ({item.tasks_quantity} tareas)<br />
+                            {item.hours_worked} horas trabajadas ({tasks.length} tareas)<br />
                             Inicio: {formatDate(item.start_date)} | Fin: {formatDate(item.end_date)}
                         </div>
                     </div>

@@ -191,7 +191,7 @@ export default function CargarHorasModal({ id, registro, handleSubmit, isRequest
                     })
 
             }).catch(() => null)
-    }, []);
+    }, [project]);
 
 
     useEffect(() => {

@@ -5,6 +5,7 @@ export default function EditProjectModal({item, projectId} : any) {
     const [versions, setVersions] = useState([])
     var [responsible_id, setResponsibleId] = useState(item.responsible_id)
     const [responsibles, setResponsibles] = useState([])
+    const [notification, setNotification] = useState('')
 
     useEffect(() => {
         fetch("https://apisoporte.onrender.com/versiones")
@@ -38,6 +39,13 @@ export default function EditProjectModal({item, projectId} : any) {
             })
         }).then((response) => {
             if(response.ok) location.reload();
+            return response.json()
+        }).then(data => {
+            if(data.error == 'invalid_date_range'){
+                setNotification('La fecha de finalización no puede ser anterior a la de inicio.');
+            }else{
+                setNotification('Ocurrió un error, intente más tarde.');
+            }
         })
         .catch((error) => {
             console.error('Error al cargar el proyecto:', error);
@@ -54,6 +62,9 @@ export default function EditProjectModal({item, projectId} : any) {
                             <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div className="modal-body">
+
+                            { notification === '' ? '' : <div className="alert alert-danger" role="alert" dangerouslySetInnerHTML={{ __html: notification }} />}
+
                             <div className="mb-3">
                                 <label htmlFor="name" className="col-form-label">Nombre: <small>(requerido)</small></label>
                                 <input type="text" className="form-control" id="name" placeholder="Nombre" defaultValue={item.name || ''} required />
