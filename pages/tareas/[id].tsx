@@ -17,7 +17,7 @@ export default function Tarea() {
 
     useEffect(() => {
         if(router.query.id){
-            fetch("http://localhost:8080/projects/tasks/" + router.query.id)
+            fetch("https://api-proyectos.onrender.com/projects/tasks/" + router.query.id)
             .then((res) => res.json())
             .then((data) => {
                 setItem(data)
@@ -43,7 +43,7 @@ export default function Tarea() {
 
     const handleStatusSubmit = async(event : any) => {
         event.preventDefault()
-        fetch('http://localhost:8080/projects/tasks/' + router.query.id, {
+        fetch('https://api-proyectos.onrender.com/projects/tasks/' + router.query.id, {
             method: 'PUT',
             headers: {"Content-Type": "application/json"},
             body: JSON.stringify({

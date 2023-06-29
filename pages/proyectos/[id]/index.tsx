@@ -21,7 +21,7 @@ export default function Proyecto() {
 
     useEffect(() => {
         if(router.query.id){
-            fetch("http://localhost:8080/projects/" + router.query.id)
+            fetch("https://api-proyectos.onrender.com/projects/" + router.query.id)
             .then((res) => {
                 return res.json()
             })
@@ -41,7 +41,7 @@ export default function Proyecto() {
                 setBreadcrumbItems(breadcrumb);
             })
 
-            fetch("http://localhost:8080/projects/" + router.query.id + "/tasks")
+            fetch("https://api-proyectos.onrender.com/projects/" + router.query.id + "/tasks")
             .then((res) => {
                 return res.json()
             })
@@ -60,7 +60,7 @@ export default function Proyecto() {
     }, [router.query.id])
 
     const searchForm = async () => {
-        fetch("http://localhost:8080/projects/tasks/search?title=" + encodeURIComponent(searchText))
+        fetch("https://api-proyectos.onrender.com/projects/tasks/search?title=" + encodeURIComponent(searchText))
         .then((res) => {
             return res.json()
         })
@@ -71,7 +71,7 @@ export default function Proyecto() {
 
     const handleStatusSubmit = async(event : any) => {
         event.preventDefault()
-        fetch('http://localhost:8080/projects/' + router.query.id, {
+        fetch('https://api-proyectos.onrender.com/projects/' + router.query.id, {
             method: 'PUT',
             headers: {"Content-Type": "application/json"},
             body: JSON.stringify({

@@ -2,7 +2,7 @@ export default function DeleteTaskModal({taskId, redirectUrl} : any) {
 
     const handleSubmit = async(event : any) => {
         event.preventDefault()
-        fetch('http://api-proyectos.onrender.com/projects/tasks/' + taskId, {
+        fetch('https://api-proyectos.onrender.com/projects/tasks/' + taskId, {
             method: 'DELETE',
             headers: {"Content-Type": "application/json"},
         }).then((response) => {

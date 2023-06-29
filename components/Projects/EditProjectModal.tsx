@@ -24,7 +24,7 @@ export default function EditProjectModal({item, projectId} : any) {
 
     const handleSubmit = async(event : any) => {
         event.preventDefault()
-        fetch('http://api-proyectos.onrender.com/projects/' + projectId, {
+        fetch('https://api-proyectos.onrender.com/projects/' + projectId, {
             method: 'PUT',
             headers: {"Content-Type": "application/json"},
             body: JSON.stringify({
