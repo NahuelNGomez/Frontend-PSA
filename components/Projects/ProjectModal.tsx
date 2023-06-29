@@ -77,13 +77,15 @@ export default function ProjectModal() {
                                 <label htmlFor="description" className="col-form-label">Descripción: <small>(requerido)</small></label>
                                 <input type="text" className="form-control" id="description" placeholder="Descripción" required />
                             </div>
-                            <div className="mb-3">
-                                <label htmlFor="start_date" className="col-form-label">Fecha de inicio: <small>(requerido)</small></label>
-                                <input type="date" className="form-control" id="start_date" required />
-                            </div>
-                            <div className="mb-3">
-                                <label htmlFor="end_date" className="col-form-label">Fecha de fin:</label>
-                                <input type="date" className="form-control" id="end_date" />
+                            <div className="row mb-3">
+                                <div className="col">
+                                    <label htmlFor="start_date" className="col-form-label">Fecha de inicio: <small>(requerido)</small></label>
+                                    <input type="date" className="form-control" id="start_date" required />
+                                </div>
+                                <div className="col">
+                                    <label htmlFor="end_date" className="col-form-label">Fecha de fin:</label>
+                                    <input type="date" className="form-control" id="end_date" />
+                                </div>
                             </div>
                             <div className="row mb-3">
                                 <div className="col">
