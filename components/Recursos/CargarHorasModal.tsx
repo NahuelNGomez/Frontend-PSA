@@ -51,7 +51,12 @@ function TaskSelect({ tasks, task, setTask }: any) {
             <label htmlFor="name" className="col-form-label">
                 Tarea: <small>(requerido)</small>
             </label>
-            <select className="form-select" value={task || ""} disabled={tasks.length === 0} required onChange={(e) => setTask(e.target.value)}>
+            <select className="form-select" value={task || ""} disabled={tasks.length === 0} required onChange={(e) => {
+                console.log("TARGET VALUE");
+                console.log(e.target.value);
+                setTask(e.target.value)
+            }
+            }>
                 {tasks.map((task: any, index: any) => (
                     <option key={task["id"]} value={task["id"]}>
                         {task["title"]}
@@ -98,7 +103,7 @@ function DateInput({ date, setDate, maxDate }: any) {
 function ModalFooterRegistro({ anyEmpty, isRequestLoading }: any) {
     return (
         <div className="modal-footer">
-            <button type="submit" className="btn btn-primary" data-bs-dismiss="modal" disabled={anyEmpty || isRequestLoading}>
+            <button type="submit" className="btn btn-primary" data-bs-dismiss="modal" disabled={/*anyEmpty ||*/ isRequestLoading}>
                 {isRequestLoading ? "Cargando..." : "Aceptar"}
             </button>
         </div>
@@ -117,7 +122,7 @@ function ModalBodyRegistro({ isRequestLoading, isModification, registro, project
                 </div>
             ) : (
                 <form onSubmit={submitHandler}>
-                    <ModalBodyTitle isModification={isModification} registro={registro} />
+                    {/* <ModalBodyTitle isModification={isModification} registro={registro} /> */}
                     <ProjectSelect projects={projects} project={project} setProject={setProject} />
                     <TaskSelect tasks={tasks} task={task} setTask={setTask} />
                     <HoursInput hours={hours} setHours={setHours} />
@@ -147,8 +152,11 @@ export default function CargarHorasModal({ id, registro, handleSubmit, isRequest
     const submitHandler = (e: { preventDefault: () => void }) => {
         e.preventDefault();
         setIsRequestLoading(true);
+        console.log(" [[[[[[PARAMS SUBMITHANDLER]]]]]] ")
+        console.log(project, task, date, hours)
         handleSubmit(project, task, date, hours)
             .then((data: any) => {
+                console.log(" [[[[[[data del then 1 del SUBMITHANDLER]]]]]] ")
                 console.log(data);
                 setIsRequestLoading(false);
             }).catch((err: any) => {
@@ -171,38 +179,44 @@ export default function CargarHorasModal({ id, registro, handleSubmit, isRequest
                 if (data && data.lenght > 0 && !project) setProject(data.at(0)["id"])
                 else setProject('')
             })
-            .then(() => {
-                if (!project) return;
-                fetch(`https://api-proyectos.onrender.com/projects/${project}/tasks`)
-                    .then((res) => {
-                        if (!res.ok) {
-                            return res.json().then(data => { throw { data } })
-                        }
-                        return res.json()
-                    })
-                    .then((data) => {
-                        setTasks(data)
-                        if (data && data.lenght > 0) setTask(data.at(0)["id"])
-                        else setTask('');
-                    })
-                    .catch(() => {
-                        setTasks([]);
-                        setTask('')
-                    })
-
-            }).catch(() => null)
     }, []);
 
 
     useEffect(() => {
-        setIsModification(registro != null)
-        if (registro != undefined) {
-            setProject(registro["id_proyecto"])
-            setTask(registro["id_tarea"])
-            setDate(registro["fecha_de_registro"])
-            setHours(registro["cantidad"])
-        }
-    }, [registro, projects])
+        console.log("Buscando tareas...")
+        if (!project) return;
+        fetch(`https://api-proyectos.onrender.com/projects/${project}/tasks`)
+            .then((res) => {
+                if (!res.ok) {
+                    return res.json().then(data => { throw { data } })
+                }
+                return res.json()
+            })
+            .then((data) => {
+                setTasks(data)
+                if (data) {
+                    setTask(data.at(0)["id"])
+                    console.log(data.at(0)["id"])
+                }
+                else setTask('')
+
+            })
+            .catch(() => {
+
+                setTasks([]);
+                setTask('')
+            })
+    }, [project]);
+
+    // useEffect(() => {
+    //     setIsModification(registro != null)
+    //     if (registro != undefined) {
+    //         setProject(registro["id_proyecto"])
+    //         setTask(registro["id_tarea"])
+    //         setDate(registro["fecha_de_registro"])
+    //         setHours(registro["cantidad"])
+    //     }
+    // }, [registro, projects])
 
 
 
