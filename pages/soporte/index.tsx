@@ -16,12 +16,12 @@ export default function Soporte() {
 
     useEffect(() => {
         fetch("https://apisoporte.onrender.com/versiones")
-            .then((res) => {
-                return res.json()
-            })
-            .then((data) => {
-                setItems(data)
-            })
+        .then((res) => {
+            return res.json()
+        })
+        .then((data) => {
+            setItems(data)
+        })
       }, [])
 
       if(!items.length){
