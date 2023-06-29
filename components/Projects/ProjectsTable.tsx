@@ -7,8 +7,15 @@ function formatDate(timestamp: string){
 
 export default function ProjectsTable({items} : any) {
 
+    const statusList:any = {
+        'starting': 'Inicio',
+        'developing': 'En desarrollo',
+        'implementation': 'En implementación',
+        'finished' : 'Finalizado'
+    };
+
     if(!items.length){
-        return (<div className="my-4">No se encontraron proyectos</div>)
+        return (<div className="my-4">No se encontraron proyectos. <u><a className="cursor-pointer" data-bs-toggle="modal" data-bs-target="#projectModal">Crear nuevo proyecto</a></u></div>)
     }
 
     return (
@@ -31,7 +38,7 @@ export default function ProjectsTable({items} : any) {
                             <td>{item.name}</td>
                             <td>{formatDate(item.start_date)}</td>
                             <td>{formatDate(item.end_date)}</td>
-                            <td>{item.status}</td>
+                            <td>{statusList[item.status]}</td>
                             <td>
                                 <Link className="btn btn-primary btn-sm" href={"/proyectos/" + item.id}>Ver proyecto</Link>
                             </td>

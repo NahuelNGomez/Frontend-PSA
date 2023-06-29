@@ -21,7 +21,7 @@ export default function Proyecto() {
 
     useEffect(() => {
         if(router.query.id){
-            fetch("http://api-proyectos.onrender.com/projects/" + router.query.id)
+            fetch("http://localhost:8080/projects/" + router.query.id)
             .then((res) => {
                 return res.json()
             })
@@ -41,7 +41,7 @@ export default function Proyecto() {
                 setBreadcrumbItems(breadcrumb);
             })
 
-            fetch("http://api-proyectos.onrender.com/projects/" + router.query.id + "/tasks")
+            fetch("http://localhost:8080/projects/" + router.query.id + "/tasks")
             .then((res) => {
                 return res.json()
             })
@@ -60,7 +60,7 @@ export default function Proyecto() {
     }, [router.query.id])
 
     const searchForm = async () => {
-        fetch("http://api-proyectos.onrender.com/projects/tasks/search?title=" + encodeURIComponent(searchText))
+        fetch("http://localhost:8080/projects/tasks/search?title=" + encodeURIComponent(searchText))
         .then((res) => {
             return res.json()
         })
@@ -71,7 +71,7 @@ export default function Proyecto() {
 
     const handleStatusSubmit = async(event : any) => {
         event.preventDefault()
-        fetch('http://api-proyectos.onrender.com/projects/' + router.query.id, {
+        fetch('http://localhost:8080/projects/' + router.query.id, {
             method: 'PUT',
             headers: {"Content-Type": "application/json"},
             body: JSON.stringify({
@@ -119,6 +119,7 @@ export default function Proyecto() {
                     </div>
                     <div>
                         <h3 className="fw-light">{item.name}</h3>
+                        <h6 className="fw-light">PRODUCTO Y VERSION</h6>
                     </div>
                 </div>
 
@@ -129,6 +130,7 @@ export default function Proyecto() {
                     <div className="col-md-6 mb-2">
                         Detalles: 
                         <div className="bd-callout bd-callout-light my-2">
+                            Responsable: <br />
                             {item.hours_worked} horas trabajadas ({item.tasks_quantity} tareas)<br />
                             Inicio: {formatDate(item.start_date)} | Fin: {formatDate(item.end_date)}
                         </div>

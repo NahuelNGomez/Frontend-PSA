@@ -10,7 +10,7 @@ export default function TasksTable({items, resources} : any) {
     };
     const [selectedTaskId, setSelectedTaskId] = useState(null);
     if(!items.length){
-        return (<div className="my-4">No se encontraron tareas</div>)
+        return (<div className="my-4">No se encontraron tareas. <u><a className="cursor-pointer" data-bs-toggle="modal" data-bs-target="#taskModal">Crear nueva tarea</a></u></div>)
     }
 
     return (

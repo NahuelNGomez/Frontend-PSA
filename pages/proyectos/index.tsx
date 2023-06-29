@@ -17,7 +17,7 @@ export default function Proyectos() {
 
     useEffect(() => {
         //fetch("https://api-proyectos.onrender.com/projects")
-        fetch("http://api-proyectos.onrender.com/projects")
+        fetch("http://localhost:8080/projects")
         .then((res) => {
             return res.json()
         })
@@ -28,7 +28,7 @@ export default function Proyectos() {
 
     const searchForm = async () => {
         //fetch("https://api-proyectos.onrender.com/projects/search?name=" + encodeURIComponent(searchText))
-        fetch("http://api-proyectos.onrender.com/projects/search?name=" + encodeURIComponent(searchText))
+        fetch("http://localhost:8080/projects/search?name=" + encodeURIComponent(searchText))
         .then((res) => {
             return res.json()
         })
