@@ -182,7 +182,8 @@ export default function CargarHorasModal({ id, registro, handleSubmit, isRequest
                     })
                     .then((data) => {
                         setTasks(data)
-                        if (data) setTask(data.at(0)["id"])
+                        if (data && data.lenght > 0) setTask(data.at(0)["id"])
+                        else setTask('');
                     })
                     .catch(() => {
                         setTasks([]);
