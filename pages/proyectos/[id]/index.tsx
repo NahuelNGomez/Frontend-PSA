@@ -18,7 +18,7 @@ export default function Proyecto() {
     const [version, setVersion] = useState<any>(null)
     const [resources, setResources] = useState([])
     const [breadcrumbItems, setBreadcrumbItems] = useState<Array<{ title: string; url: string; }>>([]);
-    const [tasks, setTasks] = useState<any>(null)
+    const [tasks, setTasks] = useState<any>([])
     var [searchText, setSearchText] = useState('')
     var resource : any = {
         legajo: '',
