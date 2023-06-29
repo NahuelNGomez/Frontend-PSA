@@ -1,6 +1,8 @@
 import React, { SyntheticEvent, useEffect, useState } from "react";
 
 export default function AsignarTareaModal({tareasDisponibles, idTicket} : any){
+    const [notification, setNotification] = useState('')
+
     const handleSubmit = async(event : any) => {
         event.preventDefault()
         fetch('https://apisoporte.onrender.com/tareasAsignadas', {
@@ -12,6 +14,9 @@ export default function AsignarTareaModal({tareasDisponibles, idTicket} : any){
             })
         }).then((response) => {
             if(response.ok) location.reload();
+            return response.json();
+        }).then(data => {
+            setNotification(data.message);
         })
         .catch((error) => {
             console.error('Error al cargar la tarea:', error);
@@ -28,6 +33,16 @@ export default function AsignarTareaModal({tareasDisponibles, idTicket} : any){
                         <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div className="modal-body py-1">
+                        {
+                            notification === ''
+                            ? ''
+                            : <div className="alert alert-danger" role="alert">
+                            Esta tarea ya está asociada a un ticket
+                          </div>
+                            }
+
+
+
                         <div className="row">
                             <div className="col-6 border-bottom">
                                 <label className="col-form-label px-5">Id</label>
