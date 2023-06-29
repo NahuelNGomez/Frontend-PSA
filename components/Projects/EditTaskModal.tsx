@@ -3,6 +3,8 @@ import { useEffect, useState } from "react"
 export default function TaskModal({item, taskId} : any) {
 
     const task = item;
+    var [employee_id, setEmployeeId] = useState(task.employee_id)
+    const [notification, setNotification] = useState('')
     const [resources, setResources] = useState([])
 
     useEffect(() => {
@@ -17,7 +19,7 @@ export default function TaskModal({item, taskId} : any) {
 
     const handleSubmit = async(event : any) => {
         event.preventDefault()
-        fetch('https://api-proyectos.onrender.com/projects/tasks/' + taskId, {
+        fetch('http://localhost:8080/projects/tasks/' + taskId, {
             method: 'PUT',
             headers: {"Content-Type": "application/json"},
             body: JSON.stringify({
@@ -30,9 +32,17 @@ export default function TaskModal({item, taskId} : any) {
             })
         }).then((response) => {
             if(response.ok) location.reload();
+            return response.json()
+        }).then(data => {
+            if(data.error == 'invalid_daterange'){
+                setNotification('La fecha de finalización no puede ser anterior a la de inicio.');
+            }else{
+                setNotification('Ocurrió un error, intente más tarde.');
+            }
         })
         .catch((error) => {
             console.error('Error al cargar el proyecto:', error);
+            setNotification('Ocurrió un error, intente más tarde.');
         })
     }
 
@@ -46,6 +56,9 @@ export default function TaskModal({item, taskId} : any) {
                             <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div className="modal-body">
+
+                            { notification === '' ? '' : <div className="alert alert-danger" role="alert" dangerouslySetInnerHTML={{ __html: notification }} />}
+
                             <div className="mb-3">
                                 <label htmlFor="title" className="col-form-label">Título: <small>(requerido)</small></label>
                                 <input type="text" className="form-control" id="title" placeholder="Título" defaultValue={task.title || ''} required />
@@ -61,7 +74,7 @@ export default function TaskModal({item, taskId} : any) {
                             <div className="row mb-3">
                                 <div className="col">
                                     <label htmlFor="task_type" className="col-form-label">Tipo: <small>(requerido)</small></label>
-                                    <select className="form-control" id="task_type" value={task.task_type || ''} required>
+                                    <select className="form-control" id="task_type" defaultValue={task.task_type || ''} required>
                                         <option value="">Seleccionar Tipo</option>
                                         <option value="feature">Feature</option>
                                         <option value="bug">Bug</option>
@@ -69,7 +82,7 @@ export default function TaskModal({item, taskId} : any) {
                                 </div>
                                 <div className="col">
                                     <label htmlFor="task_priority" className="col-form-label">Prioridad: <small>(requerido)</small></label>
-                                    <select className="form-control" id="task_priority" value={task.task_priority || ''} required>
+                                    <select className="form-control" id="task_priority" defaultValue={task.task_priority || ''} required>
                                         <option value="">Seleccionar Prioridad</option>
                                         <option value="high">Alta</option>
                                         <option value="medium">Media</option>
@@ -79,7 +92,7 @@ export default function TaskModal({item, taskId} : any) {
                             </div>
                             <div className="mb-3">
                                 <label htmlFor="employee_id" className="col-form-label">Empleado: <small>(requerido)</small></label>
-                                <select className="form-control" id="employee_id" value={task.employee_id || ''} required>
+                                <select className="form-control" id="employee_id" value={employee_id || ''} onChange={(e) => setEmployeeId(e.target.value)} required>
                                     <option value="">Seleccionar Recurso</option>
                                     {
                                         resources.map((item: any, index: number) => (

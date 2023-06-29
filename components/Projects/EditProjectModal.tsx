@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react"
 export default function EditProjectModal({item, projectId} : any) {
 
+    var [version_id, setVersion] = useState(item.version_id)
     const [versions, setVersions] = useState([])
+    var [responsible_id, setResponsibleId] = useState(item.responsible_id)
     const [responsibles, setResponsibles] = useState([])
 
     useEffect(() => {
@@ -24,7 +26,7 @@ export default function EditProjectModal({item, projectId} : any) {
 
     const handleSubmit = async(event : any) => {
         event.preventDefault()
-        fetch('https://api-proyectos.onrender.com/projects/' + projectId, {
+        fetch('http://localhost:8080/projects/' + projectId, {
             method: 'PUT',
             headers: {"Content-Type": "application/json"},
             body: JSON.stringify({
@@ -73,7 +75,7 @@ export default function EditProjectModal({item, projectId} : any) {
                             <div className="row mb-3">
                                 <div className="col">
                                     <label htmlFor="version_id" className="col-form-label">Versión: <small>(requerido)</small></label>
-                                    <select className="form-control" id="version_id" value={item.version_id || ''} disabled>
+                                    <select className="form-control" id="version_id" value={item.version_id || ''} onChange={(e) => setVersion(e.target.value)} disabled>
                                         <option value="">Seleccionar Versión</option>
                                         {
                                         versions.map((item: any, index: number) => (
@@ -84,7 +86,7 @@ export default function EditProjectModal({item, projectId} : any) {
                                 </div>
                                 <div className="col">
                                     <label htmlFor="responsible_id" className="col-form-label">Responsable: <small>(requerido)</small></label>
-                                    <select className="form-control" id="responsible_id" value={item.responsible_id || ''} required>
+                                    <select className="form-control" id="responsible_id" value={responsible_id || ''} onChange={(e) => setResponsibleId(e.target.value)} required>
                                         <option value="">Seleccionar Responsable</option>
                                         {
                                         responsibles.map((item: any, index: number) => (

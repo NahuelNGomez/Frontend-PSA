@@ -4,6 +4,7 @@ import Breadcrumbs from "../../../components/Breadcrumbs"
 import TasksTable from "../../../components/Projects/TasksTable"
 import TaskModal from "../../../components/Projects/TaskModal"
 import EditProjectModal from "../../../components/Projects/EditProjectModal"
+import AlertStatusModal from "../../../components/Projects/AlertStatusModal"
 
 function formatDate(timestamp: string){
     const date = new Date(timestamp);
@@ -92,11 +93,8 @@ export default function Proyecto() {
                 status: event.target.value
             })
         }).then((response) => {
-            if(response.ok){
-                location.reload();
-            }else{
-                //Aca mostrar modal
-            }
+            if(response.ok) location.reload();
+            $('#alertStatusModal').modal('show');
         })
         .catch((error) => {
             console.error('Error al cargar el proyecto:', error);
@@ -124,7 +122,6 @@ export default function Proyecto() {
                 <div className="d-md-flex flex-md-row-reverse align-items-center justify-content-between">
                     <div className="mb-3 mb-md-0 d-flex text-nowrap">
                         <select id="status" name="status" className="form-select mx-1" onChange={(e) => handleStatusSubmit(e)} value={item.status || ''} disabled={item.status == 'finished'}>
-                            <option>Seleccionar estado</option>
                             <option value="starting">Inicio</option>
                             <option value="developing">En desarrollo</option>
                             <option value="implementation">En implementación</option>
@@ -170,6 +167,7 @@ export default function Proyecto() {
 
             <TaskModal projectId={router.query.id} type={1} idTicket={null} resources={resources} />
             <EditProjectModal item={item} projectId={router.query.id} />
+            <AlertStatusModal />
         </section>
     )
 }

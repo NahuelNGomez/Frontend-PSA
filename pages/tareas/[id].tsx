@@ -3,6 +3,7 @@ import { useRouter } from "next/router"
 import Breadcrumbs from "../../components/Breadcrumbs"
 import EditTaskModal from "../../components/Projects/EditTaskModal"
 import DeleteTaskModal from "../../components/Projects/DeleteTaskModal";
+import AlertStatusModal from "../../components/Projects/AlertStatusModal";
 
 function formatDate(timestamp: string){
     const date = new Date(timestamp);
@@ -51,6 +52,7 @@ export default function Tarea() {
             })
         }).then((response) => {
             if(response.ok) location.reload();
+            $('#alertStatusModal').modal('show');
         })
         .catch((error) => {
             console.error('Error al cargar el proyecto:', error);
@@ -77,7 +79,6 @@ export default function Tarea() {
                 <div className="d-md-flex flex-md-row-reverse align-items-center justify-content-between">
                     <div className="mb-3 mb-md-0 d-flex text-nowrap">
                         <select id="status" name="status" className="form-select mx-1" onChange={(e) => handleStatusSubmit(e)} value={item.status || ''} disabled={item.status == 'finished'}>
-                            <option>Seleccionar estado</option>
                             <option value="pending">Pendiente</option>
                             <option value="working">En curso</option>
                             <option value="reviewing">En revisión</option>
@@ -116,7 +117,7 @@ export default function Tarea() {
             </div>
 
             <EditTaskModal item={item} taskId={router.query.id} />
-
+            <AlertStatusModal />
         </section>
     )
 }

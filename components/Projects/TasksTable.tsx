@@ -31,11 +31,11 @@ export default function TasksTable({items, resources} : any) {
                             var resource = resources.find((r: any) => r.legajo == item.employee_id);
                             return (
                             <tr key={index}>
-                                <td>{item.id}</td>
+                                <td width={'10%'}>{item.id}</td>
                                 <td>{item.title}</td>
                                 <td>{statusList[item.status]}</td>
                                 <td>{resource != undefined ? resource.Nombre + ' ' + resource.Apellido : ''}</td>
-                                <td width={'15%'} align="center">
+                                <td width={'25%'} align="center">
                                     <a href={'/tareas/' + item.id} className="btn btn-primary btn-sm mx-2">Ver tarea</a>
                                     <button className="btn btn-danger btn-sm" type="button" data-bs-toggle="modal" data-bs-target="#deleteTaskModal" onClick={() => setSelectedTaskId(item.id)}>Borrar</button>
                                 </td>

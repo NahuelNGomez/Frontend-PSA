@@ -37,12 +37,12 @@ export default function ProjectsTable({items, resources} : any) {
                     {
                         items.map((item: any, index: number) => (
                             <tr key={index}>
-                                <td>{item.id}</td>
+                                <td width={'10%'}>{item.id}</td>
                                 <td>{item.name}</td>
                                 <td>{formatDate(item.start_date)}</td>
                                 <td>{formatDate(item.end_date)}</td>
                                 <td>{statusList[item.status]}</td>
-                                <td width={'15%'}>
+                                <td width={'25%'} align="center">
                                     <Link className="btn btn-primary btn-sm mx-2" href={"/proyectos/" + item.id}>Ver proyecto</Link>
                                     <button className="btn btn-danger btn-sm" type="button" data-bs-toggle="modal" data-bs-target="#deleteProjectModal" onClick={() => setSelectedProjectId(item.id)}>Borrar</button>
                                 </td>

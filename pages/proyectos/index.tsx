@@ -16,7 +16,6 @@ export default function Proyectos() {
     var [searchText, setSearchText] = useState('')
 
     useEffect(() => {
-        //fetch("https://api-proyectos.onrender.com/projects")
         fetch("https://api-proyectos.onrender.com/projects")
         .then((res) => {
             return res.json()
@@ -27,7 +26,6 @@ export default function Proyectos() {
     }, [])
 
     const searchForm = async () => {
-        //fetch("https://api-proyectos.onrender.com/projects/search?name=" + encodeURIComponent(searchText))
         fetch("https://api-proyectos.onrender.com/projects/search?name=" + encodeURIComponent(searchText))
         .then((res) => {
             return res.json()

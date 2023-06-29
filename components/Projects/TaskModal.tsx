@@ -7,10 +7,11 @@ import { useEffect, useState } from "react"
 
 export default function TaskModal({projectId, type, idTicket, resources} : any) {
 
+    const [notification, setNotification] = useState('')
     const handleSubmit = async(event : any) => {
         let valid = 0;
         event.preventDefault()
-        fetch('https://api-proyectos.onrender.com/projects/'+ projectId + '/tasks', {
+        fetch('http://localhost:8080/projects/'+ projectId + '/tasks', {
             method: 'POST',
             headers: {"Content-Type": "application/json"},
             body: JSON.stringify({
@@ -40,11 +41,19 @@ export default function TaskModal({projectId, type, idTicket, resources} : any) 
                     body: JSON.stringify({
                         idTarea: data?.id,
                         id: idTicket
-                })
-            }).then((response) =>{
-                if(response.ok) location.reload();
-            }).catch((error) => {
-                console.log('Error al asignar la tarea al ticket:', error);
+                    })
+                }).then((response) =>{
+                    if(response.ok) location.reload();
+                    return response.json();
+                }).then(data => {
+                    if(data.error == 'invalid_daterange'){
+                        setNotification('La fecha de finalización no puede ser anterior a la de inicio.');
+                    }else{
+                        setNotification('Ocurrió un error, intente más tarde.');
+                    }
+                }).catch((error) => {
+                    console.log('Error al asignar la tarea al ticket:', error);
+                    setNotification('Ocurrió un error, intente más tarde.');
                 })
             }
         })
@@ -60,6 +69,9 @@ export default function TaskModal({projectId, type, idTicket, resources} : any) 
                             <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div className="modal-body">
+
+                            { notification === '' ? '' : <div className="alert alert-danger" role="alert" dangerouslySetInnerHTML={{ __html: notification }} />}
+
                             <div className="mb-3">
                                 <label htmlFor="title" className="col-form-label">Título: <small>(requerido)</small></label>
                                 <input type="text" className="form-control" id="title" placeholder="Título" required />

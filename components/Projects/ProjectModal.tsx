@@ -40,10 +40,18 @@ export default function ProjectModal() {
             if(response.ok) location.reload();
             return response.json();
         }).then(data => {
-            setNotification(data.message);
+            if(data.error == 'version_already_has_a_project'){
+                setNotification('La versión seleccionada ya posee un proyecto asociado.');
+            }
+            else if(data.error == 'invalid_daterange'){
+                setNotification('La fecha de finalización no puede ser anterior a la de inicio.');
+            }else{
+                setNotification('Ocurrió un error, intente más tarde.');
+            }
         })
         .catch((error) => {
             console.error('Error al cargar el proyecto:', error);
+            setNotification('Ocurrió un error, intente más tarde.');
         })
     }
 
@@ -58,16 +66,7 @@ export default function ProjectModal() {
                         </div>
                         <div className="modal-body">
 
-                            {
-                            notification === ''
-                            ? ''
-                            : <div
-                                className="alert alert-danger"
-                                role="alert"
-                                dangerouslySetInnerHTML={{ __html: notification }}
-                                />
-                            }
-
+                            { notification === '' ? '' : <div className="alert alert-danger" role="alert" dangerouslySetInnerHTML={{ __html: notification }} />}
 
                             <div className="mb-3">
                                 <label htmlFor="name" className="col-form-label">Nombre: <small>(requerido)</small></label>

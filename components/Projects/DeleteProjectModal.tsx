@@ -2,7 +2,7 @@ export default function DeleteProjectModal({projectId, redirectUrl} : any) {
 
     const handleSubmit = async(event : any) => {
         event.preventDefault()
-        fetch('https://api-proyectos.onrender.com/projects/' + projectId, {
+        fetch('http://localhost:8080/projects/' + projectId, {
             method: 'DELETE',
             headers: {"Content-Type": "application/json"},
         }).then((response) => {
