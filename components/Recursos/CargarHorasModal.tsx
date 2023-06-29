@@ -190,7 +190,7 @@ export default function CargarHorasModal({ id, registro, handleSubmit, isRequest
             })
             .then((data) => {
                 setProjects(data)
-                if (data && data.lenght > 0 && !project) setProject(data.at(0)["id"])
+                if (data && data.lenght > 0) setProject(data.at(0)["id"])
                 else setProject('')
             })
             .then(() => {

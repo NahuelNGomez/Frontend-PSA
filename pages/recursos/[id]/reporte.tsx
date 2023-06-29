@@ -84,7 +84,7 @@ export default function ReporteHoras({ id }: any) {
     useEffect(() => {
         console.log("project", project)
         setAnyEmpty(!project || !dateInicio || !dateFin)
-    }, [projects, dateInicio, dateFin])
+    }, [project, dateInicio, dateFin])
 
     const handleSubmit = (e: { preventDefault: () => void }) => {
         e.preventDefault();
