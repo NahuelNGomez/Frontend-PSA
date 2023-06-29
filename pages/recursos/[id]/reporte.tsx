@@ -63,6 +63,8 @@ export default function ReporteHoras({ id }: any) {
         setDateInicio(fecha.toISOString().slice(0, 10));
         setDateFin(maxDate);
 
+        console.log("Buscando proyectos... [REPORTE]")
+
         fetch("https://api-proyectos.onrender.com/projects/")
             .then((res) => {
                 if (!res.ok) {
@@ -139,7 +141,7 @@ export default function ReporteHoras({ id }: any) {
 
                     <LoadingIndicator cargando={cargando} />
 
-                    <div hidden ={!registros || registros.length > 0} className="text-center"><h1>No hay tareas cargadas</h1></div>
+                    <div hidden={!registros || registros.length > 0} className="text-center"><h1>No hay tareas cargadas</h1></div>
                     <div hidden={registros && registros.length === 0}>
 
                     </div>

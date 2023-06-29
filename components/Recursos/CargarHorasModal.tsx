@@ -190,20 +190,21 @@ export default function CargarHorasModal({ id, registro, handleSubmit, isRequest
                         setTask('')
                     })
 
-            })
-            .then(() => {
-                setIsModification(registro != null)
+            }).catch(() => null)
+    }, []);
 
-                if (registro != null) {
-                    setProject(registro["id_proyecto"])
-                    setTask(registro["id_tarea"])
-                    setDate(registro["fecha_de_registro"])
-                    setHours(registro["cantidad"])
-                }
-            })
-            .catch(() => null)
 
-    }, [registro, projects, project])
+    useEffect(() => {
+        setIsModification(registro != null)
+        if (registro != undefined) {
+            setProject(registro["id_proyecto"])
+            setTask(registro["id_tarea"])
+            setDate(registro["fecha_de_registro"])
+            setHours(registro["cantidad"])
+        }
+    }, [registro, projects])
+
+
 
     let anyEmpty = !project || !task || !hours || !date;
     let maxDate = new Date().toISOString().slice(0, 10);
