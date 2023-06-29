@@ -75,8 +75,6 @@ function HoursInput({ hours, setHours }: any) {
                 id="horas"
                 placeholder="Horas de trabajo"
                 required
-                min={1}
-                max={12}
                 value={hours || ""}
                 onChange={(e) => setHours(e.target.value)}
             />

@@ -75,15 +75,16 @@ export default function ReporteHoras({ id }: any) {
             })
             .then((data) => {
                 setProjects(data)
-                if (data && data.lenght > 0) setProject(data[0]['id'])
+                if (data) setProject(data[0]['id'])
             })
             .catch(() => null)
 
     }, [maxDate])
 
     useEffect(() => {
+        console.log("project", project)
         setAnyEmpty(!project || !dateInicio || !dateFin)
-    }, [project, dateInicio, dateFin])
+    }, [projects, dateInicio, dateFin])
 
     const handleSubmit = (e: { preventDefault: () => void }) => {
         e.preventDefault();
@@ -130,7 +131,7 @@ export default function ReporteHoras({ id }: any) {
     }
 
     const breadcrumbItems = BreadcrumbItemsReporte({ legajo_recurso });
-
+    
     return (
         <section className="row py-lg-12">
             <div className="col-lg-12">
