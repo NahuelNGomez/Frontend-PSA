@@ -49,7 +49,7 @@ export default function CrearTicketModal({version_id, recursos, clientes} : any)
                                     <select className="form-control" id="cuit">
                                 {
                                     Array.isArray(clientes) && clientes.map((item: any, index: number) => (
-                                        <option value={item?.CUIT}>{item?.CUIT} - {item?.Nombre}</option>
+                                        <option value={item?.CUIT} key={index}>{item?.CUIT} - {item?.Nombre}</option>
                                     ))
                                 }
                                 </select>
@@ -85,7 +85,7 @@ export default function CrearTicketModal({version_id, recursos, clientes} : any)
                                 <select className="form-control" id="recursos">
                                 {
                                     Array.isArray(recursos) && recursos.map((item: any, index: number) => (
-                                        <option value={item?.legajo}>{item?.legajo} - {item?.Nombre} {item?.Apellido}</option>
+                                        <option value={item?.legajo} key={index}>{item?.legajo} - {item?.Nombre} {item?.Apellido}</option>
                                     ))
                                 }
                                 </select>

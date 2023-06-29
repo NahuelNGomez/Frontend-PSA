@@ -1,22 +1,21 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState } from "react"
 
 export default function ProductReportModal(props : any) {
-    if(props == undefined){  // || props.id == undefined
-        return (<></>)
-    }
-
     const [item, setItem] = useState<any>(null);
 
     useEffect(() => {
-        fetch("https://apisoporte.onrender.com/reportes/" + props.id)
+        if(props.id != undefined){
+            fetch("https://apisoporte.onrender.com/reportes/" + props.id)
             .then((res) => {
                 return res.json()
             })
             .then((data) => {
                 setItem(data)
             })
+        }
     }, [props.id])
 
+    if(!item.length) return (<></>)
 
     return (
         <div className="modal fade" id="productReportModal" tabIndex={-1} aria-labelledby="productReportModalLabel" aria-hidden="true">
@@ -27,8 +26,8 @@ export default function ProductReportModal(props : any) {
                         <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div className="modal-body">
-                    {item ? (
-                            <>
+                        {item ? (
+                            <div>
                                 ID: {props.id} <br />
                                 Nombre: {item.NombreProducto} <br />
                                 Versión: {item.CodigoVersion} <br /> 
@@ -40,7 +39,7 @@ export default function ProductReportModal(props : any) {
                                     <li className="m-3">Promedio en Severidad 3: {item.PromedioS3} días</li>
                                     <li className="m-3">Promedio en Severidad 4: {item.PromedioS4} días</li>
                                 </ul>
-                            </>
+                            </div>
                         ) : (
                             <p>Cargando...</p>
                         )}

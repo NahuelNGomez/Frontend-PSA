@@ -1,11 +1,10 @@
 import { useRouter } from "next/router";
 import EliminarRegistroModal from "./EliminarRegistroModal";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import CargarHorasModal from "./CargarHorasModal";
 
 
 export default function RegistrosTable({ registros }: any) {
-    if (!registros) return (<></>)
     const router = useRouter()
     const legajo = router.query.id;
     const [id, setId] = useState(0)
@@ -13,8 +12,6 @@ export default function RegistrosTable({ registros }: any) {
 
     const [isRequestLoading, setIsRequestLoading] = useState(false);
     const [notification, setNotification] = useState({ message: "", type: "" });
-
-
 
     const modificarRegistro = (proyect: number, task: number, date: string, hours: number) => {
         const registro = {
@@ -68,6 +65,7 @@ export default function RegistrosTable({ registros }: any) {
         return `${fecha.substring(8, 10)}/${fecha.substring(5, 7)}/${fecha.substring(0, 4)}`
     }
 
+    if (!registros) return (<></>)
     return (
         <div>
             {isRequestLoading && (

@@ -13,11 +13,9 @@ export default function Usuarios() {
   useEffect(() => {
     fetch("https://apisoporte.onrender.com/clientes")
       .then((res) => {
-        console.log("res", res)
         return res.json()
       })
       .then((data) => {
-        console.log("data", data)
         setList(data)
       })
   }, [])
@@ -44,8 +42,8 @@ export default function Usuarios() {
                 </thead>
 
                 <tbody>
-                  {list.map((usuario) => (
-                    <UserGridRow usuario={usuario} />
+                  {list.map((usuario, index: number) => (
+                    <UserGridRow usuario={usuario} key={index} />
                   ))}
                 </tbody>
               </table>

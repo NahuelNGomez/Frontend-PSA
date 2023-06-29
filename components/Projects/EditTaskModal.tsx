@@ -49,7 +49,7 @@ export default function TaskModal({item, taskId} : any) {
                         <div className="modal-body">
                             <div className="mb-3">
                                 <label htmlFor="title" className="col-form-label">Título: <small>(requerido)</small></label>
-                                <input type="text" className="form-control" id="title" placeholder="Título" defaultValue={task.title} required />
+                                <input type="text" className="form-control" id="title" placeholder="Título" defaultValue={task.title || ''} required />
                             </div>
                             <div className="mb-3">
                                 <label htmlFor="description" className="col-form-label">Descripción: <small>(requerido)</small></label>
