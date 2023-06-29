@@ -65,12 +65,16 @@ export default function ReporteHoras({ id }: any) {
 
         fetch("https://api-proyectos.onrender.com/projects/")
             .then((res) => {
+                if (!res.ok) {
+                    return res.json().then(data => { throw { data } })
+                }
                 return res.json()
             })
             .then((data) => {
                 setProjects(data)
-                setProject(data[0]['id'])
+                if (data && data.lenght > 0) setProject(data[0]['id'])
             })
+            .catch(() => null)
 
     }, [maxDate])
 
@@ -112,8 +116,6 @@ export default function ReporteHoras({ id }: any) {
 
     const breadcrumbItems = BreadcrumbItemsReporte({ legajo_recurso });
 
-    const table = registros.length === 0 ? (<div className="text-center"><h1>No hay tareas cargadas</h1></div>) : (<RegistrosTable registros={registros} />);
-
     return (
         <section className="row py-lg-12">
             <div className="col-lg-12">
@@ -136,7 +138,11 @@ export default function ReporteHoras({ id }: any) {
                     />
 
                     <LoadingIndicator cargando={cargando} />
-                    {table}
+
+                    <div hidden ={!registros || registros.length > 0} className="text-center"><h1>No hay tareas cargadas</h1></div>
+                    <div hidden={registros && registros.length === 0}>
+
+                    </div>
 
                     <SubtotalHours hours={hours} />
 

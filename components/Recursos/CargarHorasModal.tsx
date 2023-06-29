@@ -98,9 +98,6 @@ function DateInput({ date, setDate, maxDate }: any) {
 function ModalFooterRegistro({ anyEmpty, isRequestLoading }: any) {
     return (
         <div className="modal-footer">
-            {/* <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">
-                Cancelar
-            </button> */}
             <button type="submit" className="btn btn-primary" data-bs-dismiss="modal" disabled={anyEmpty || isRequestLoading}>
                 {isRequestLoading ? "Cargando..." : "Aceptar"}
             </button>
@@ -163,28 +160,47 @@ export default function CargarHorasModal({ id, registro, handleSubmit, isRequest
     useEffect(() => {
         console.log("Buscando proyectos...")
         fetch("https://api-proyectos.onrender.com/projects/")
-        .then((res) => {
-            return res.json()
-        })
-        .then((data) => {
-            setProjects(data)
-            if (!project) setProject(data.at(0)["id"])
-        })
+            .then((res) => {
+                if (!res.ok) {
+                    return res.json().then(data => { throw { data } })
+                }
+                return res.json()
+            })
+            .then((data) => {
+                setProjects(data)
+                if (data && data.lenght > 0 && !project) setProject(data.at(0)["id"])
+                else setProject('')
+            })
+            .then(() => {
+                if (!project) return;
+                fetch(`https://api-proyectos.onrender.com/projects/${project}/tasks`)
+                    .then((res) => {
+                        if (!res.ok) {
+                            return res.json().then(data => { throw { data } })
+                        }
+                        return res.json()
+                    })
+                    .then((data) => {
+                        setTasks(data)
+                        if (data) setTask(data.at(0)["id"])
+                    })
+                    .catch(() => {
+                        setTasks([]);
+                        setTask('')
+                    })
 
-        setIsModification(true)
+            })
+            .then(() => {
+                setIsModification(registro != null)
 
-        if (registro != undefined) {
-            setProject(registro["id_proyecto"])
-            setTask(registro["id_tarea"])
-            setDate(registro["fecha_de_registro"])
-            setHours(registro["cantidad"])
-        }
-
-        let proyect: any = projects.find(p => p["id"] == project);
-        let tasks = proyect ? proyect["tasks"] : [];
-
-        setTasks(tasks)
-        setTask(tasks.length === 0 ? "" : tasks[0]["id"])
+                if (registro != null) {
+                    setProject(registro["id_proyecto"])
+                    setTask(registro["id_tarea"])
+                    setDate(registro["fecha_de_registro"])
+                    setHours(registro["cantidad"])
+                }
+            })
+            .catch(() => null)
 
     }, [registro, projects, project])
 
