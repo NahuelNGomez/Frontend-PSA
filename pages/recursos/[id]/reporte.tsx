@@ -54,6 +54,7 @@ export default function ReporteHoras({ id }: any) {
     const [projects, setProjects] = useState([])
     const [project, setProject] = useState('')
     const [hours, setHours] = useState(0)
+    const [anyEmpty, setAnyEmpty] = useState(true)
 
     let maxDate = new Date().toISOString().slice(0, 10);
 
@@ -74,11 +75,16 @@ export default function ReporteHoras({ id }: any) {
             })
             .then((data) => {
                 setProjects(data)
-                if (data && data.lenght > 0) setProject(data[0]['id'])
+                if (data) setProject(data[0]['id'])
             })
             .catch(() => null)
 
     }, [maxDate])
+
+    useEffect(() => {
+        console.log("project", project)
+        setAnyEmpty(!project || !dateInicio || !dateFin)
+    }, [projects, dateInicio, dateFin])
 
     const handleSubmit = (e: { preventDefault: () => void }) => {
         e.preventDefault();
@@ -90,15 +96,25 @@ export default function ReporteHoras({ id }: any) {
                 }
                 return res.json()
             })
-            .then(data => {
-                let registros = data.map((registro: any) => {
-                    let proyecto = projects.find(p => p['id'] == project);
-                    if (proyecto) {
-                        registro.nombre_proyecto = proyecto["name"];
-                        let tasks: [] = proyecto['tasks'] || []; // TO MODIF
-                        let tarea = tasks.find((task: any) => task.id == registro.id_tarea)
-                        registro.titulo_tarea = tarea ? tarea['title'] : "Tarea sin titulo";
-                    }
+            .then(regs => {
+                if (!regs || regs.lenght === 0) return [regs, []];
+
+                return fetch(`https://api-proyectos.onrender.com/projects/${project}/tasks`)
+                    .then((res) => {
+                        if (!res.ok) {
+                            return res.json().then(err => { throw { err } })
+                        }
+                        return res.json().then((tasks:any) => ([regs, tasks]))
+                    })
+            })
+            .then(([regs, tasks]: any) => {
+                console.log(tasks)
+                let proyecto = projects.find(p => p['id'] == project);
+                if (!proyecto || !tasks || tasks.lenght === 0) return [];
+
+                let registros = regs.map((registro: any) => {
+                    let tarea = tasks.find((task: any) => task.id == registro.id_tarea)
+                    registro.titulo_tarea = tarea ? tarea['title'] : "Tarea sin titulo";
                     return registro
                 })
 
@@ -114,10 +130,8 @@ export default function ReporteHoras({ id }: any) {
 
     }
 
-    let anyEmpty = !project || !dateInicio || !dateFin;
-
     const breadcrumbItems = BreadcrumbItemsReporte({ legajo_recurso });
-
+    
     return (
         <section className="row py-lg-12">
             <div className="col-lg-12">
@@ -141,15 +155,15 @@ export default function ReporteHoras({ id }: any) {
 
                     <LoadingIndicator cargando={cargando} />
 
-                    <div hidden={!registros || registros.length === 0} className="text-center"><h1>No hay tareas cargadas</h1></div>
-                    {/* <div hidden={registros && registros.length === 0}> */}
-
-                    {/* </div> */}
+                    <div hidden={registros.length > 0} className="text-center"><h1>No hay tareas cargadas</h1></div>
+                    <div hidden={registros.length === 0}>
+                        <RegistrosTable registros={registros} />
+                    </div>
 
                     <SubtotalHours hours={hours} />
 
                 </div>
             </div>
-        </section >
+        </section>
     )
 }
