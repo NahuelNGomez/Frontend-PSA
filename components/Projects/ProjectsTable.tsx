@@ -7,6 +7,10 @@ function formatDate(timestamp: string){
 
 export default function ProjectsTable({items} : any) {
 
+    if(!items.length){
+        return (<div className="my-4">No se encontraron proyectos</div>)
+    }
+
     return (
         <table className="table table-striped my-4">
             <thead>

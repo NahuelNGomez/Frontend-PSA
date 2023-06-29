@@ -3,6 +3,7 @@ import { useRouter } from "next/router"
 import Breadcrumbs from "../../../components/Breadcrumbs"
 import TasksTable from "../../../components/Projects/TasksTable"
 import TaskModal from "../../../components/Projects/TaskModal"
+import EditProjectModal from "../../../components/Projects/EditProjectModal"
 
 function formatDate(timestamp: string){
     const date = new Date(timestamp);
@@ -13,19 +14,19 @@ export default function Proyecto() {
     const router = useRouter()
 
     const [item, setItem] = useState<any>(null)
+    const [resources, setResources] = useState([])
     const [breadcrumbItems, setBreadcrumbItems] = useState<Array<{ title: string; url: string; }>>([]);
-    const [tasks, setTasks] = useState([])
+    const [tasks, setTasks] = useState(null)
     var [searchText, setSearchText] = useState('')
 
     useEffect(() => {
         if(router.query.id){
-            fetch("https://api-proyectos.onrender.com/projects/" + router.query.id)
+            fetch("http://api-proyectos.onrender.com/projects/" + router.query.id)
             .then((res) => {
                 return res.json()
             })
             .then((data) => {
                 setItem(data)
-                setTasks(data.tasks)
 
                 const breadcrumb = [
                     {
@@ -39,20 +40,56 @@ export default function Proyecto() {
                 ];
                 setBreadcrumbItems(breadcrumb);
             })
+
+            fetch("http://api-proyectos.onrender.com/projects/" + router.query.id + "/tasks")
+            .then((res) => {
+                return res.json()
+            })
+            .then((data) => {
+                setTasks(data)
+            })
+
+            fetch("https://rrhh-squad6-1c2023.onrender.com/recursos")
+            .then((res) => {
+                return res.json()
+            })
+            .then((data) => {
+                setResources(data)
+            })
         }
     }, [router.query.id])
 
     const searchForm = async () => {
-        fetch("https://api-proyectos.onrender.com/projects/search?name=" + encodeURIComponent(searchText))
+        fetch("http://api-proyectos.onrender.com/projects/tasks/search?title=" + encodeURIComponent(searchText))
         .then((res) => {
             return res.json()
         })
         .then((data) => {
-            setItem(data)
+            setTasks(data)
         })
     }
 
-    if(item == null && !tasks.length){
+    const handleStatusSubmit = async(event : any) => {
+        event.preventDefault()
+        fetch('http://api-proyectos.onrender.com/projects/' + router.query.id, {
+            method: 'PUT',
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({
+                status: event.target.value
+            })
+        }).then((response) => {
+            if(response.ok){
+                location.reload();
+            }else{
+                //Aca mostrar modal
+            }
+        })
+        .catch((error) => {
+            console.error('Error al cargar el proyecto:', error);
+        })
+    }
+
+    if(item == null || tasks == null){
         return (<div className="container text-center">
             <div className="row align-items-center">
                 <div className="col my-4">
@@ -69,7 +106,21 @@ export default function Proyecto() {
             <div className="col-lg-12">
                 <Breadcrumbs items={breadcrumbItems} />
                 
-                <h3 className="fw-light">{item.name}</h3>
+                <div className="d-md-flex flex-md-row-reverse align-items-center justify-content-between">
+                    <div className="mb-3 mb-md-0 d-flex text-nowrap">
+                        <select id="status" name="status" className="form-select mx-1" onChange={(e) => handleStatusSubmit(e)} value={item.status || ''} disabled={item.status == 'finished'}>
+                            <option>Seleccionar estado</option>
+                            <option value="starting">Inicio</option>
+                            <option value="developing">En desarrollo</option>
+                            <option value="implementation">En implementación</option>
+                            <option value="finished">Finalizado</option>
+                        </select>
+                        <button className="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#editProjectModal">Editar proyecto</button>
+                    </div>
+                    <div>
+                        <h3 className="fw-light">{item.name}</h3>
+                    </div>
+                </div>
 
                 <div className="row my-4">
                     <div className="col-md-6 mb-2">
@@ -97,10 +148,11 @@ export default function Proyecto() {
                     </div>
                 </div>
 
-                <TasksTable items={tasks} />
+                <TasksTable items={tasks} resources={resources} />
             </div>
 
-            <TaskModal projectId={router.query.id} type={1} idTicket={null}/>
+            <TaskModal projectId={router.query.id} type={1} idTicket={null} resources={resources} />
+            <EditProjectModal item={item} projectId={router.query.id} />
         </section>
     )
 }

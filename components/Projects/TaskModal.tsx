@@ -5,24 +5,12 @@ import { useEffect, useState } from "react"
     type: 2 -> Se añade al proyecto y se vincula a un ticket
 */}
 
-export default function TaskModal({projectId, type, idTicket} : any) {
-
-    const [resources, setResources] = useState([])
-
-    useEffect(() => {
-        fetch("https://rrhh-squad6-1c2023.onrender.com/recursos")
-        .then((res) => {
-            return res.json()
-        })
-        .then((data) => {
-            setResources(data)
-        })
-    }, [])
+export default function TaskModal({projectId, type, idTicket, resources} : any) {
 
     const handleSubmit = async(event : any) => {
         let valid = 0;
         event.preventDefault()
-        fetch('https://api-proyectos.onrender.com/projects/'+ projectId + '/tasks', {
+        fetch('http://api-proyectos.onrender.com/projects/'+ projectId + '/tasks', {
             method: 'POST',
             headers: {"Content-Type": "application/json"},
             body: JSON.stringify({

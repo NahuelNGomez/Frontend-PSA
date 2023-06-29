@@ -2,6 +2,7 @@ import { useEffect, useState } from "react"
 import { useRouter } from "next/router"
 import Breadcrumbs from "../../components/Breadcrumbs"
 import EditTaskModal from "../../components/Projects/EditTaskModal"
+import DeleteTaskModal from "../../components/Projects/DeleteTaskModal";
 
 function formatDate(timestamp: string){
     const date = new Date(timestamp);
@@ -12,12 +13,11 @@ export default function Tarea() {
     const router = useRouter()
 
     const [item, setItem] = useState<any>(null)
-    const [status, setStatus] = useState(null)
     const [breadcrumbItems, setBreadcrumbItems] = useState<Array<{ title: string; url: string; }>>([]);
 
     useEffect(() => {
         if(router.query.id){
-            fetch("https://api-proyectos.onrender.com/projects/tasks/" + router.query.id)
+            fetch("http://api-proyectos.onrender.com/projects/tasks/" + router.query.id)
             .then((res) => res.json())
             .then((data) => {
                 setItem(data)
@@ -43,7 +43,7 @@ export default function Tarea() {
 
     const handleStatusSubmit = async(event : any) => {
         event.preventDefault()
-        fetch('https://api-proyectos.onrender.com/projects/tasks/' + router.query.id, {
+        fetch('http://api-proyectos.onrender.com/projects/tasks/' + router.query.id, {
             method: 'PUT',
             headers: {"Content-Type": "application/json"},
             body: JSON.stringify({
@@ -76,7 +76,7 @@ export default function Tarea() {
 
                 <div className="d-md-flex flex-md-row-reverse align-items-center justify-content-between">
                     <div className="mb-3 mb-md-0 d-flex text-nowrap">
-                        <select id="status" name="status" className="form-select mx-1" onChange={(e) => handleStatusSubmit(e)} value={item.status || ''}>
+                        <select id="status" name="status" className="form-select mx-1" onChange={(e) => handleStatusSubmit(e)} value={item.status || ''} disabled={item.status == 'finished'}>
                             <option>Seleccionar estado</option>
                             <option value="pending">Pendiente</option>
                             <option value="working">En curso</option>
@@ -89,12 +89,7 @@ export default function Tarea() {
                         <span className="badge text-bg-dark ms-1">{item.task_type}</span>
                         <span className="badge text-bg-warning ms-1">{item.task_priority}</span>
                         <h3 className="fw-light mb-0">{item.title}</h3>
-                    </div>
-                </div>
-
-                <div className="d-md-flex flex-md-row-reverse align-items-center justify-content-between">
-                    <div>
-                        <h6 className="fw-light">{item.project.name} Proyecto</h6>
+                        <h6 className="fw-light">{item.project.name}</h6>
                     </div>
                 </div>
 
@@ -106,7 +101,8 @@ export default function Tarea() {
                         Detalles: 
                         <div className="bd-callout bd-callout-light my-2">
                             Responsable: {item.employee_info.name + ' ' + item.employee_info.last_name}<br />
-                            Fecha de creación: {formatDate(item.start_date)}<br />
+                            Fecha de inicio: {item.start_date == undefined ? '-' : formatDate(item.start_date)}<br />
+                            {item.end_date == undefined ? '' : 'Fecha de finalización: ' + formatDate(item.end_date)}<br />
                             Tiempo estimado: {item.estimated_time} horas<br />
                             Tiempo trabajado: {item.time_worked} horas<br />
                         </div>
@@ -115,6 +111,11 @@ export default function Tarea() {
             </div>
 
             <EditTaskModal item={item} taskId={router.query.id} />
+
+            <div>
+                <button className="btn btn-danger btn-sm" type="button" data-bs-toggle="modal" data-bs-target="#deleteTaskModal">Borrar tarea</button>
+            </div>
+            <DeleteTaskModal taskId={item.id} redirectUrl={'/proyectos/' + item.project.id} />
 
         </section>
     )

@@ -12,11 +12,12 @@ export default function Proyectos() {
         }
     ]
 
-    const [items, setItems] = useState([])
+    const [items, setItems] = useState(null)
     var [searchText, setSearchText] = useState('')
 
     useEffect(() => {
-        fetch("https://api-proyectos.onrender.com/projects")
+        //fetch("https://api-proyectos.onrender.com/projects")
+        fetch("http://api-proyectos.onrender.com/projects")
         .then((res) => {
             return res.json()
         })
@@ -26,7 +27,8 @@ export default function Proyectos() {
     }, [])
 
     const searchForm = async () => {
-        fetch("https://api-proyectos.onrender.com/projects/search?name=" + encodeURIComponent(searchText))
+        //fetch("https://api-proyectos.onrender.com/projects/search?name=" + encodeURIComponent(searchText))
+        fetch("http://api-proyectos.onrender.com/projects/search?name=" + encodeURIComponent(searchText))
         .then((res) => {
             return res.json()
         })
@@ -35,7 +37,7 @@ export default function Proyectos() {
         })
     }
 
-    if(!items.length){
+    if(items == null){
         return (<div className="container text-center">
             <div className="row align-items-center">
                 <div className="col my-4">

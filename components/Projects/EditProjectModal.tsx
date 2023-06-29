@@ -1,11 +1,10 @@
 import { useEffect, useState } from "react"
-export default function ProjectModal() {
+export default function EditProjectModal({item, projectId} : any) {
 
     const [versions, setVersions] = useState([])
     const [responsibles, setResponsibles] = useState([])
 
     useEffect(() => {
-        //fetch("https://api-proyectos.onrender.com/projects")
         fetch("https://apisoporte.onrender.com/versiones")
         .then((res) => {
             return res.json()
@@ -25,8 +24,8 @@ export default function ProjectModal() {
 
     const handleSubmit = async(event : any) => {
         event.preventDefault()
-        fetch('http://api-proyectos.onrender.com/projects', {
-            method: 'POST',
+        fetch('http://api-proyectos.onrender.com/projects/' + projectId, {
+            method: 'PUT',
             headers: {"Content-Type": "application/json"},
             body: JSON.stringify({
                 name: event.target.name.value,
@@ -45,35 +44,35 @@ export default function ProjectModal() {
     }
 
     return (
-        <div className="modal fade" id="projectModal" tabIndex={-1} aria-labelledby="projectModalLabel" aria-hidden="true">
+        <div className="modal fade" id="editProjectModal" tabIndex={-1} aria-labelledby="editProjectModalLabel" aria-hidden="true">
             <div className="modal-dialog">
                 <div className="modal-content">
                     <form method="POST" onSubmit={handleSubmit}>
                         <div className="modal-header">
-                            <h1 className="modal-title fs-5" id="projectModalLabel">Nuevo Proyecto</h1>
+                            <h1 className="modal-title fs-5" id="editProjectModalLabel">Editar Proyecto</h1>
                             <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div className="modal-body">
                             <div className="mb-3">
                                 <label htmlFor="name" className="col-form-label">Nombre: <small>(requerido)</small></label>
-                                <input type="text" className="form-control" id="name" placeholder="Nombre" required />
+                                <input type="text" className="form-control" id="name" placeholder="Nombre" defaultValue={item.name || ''} required />
                             </div>
                             <div className="mb-3">
                                 <label htmlFor="description" className="col-form-label">Descripción: <small>(requerido)</small></label>
-                                <input type="text" className="form-control" id="description" placeholder="Descripción" required />
+                                <input type="text" className="form-control" id="description" placeholder="Descripción" defaultValue={item.description || ''} required />
                             </div>
                             <div className="mb-3">
                                 <label htmlFor="start_date" className="col-form-label">Fecha de inicio: <small>(requerido)</small></label>
-                                <input type="date" className="form-control" id="start_date" required />
+                                <input type="date" className="form-control" id="start_date" defaultValue={item.start_date || ''} required />
                             </div>
                             <div className="mb-3">
                                 <label htmlFor="end_date" className="col-form-label">Fecha de fin:</label>
-                                <input type="date" className="form-control" id="end_date" />
+                                <input type="date" className="form-control" id="end_date" defaultValue={item.end_date || ''} required />
                             </div>
                             <div className="row mb-3">
                                 <div className="col">
                                     <label htmlFor="version_id" className="col-form-label">Versión: <small>(requerido)</small></label>
-                                    <select className="form-control" id="version_id" required>
+                                    <select className="form-control" id="version_id" value={item.version_id || ''} required>
                                         <option value="">Seleccionar Versión</option>
                                         {
                                         versions.map((item: any, index: number) => (
@@ -84,7 +83,7 @@ export default function ProjectModal() {
                                 </div>
                                 <div className="col">
                                     <label htmlFor="responsible_id" className="col-form-label">Responsable: <small>(requerido)</small></label>
-                                    <select className="form-control" id="responsible_id" required>
+                                    <select className="form-control" id="responsible_id" value={item.responsible_id || ''} required>
                                         <option value="">Seleccionar Responsable</option>
                                         {
                                         responsibles.map((item: any, index: number) => (

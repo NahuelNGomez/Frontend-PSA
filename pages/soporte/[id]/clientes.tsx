@@ -17,6 +17,7 @@ export default function Clientes() {
       }
       
       const [version, setVersion] = useState<Version>();
+      const [resources, setResources] = useState([]);
       
       const [items, setItems] = useState([])
 
@@ -37,6 +38,13 @@ export default function Clientes() {
                 setVersion(data)
             })    
         }
+        fetch("https://rrhh-squad6-1c2023.onrender.com/recursos")
+            .then((res) => {
+                return res.json()
+            })
+            .then((data) => {
+                setResources(data)
+            })
       }, [router.query.id])
       
       const breadcrumbItems = [
@@ -77,7 +85,7 @@ export default function Clientes() {
                 </div>
                 <ClientsTable items={items} />
             </div>
-            <TicketModal />
+            <TicketModal resources={[]} />
         </section>
     )
 }
