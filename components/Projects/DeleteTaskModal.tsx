@@ -1,5 +1,6 @@
+import { useState } from "react"
 export default function DeleteTaskModal({taskId, redirectUrl} : any) {
-
+    const [notification, setNotification] = useState('')
     const handleSubmit = async(event : any) => {
         event.preventDefault()
         fetch('https://api-proyectos.onrender.com/projects/tasks/' + taskId, {
@@ -13,6 +14,11 @@ export default function DeleteTaskModal({taskId, redirectUrl} : any) {
                     location.href = redirectUrl;
                 }
             }
+            return response.json();
+        }).then(data => {
+            if(data.error == 'internal_server_error'){
+                setNotification('Ocurrió un error, intente más tarde.');
+            }
         })
     }
 
@@ -20,12 +26,14 @@ export default function DeleteTaskModal({taskId, redirectUrl} : any) {
         <div className="modal fade" id="deleteTaskModal" tabIndex={-1} aria-labelledby="deleteTaskModalLabel" aria-hidden="true">
             <div className="modal-dialog">
                 <div className="modal-content">
+
                     <form method="POST" onSubmit={handleSubmit}>
                         <div className="modal-header">
                             <h1 className="modal-title fs-5" id="deleteTaskModalLabel">Eliminar Tarea</h1>
                             <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div className="modal-body">
+                            { notification === '' ? '' : <div className="alert alert-danger" role="alert" dangerouslySetInnerHTML={{ __html: notification }} />}
                             <p>¿Está seguro que desea eliminar la tarea?<br />Esta acción no se podrá deshacer.</p>
                         </div>
                         <div className="modal-footer">

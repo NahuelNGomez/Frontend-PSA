@@ -43,12 +43,13 @@ export default function EditProjectModal({item, projectId} : any) {
         }).then(data => {
             if(data.error == 'invalid_date_range'){
                 setNotification('La fecha de finalización no puede ser anterior a la de inicio.');
-            }else{
+            }else if(data.error == 'internal_server_error'){
                 setNotification('Ocurrió un error, intente más tarde.');
             }
         })
         .catch((error) => {
             console.error('Error al cargar el proyecto:', error);
+            setNotification('Ocurrió un error, intente más tarde.');
         })
     }
 

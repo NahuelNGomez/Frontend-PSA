@@ -46,9 +46,9 @@ export default function TaskModal({projectId, type, idTicket, resources} : any) 
                     if(response.ok) location.reload();
                     return response.json();
                 }).then(data => {
-                    if(data.error == 'invalid_daterange'){
+                    if(data.error == 'invalid_date_range'){
                         setNotification('La fecha de finalización no puede ser anterior a la de inicio.');
-                    }else{
+                    }else if(data.error == 'internal_server_error'){
                         setNotification('Ocurrió un error, intente más tarde.');
                     }
                 }).catch((error) => {
