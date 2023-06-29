@@ -54,8 +54,8 @@ export default function Soporte() {
                     </div>
                     <div className="col-md-2">
                         <div className="d-grid gap-2">
-                            <button className="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#projectModal">Ver mis tareas</button>
-                            <button className="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#projectModal">Ver mis tickets</button>
+                            <button className="btn btn-primary" type="button" data-bs-toggle="modal" disabled={true}>Ver mis tareas</button>
+                            <button className="btn btn-primary" type="button" data-bs-toggle="modal" disabled={true}>Ver mis tickets</button>
                         </div>
                     </div>
                 </div>

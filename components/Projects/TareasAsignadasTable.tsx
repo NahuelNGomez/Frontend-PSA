@@ -21,7 +21,9 @@ export default function TareasAsignadasTable({items} : any) {
                             <td>{item.nombre}</td>
                             <td>{item.estado}</td>
                             <td>{item.recursoAsignado}</td>
-                            <td>-</td>
+                            <td>
+                                <a href={'/tareas/' + item.id} className="btn btn-primary btn-sm">Ver tarea</a>
+                            </td>
                         </tr>
                     ))
                 }

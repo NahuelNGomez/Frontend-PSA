@@ -5,6 +5,7 @@ import { version } from "os"
 import TareasAsignadasTable from "../../../../components/Projects/TareasAsignadasTable"
 import TaskModal from "../../../../components/Projects/TaskModal"
 import AsignarTareaModal from "../../../../components/Projects/AsignarTareaModal"
+import EditTicketModal from "../../../../components/Soporte/EditTicketModal"
 
 const Ticket = () => {
     const router = useRouter()
@@ -37,10 +38,9 @@ const Ticket = () => {
       
     const [ticket, setTicket] = useState<Ticket>();
 
-    //const[recurso, setRecurso] = useState<any>();
-
     const[tareasAsignadas, setTareasAsignadas] = useState([]);
     const[tareasDisponibles, setTareasDisponibles] = useState([]);
+    const[recursos, setRecursos] = useState([]);
 
     useEffect(() => {
         if(router.query.id != null || router.query.id2 != null){ 
@@ -64,6 +64,13 @@ const Ticket = () => {
                 })
                 .then((data) => {
                     setTareasAsignadas(data)
+                })
+            fetch("https://rrhh-squad6-1c2023.onrender.com/recursos")
+                .then((res) => {
+                    return res.json()
+                })
+                .then((data) => {
+                    setRecursos(data)
                 })
         }
       }, [router.query.id, router.query.id2])
@@ -141,9 +148,7 @@ const Ticket = () => {
                         <p className="bd-callout bd-callout-light fw-light mb-8"><b>Recurso:</b> {ticket?.RecursoAsignado}.</p>
                     </div>
                     <div className="col-2 my-4">
-                        <button className="btn btn-outline-secondary " type="button" id="search">
-                                    <i className="bi bi-search"></i> Editar Ticket
-                        </button>
+                    <button className="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#editTicketModal">Editar ticket</button>
                     </div>
                 </div>
                 <div className="row">
@@ -175,6 +180,7 @@ const Ticket = () => {
                 {tareasDisponibles && (
                     <AsignarTareaModal tareasDisponibles={tareasDisponibles} idTicket={ticket?.id} />
                 )}
+                <EditTicketModal ticket={ticket} recursos={recursos}/> 
                 <TaskModal projectId={version?.idProyecto} type={2} idTicket={ticket?.id}/>
         </section>
     )
