@@ -15,7 +15,6 @@ export default function ProductReportModal(props : any) {
         }
     }, [props.id])
 
-    if(item == null) return (<></>)
 
     return (
         <div className="modal fade" id="productReportModal" tabIndex={-1} aria-labelledby="productReportModalLabel" aria-hidden="true">
