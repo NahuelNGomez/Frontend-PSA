@@ -95,7 +95,7 @@ export default function ReporteHoras({ id }: any) {
                     let proyecto = projects.find(p => p['id'] == project);
                     if (proyecto) {
                         registro.nombre_proyecto = proyecto["name"];
-                        let tasks: [] = proyecto['tasks'] || [];
+                        let tasks: [] = proyecto['tasks'] || []; // TO MODIF
                         let tarea = tasks.find((task: any) => task.id == registro.id_tarea)
                         registro.titulo_tarea = tarea ? tarea['title'] : "Tarea sin titulo";
                     }
@@ -141,15 +141,15 @@ export default function ReporteHoras({ id }: any) {
 
                     <LoadingIndicator cargando={cargando} />
 
-                    <div hidden={!registros || registros.length > 0} className="text-center"><h1>No hay tareas cargadas</h1></div>
-                    <div hidden={registros && registros.length === 0}>
+                    <div hidden={!registros || registros.length === 0} className="text-center"><h1>No hay tareas cargadas</h1></div>
+                    {/* <div hidden={registros && registros.length === 0}> */}
 
-                    </div>
+                    {/* </div> */}
 
                     <SubtotalHours hours={hours} />
 
                 </div>
             </div>
-        </section>
+        </section >
     )
 }
