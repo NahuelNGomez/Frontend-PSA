@@ -11,7 +11,7 @@ function formatDate(timestamp: string){
 export default function Tarea() {
     const router = useRouter()
 
-    const [item, setItem] = useState(null)
+    const [item, setItem] = useState<any>(null)
     const [status, setStatus] = useState(null)
     const [breadcrumbItems, setBreadcrumbItems] = useState<Array<{ title: string; url: string; }>>([]);
 
@@ -93,9 +93,6 @@ export default function Tarea() {
                 </div>
 
                 <div className="d-md-flex flex-md-row-reverse align-items-center justify-content-between">
-                    <div className="mb-3 mb-md-0 d-flex text-nowrap">
-                        <a className="btn btn-dark">Cargar horas</a>
-                    </div>
                     <div>
                         <h6 className="fw-light">{item.project.name} Proyecto</h6>
                     </div>

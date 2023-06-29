@@ -72,7 +72,7 @@ export default function ReporteHoras({ id }: any) {
                 setProject(data[0]['id'])
             })
 
-    }, [])
+    }, [maxDate])
 
     const handleSubmit = (e: { preventDefault: () => void }) => {
         e.preventDefault();

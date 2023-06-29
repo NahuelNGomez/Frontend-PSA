@@ -12,7 +12,7 @@ function formatDate(timestamp: string){
 export default function Proyecto() {
     const router = useRouter()
 
-    const [item, setItem] = useState(null)
+    const [item, setItem] = useState<any>(null)
     const [breadcrumbItems, setBreadcrumbItems] = useState<Array<{ title: string; url: string; }>>([]);
     const [tasks, setTasks] = useState([])
     var [searchText, setSearchText] = useState('')

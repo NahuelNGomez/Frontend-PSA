@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react"
-import { useRouter } from "next/router";
 // import HorasCargadasModal from "./HorasCargadasModal";
 
 
@@ -135,8 +134,8 @@ function ModalBodyRegistro({ isRequestLoading, isModification, registro, project
 }
 
 export default function CargarHorasModal({ id, registro, handleSubmit, isRequestLoading, setIsRequestLoading }: any) {
-    const router = useRouter()
-    const legajo = id > 0 ? id : router.query.id;
+    //const router = useRouter()
+    //const legajo = id > 0 ? id : router.query.id;
 
     const [isModification, setIsModification] = useState(false)
     const [hours, setHours] = useState('')
@@ -147,8 +146,6 @@ export default function CargarHorasModal({ id, registro, handleSubmit, isRequest
 
     const [project, setProject] = useState("")
     const [task, setTask] = useState("")
-
-
 
     const submitHandler = (e: { preventDefault: () => void }) => {
         e.preventDefault();
@@ -166,31 +163,30 @@ export default function CargarHorasModal({ id, registro, handleSubmit, isRequest
     useEffect(() => {
         console.log("Buscando proyectos...")
         fetch("https://api-proyectos.onrender.com/projects/")
-            .then((res) => {
-                return res.json()
-            })
-            .then((data) => {
-                setProjects(data)
-                if (!project) setProject(data.at(0)["id"])
-            })
-    }, [])
+        .then((res) => {
+            return res.json()
+        })
+        .then((data) => {
+            setProjects(data)
+            if (!project) setProject(data.at(0)["id"])
+        })
 
-    useEffect(() => {
         setIsModification(true)
+
         if (registro != undefined) {
             setProject(registro["id_proyecto"])
             setTask(registro["id_tarea"])
             setDate(registro["fecha_de_registro"])
             setHours(registro["cantidad"])
         }
-    }, [registro, projects])
 
-    useEffect(() => {
         let proyect: any = projects.find(p => p["id"] == project);
         let tasks = proyect ? proyect["tasks"] : [];
+
         setTasks(tasks)
         setTask(tasks.length === 0 ? "" : tasks[0]["id"])
-    }, [project])
+
+    }, [registro, projects, project])
 
     let anyEmpty = !project || !task || !hours || !date;
     let maxDate = new Date().toISOString().slice(0, 10);

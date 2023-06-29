@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"
 
 export default function TaskModal({item, taskId} : any) {
 
-    const [task, setTask] = useState([])
+    const task = item;
     const [resources, setResources] = useState([])
 
     useEffect(() => {
@@ -11,7 +11,6 @@ export default function TaskModal({item, taskId} : any) {
             return res.json()
         })
         .then((data) => {
-            setTask(item);
             setResources(data)
         })
     }, [])

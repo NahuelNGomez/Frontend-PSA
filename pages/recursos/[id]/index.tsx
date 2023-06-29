@@ -9,6 +9,16 @@ export default function Recurso() {
     const router = useRouter()
     const legajo_recurso = router.query.id;
 
+    useEffect(() => {
+        fetch("https://rrhh-squad6-1c2023.onrender.com/recursos/" + legajo_recurso)
+        .then((res) => {
+            return res.json()
+        })
+        .then((data) => {
+            setItems(data)
+        })
+    }, [legajo_recurso])
+
     const breadcrumbItems = [
         {
             title: 'Recursos',
@@ -25,7 +35,6 @@ export default function Recurso() {
     const [notification, setNotification] = useState({ message: "", type: "" });
 
     const [isRequestLoading, setIsRequestLoading] = useState(false);
-
 
     const cargarRegistro = (proyect: number, task: number, date: string, hours: number) => {
         const registro = {
@@ -53,16 +62,6 @@ export default function Recurso() {
         })
 
     }
-
-    useEffect(() => {
-        fetch("https://rrhh-squad6-1c2023.onrender.com/recursos/" + legajo_recurso)
-            .then((res) => {
-                return res.json()
-            })
-            .then((data) => {
-                setItems(data)
-            })
-    }, [])
 
 
     return (
